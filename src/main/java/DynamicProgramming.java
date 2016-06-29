@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -95,6 +96,11 @@ public class DynamicProgramming {
     return longestIncreasingLength;
   }
 
+  /**
+   * logic is the same as above function, return a valid longestIncreasingSequence instead of the length
+   * @param inputArr
+   * @return
+     */
   public int[] longestIncreasingSubsequence_nlogn_array(int[] inputArr){
     int[] result;
     int arrLen = inputArr.length;
@@ -136,6 +142,46 @@ public class DynamicProgramming {
       for(int i=longestIncreasingLength-1;i>=0; i--){
         result[i] = inputArr[k];
         k = parentArray[k];
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Given a set of distinct positive integers, find the largest subset such that every pair (Si, Sj) of elements in this subset
+   * satisfies: Si % Sj = 0 or Sj % Si = 0.
+   * @param nums set of distinct positive integers
+   * @return  one largest subset, if there are multiple answers, return any of them is fine
+   */
+  public List<Integer> largestDivisibleSubset(int[] nums) {
+    LinkedList<Integer> result = new LinkedList<>();
+    int numLen = nums.length;
+    if(numLen != 0){
+      result = new LinkedList<>();
+      int largestSubsetEndAt = 0;
+      int largestSize = 1;
+      Arrays.sort(nums);
+      int[] dpArray = new int[numLen];
+      int[] parentArray = new int[numLen];
+      //initialize dpArray to be 1
+      for(int i=0;i<numLen;++i){
+        dpArray[i] = 1;
+      }
+      for(int i=1;i<numLen;++i){
+        for(int j=0;j<i;++j){
+          if(nums[i] % nums[j] == 0){
+            dpArray[i] = dpArray[j]+1;
+            if(dpArray[i] > largestSize){
+              largestSubsetEndAt = i;
+              largestSize = dpArray[i];
+            }
+            parentArray[i] = j;
+          }
+        }
+      }
+      for(int i=0;i<largestSize;i++){
+        result.addFirst(nums[largestSubsetEndAt]);
+        largestSubsetEndAt = parentArray[largestSubsetEndAt];
       }
     }
     return result;

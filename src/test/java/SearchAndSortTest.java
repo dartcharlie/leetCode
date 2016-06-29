@@ -20,6 +20,12 @@ public class SearchAndSortTest {
     assertEquals(_searchAndSort.binarySearch(sortedArray,1),0);
     assertEquals(_searchAndSort.binarySearch(sortedArray,39),14);
     assertEquals(_searchAndSort.binarySearch(sortedArray,22),-1);
+  }
 
+  @Test
+  public void isPerfectSquareTest(){
+    assertEquals(_searchAndSort.isPerfectSquare(16),true);
+    assertEquals(_searchAndSort.isPerfectSquare(14),false);
+    assertEquals(_searchAndSort.isPerfectSquare(2147483647),false);
   }
 }

@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /**
  * Created by ZSong on 6/26/16.
  */
@@ -22,6 +24,35 @@ public class SearchAndSort {
         start = mid + 1;
       } else {
         end = mid - 1;
+      }
+    }
+    return result;
+  }
+
+  public int[] builtInArraySort(int[] unsorted){
+    Arrays.sort(unsorted);
+    return unsorted;
+  }
+
+  public boolean isPerfectSquare(int num){
+    boolean result = false;
+    if(num == 1){
+      result = true;
+    }
+    int low = 1;
+    int high = num-1;
+    int mid;
+    long product;
+    while(low <= high){
+      mid = (low+high)/2;
+      product = (long)mid*mid;
+      if(product == num){
+        result = true;
+        break;
+      }else if(product < num){
+        low = mid+1;
+      }else{
+        high = mid-1;
       }
     }
     return result;
