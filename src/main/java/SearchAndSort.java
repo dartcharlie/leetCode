@@ -29,30 +29,30 @@ public class SearchAndSort {
     return result;
   }
 
-  public int[] builtInArraySort(int[] unsorted){
+  public int[] builtInArraySort(int[] unsorted) {
     Arrays.sort(unsorted);
     return unsorted;
   }
 
-  public boolean isPerfectSquare(int num){
+  public boolean isPerfectSquare(int num) {
     boolean result = false;
-    if(num == 1){
+    if (num == 1) {
       result = true;
     }
     int low = 1;
-    int high = num-1;
+    int high = num - 1;
     int mid;
     long product;
-    while(low <= high){
-      mid = (low+high)/2;
-      product = (long)mid*mid;
-      if(product == num){
+    while (low <= high) {
+      mid = (low + high) / 2;
+      product = (long) mid * mid;
+      if (product == num) {
         result = true;
         break;
-      }else if(product < num){
-        low = mid+1;
-      }else{
-        high = mid-1;
+      } else if (product < num) {
+        low = mid + 1;
+      } else {
+        high = mid - 1;
       }
     }
     return result;
