@@ -1,6 +1,7 @@
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TreeSet;
 
 /**
  * Created by ZSong on 6/26/16.
@@ -158,10 +159,10 @@ public class DynamicProgramming {
    * @return one largest subset, if there are multiple answers, return any of them is fine
    */
   public List<Integer> largestDivisibleSubset(int[] nums) {
-    LinkedList<Integer> result = new LinkedList<>();
+    LinkedList<Integer> result = new LinkedList<Integer>();
     int numLen = nums.length;
     if (numLen != 0) {
-      result = new LinkedList<>();
+      result = new LinkedList<Integer>();
       int largestSubsetEndAt = 0;
       int largestSize = 1;
       Arrays.sort(nums);
@@ -216,6 +217,73 @@ public class DynamicProgramming {
       }
     }
     return distanceArray[word1Len][word2Len];
+  }
+
+  /**
+   * find a subarray in array Input that contains the largest sum and subject to the constraint that such sum is less than k.
+   * algorithm time complexity should be O(nlogn)
+   * brutal force method time complexity is O(n^2)
+   * @param input input array
+   * @param k the magic number that the largest sum of subArray can't exceed.
+   * @return
+   */
+  public int maxSumSubarrayNoLargerThanK(int[] input, int k){
+    TreeSet<Integer> treeSet = new TreeSet<Integer>();
+    int inputLen = input.length;
+    int sum = 0;
+    int result = Integer.MIN_VALUE;
+    for(int i=0;i<inputLen;++i){
+      sum += input[i];
+      Integer currMax = treeSet.ceiling(sum-k);
+      if(currMax != null){
+        result = Math.max(sum - currMax,result);
+      }
+      if(sum <= k){
+        result = Math.max(sum,result);
+      }
+      treeSet.add(sum);
+    }
+    return result;
+  }
+
+  /**
+   * Given a non-empty 2D matrix matrix and an integer k,
+   * find the max sum of a rectangle in the matrix such that its sum is no larger than k.
+   * 1) The rectangle inside the matrix must have an area > 0.
+   * 2) What if the number of rows is much larger than the number of columns?
+   * @param matrix
+   * @param k
+   * @return
+   */
+  public int maxSumSubmatrix(int[][] matrix, int k){
+    int row = matrix.length;
+    int result = Integer.MIN_VALUE;
+    if(row != 0){
+      int col = matrix[0].length;
+      int longerDimension = Math.max(row,col);
+      int shorterDimension = Math.min(row,col);
+
+      for(int i=0;i<shorterDimension;++i){
+        int[] sums = new int[longerDimension];
+        for(int j=i;j<shorterDimension;++j){
+          TreeSet<Integer> numSet = new TreeSet<Integer>();
+          int num = 0;
+          for(int x=0;x<longerDimension;++x){
+            sums[x] += row > col? matrix[x][j] :matrix[j][x];
+            num += sums[x];
+            Integer currMax = numSet.ceiling(num-k);
+            if(currMax != null){
+              result = Math.max(result,num-currMax);
+            }
+            if(num <= k){
+              result = Math.max(result,num);
+            }
+            numSet.add(num);
+          }
+        }
+      }
+    }
+    return result;
   }
 
 }
