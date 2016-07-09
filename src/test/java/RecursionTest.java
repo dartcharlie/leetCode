@@ -51,4 +51,24 @@ public class RecursionTest {
     assertEquals(_recursion.matrixLongestIncreasingPathLength(input4), 16);
   }
 
+  @Test
+  public void addToANumberTest(){
+    String input1 = "123";
+    assertEquals(_recursion.addToANumber(input1,6),Arrays.asList(new String[]{"1+2+3"}));
+    String input2 = "3210";
+    assertEquals(_recursion.addToANumber(input2,22),Arrays.asList(new String[]{"32-10"}));
+    String input3 = "123456789";
+    assertEquals(_recursion.addToANumber(input3,100),
+        Arrays.asList(new String[]{"123+45-67+8-9","123+4-5+67-89","123-45-67+89",
+                                  "123-4-5-6-7+8-9","12+3+4+5-6-7+89","12+3-4+5+67+8+9",
+                                  "12-3-4+5-6+7+89","1+23-4+56+7+8+9","1+23-4+5+6+78-9",
+                                  "1+2+34-5+67-8+9","1+2+3-4+5+6+78+9","-1+2-3+4+5+6+78+9"}));
+  }
+
+  @Test
+  public void generateParenthesisTest(){
+    assertEquals(_recursion.generateParenthesis(2),Arrays.asList(new String[]{"(())","()()"}));
+    assertEquals(_recursion.generateParenthesis(3),Arrays.asList(new String[]{"((()))","(()())","(())()","()(())","()()()"}));
+  }
+
 }

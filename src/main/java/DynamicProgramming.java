@@ -236,10 +236,10 @@ public class DynamicProgramming {
       sum += input[i];
       Integer currMax = treeSet.ceiling(sum-k);
       if(currMax != null){
-        result = Math.max(sum - currMax,result);
+        result = Math.max(sum - currMax, result);
       }
       if(sum <= k){
-        result = Math.max(sum,result);
+        result = Math.max(sum, result);
       }
       treeSet.add(sum);
     }
@@ -260,8 +260,8 @@ public class DynamicProgramming {
     int result = Integer.MIN_VALUE;
     if(row != 0){
       int col = matrix[0].length;
-      int longerDimension = Math.max(row,col);
-      int shorterDimension = Math.min(row,col);
+      int longerDimension = Math.max(row, col);
+      int shorterDimension = Math.min(row, col);
 
       for(int i=0;i<shorterDimension;++i){
         int[] sums = new int[longerDimension];
@@ -273,10 +273,10 @@ public class DynamicProgramming {
             num += sums[x];
             Integer currMax = numSet.ceiling(num-k);
             if(currMax != null){
-              result = Math.max(result,num-currMax);
+              result = Math.max(result, num - currMax);
             }
             if(num <= k){
-              result = Math.max(result,num);
+              result = Math.max(result, num);
             }
             numSet.add(num);
           }

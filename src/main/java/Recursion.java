@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Recursion {
   /**
@@ -9,6 +8,7 @@ public class Recursion {
    * @param inputList input list to be permutated
    * @return list of permutations
    */
+  Utils _utils = new Utils();
   public List<List<Integer>> permutations(List<Integer> inputList) {
     int inputSize = inputList.size();
     List<List<Integer>> result = new ArrayList<>();
@@ -133,4 +133,180 @@ public class Recursion {
     maxLengthMap[posX][posY] = currMax;
     return currMax;
   }
+
+  /**
+   * given a list of digit, add '+' or '-' between digit so that resulted equation equal to target number
+   * i.e. given "12345" and target 15, one element of result list would be "1+2+3+4+5"
+   * @param digits
+   * @param target
+   * @return all combinations of digests and signs that equal to the target
+   */
+  public List<String> addToANumber(String digits, int target){
+    List<String> results = helper_addToANumber("", digits, 0, target);
+    return results;
+  }
+
+  private List<String> helper_addToANumber(String prefix, String remainingDigits, int prefixResult, int target){
+    List<String> result = new ArrayList<String>();
+    int remainingLen = remainingDigits.length();
+    if(remainingLen == 0 ){
+      if(target == prefixResult) {
+        result.add(prefix);
+      }
+    }else {
+      //remaining digits length at least 1.
+      String newPrefix = "";
+      int newPrefixResult = 0;
+      String nextDigit = remainingDigits.substring(0,1);
+      for (int j = 0; j < 3; ++j) {
+        switch(j) {
+          case 0:
+            newPrefix = prefix + remainingDigits.substring(0, 1);
+            newPrefixResult = helper_addToANumber_eval(newPrefix);
+            break;
+          case 1:
+            if (!prefix.isEmpty()) {
+              newPrefix = prefix + '+' + nextDigit;
+              newPrefixResult = prefixResult + Integer.parseInt(nextDigit);
+              break;
+            } else {
+              continue;
+            }
+          case 2:
+            newPrefix = prefix + '-' + remainingDigits.substring(0, 1);
+            newPrefixResult = prefixResult - Integer.parseInt(nextDigit);
+            break;
+        }
+        List<String> recursiveResults;
+        if (remainingLen > 1) {
+          String remainDigits = remainingDigits.substring(1);
+          recursiveResults = helper_addToANumber(newPrefix, remainDigits, newPrefixResult, target);
+        } else {
+          recursiveResults = helper_addToANumber(newPrefix, "", newPrefixResult, target);
+        }
+        for (String recursiveResult : recursiveResults) {
+          result.add(recursiveResult);
+        }
+      }
+    }
+    return result;
+  }
+  //helper function to calculate intermediate function result
+  private int helper_addToANumber_eval(String function){
+    int sum = 0;
+    int currNum = 0;
+    boolean add = true;
+    int functionLen = function.length();
+    for(int i=0;i<functionLen;++i){
+      if(function.charAt(i) == '+' || function.charAt(i) == '-'){
+        if(add){
+          sum += currNum;
+        }else{
+          sum -= currNum;
+        }
+        currNum = 0;
+        add = function.charAt(i) == '+'? true:false;
+      }else{
+        currNum = currNum*10 + (function.charAt(i) - '0');
+      }
+    }
+    if(add){
+      sum += currNum;
+    }else{
+      sum -= currNum;
+    }
+    return sum;
+  }
+
+  public List<String> generateParenthesis(int n){
+    List<String> result = new ArrayList<String>();
+    helper_generateParenthesis(n,n,"",result);
+    return result;
+  }
+
+  public void helper_generateParenthesis(int left, int right, String prefix, List<String> result){
+    if(left == 0 && right == 0){
+      result.add(prefix);
+    }else {
+      String nextPrefix;
+      if (left > right) {
+        return;
+      } else if (left == right) {
+        nextPrefix = prefix + '(';
+        helper_generateParenthesis(left-1,right,nextPrefix,result);
+      }else{
+        if(left == 0){
+          nextPrefix = prefix + ')';
+          helper_generateParenthesis(left,right-1,nextPrefix,result);
+        }else{
+          nextPrefix = prefix + '(';
+          helper_generateParenthesis(left-1,right,nextPrefix,result);
+          nextPrefix = prefix + ')';
+          helper_generateParenthesis(left,right-1,nextPrefix,result);
+        }
+      }
+    }
+  }
+
+  /**
+   * a game to draw 4 cards of poker, A=1,J=11,Q=12,K=13, use those 4 numbers and +,-,x,/ and () to get the target to 24.
+   * @param inputs, list of numbers should range from 1 to 13
+   * @param target, the target number, by definition, it should be 24
+   * @return all combinations that resulted to target
+   * TODO: missing some results now
+   */
+
+  public List<String> arithmeticToTarget(int[] inputs, int target){
+    List<String> answers = new ArrayList<String>();
+    List<Integer> inputNums = new LinkedList<Integer>();
+    for(int i:inputs){
+      inputNums.add(i);
+    }
+    List<List<Integer>> perms = permutations(inputNums);
+    Set<List<Integer>> uniqPerms = new HashSet<List<Integer>>();
+    for(List<Integer> perm: perms){
+      uniqPerms.add(perm);
+    }
+    for(List<Integer> uniqPerm:uniqPerms) {
+      helper_arithmeticToTarget(uniqPerm, "",0, target, answers);
+    }
+    return answers;
+  }
+
+  private void helper_arithmeticToTarget(List<Integer> remainingNums, String prefix, int prefixResult, int target, List<String> answer){
+    int remainingNumsLen = remainingNums.size();
+    if(remainingNumsLen == 0){
+      if(prefixResult == target){
+        answer.add(prefix);
+      }
+    }else {
+      List<Integer> remainingNumsCopy = new LinkedList<Integer>(remainingNums);
+      Integer currInteger = remainingNumsCopy.remove(0);
+
+      if (prefix.isEmpty()) {
+        prefix = currInteger.toString();
+        helper_arithmeticToTarget(remainingNumsCopy, prefix, currInteger, target, answer);
+      } else {
+        //try add
+        int newPrefixResult = 0;
+        newPrefixResult = prefixResult + currInteger;
+        helper_arithmeticToTarget(remainingNumsCopy, prefix + '+' + currInteger,newPrefixResult, target, answer);
+        //try minus
+        newPrefixResult = prefixResult - currInteger;
+        helper_arithmeticToTarget(remainingNumsCopy, prefix + '-' + currInteger,newPrefixResult, target, answer);
+        //try product
+        newPrefixResult = prefixResult * currInteger;
+        String newPrefix = '(' + prefix + ')' + '*' + currInteger;
+        helper_arithmeticToTarget(remainingNumsCopy, newPrefix,newPrefixResult, target, answer);
+        //try divide
+        if(prefixResult % currInteger == 0){
+          newPrefixResult = prefixResult / currInteger;
+          newPrefix = '(' + prefix + ')' + '/' + currInteger;
+          helper_arithmeticToTarget(remainingNumsCopy, newPrefix, newPrefixResult, target, answer);
+        }
+      }
+    }
+  }
+
+
 }
