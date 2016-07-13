@@ -223,7 +223,7 @@ public class Recursion {
     return result;
   }
 
-  public void helper_generateParenthesis(int left, int right, String prefix, List<String> result){
+  private void helper_generateParenthesis(int left, int right, String prefix, List<String> result){
     if(left == 0 && right == 0){
       result.add(prefix);
     }else {
