@@ -1,5 +1,4 @@
 import java.util.*;
-
 public class Recursion {
   /**
    * given an input array, return all permutations of such array, no duplicate element inside input array
@@ -308,5 +307,86 @@ public class Recursion {
     }
   }
 
+  /**
+   * leetcode 212, back tracking, trie
+   * @param board
+   * @param words
+   * @return
+   */
+  public List<String> findWordsII(char[][] board, String[] words){
+    List<String> wordList = Arrays.asList(words);
+    Utils.TrieNode root = _utils.buildTrie(wordList);
+    Set<String> resultSet = new HashSet<>();
 
+    int lenX = board.length;
+    if(lenX != 0) {
+      int lenY = board[0].length;
+      boolean[][] visitedMap = new boolean[lenX][lenY];
+      for(int i=0;i<lenX;++i){
+        for(int j=0;j<lenY;++j){
+          if(root.hasChild(board[i][j])) {
+            visitedMap[i][j] = true;
+            helper_findWordsII(""+ board[i][j], board, visitedMap, i, j, lenX, lenY, root.getChildren().get(board[i][j]), resultSet);
+            visitedMap[i][j] = false;
+          }
+        }
+      }
+    }
+    List<String> answer = new ArrayList<>();
+    for(String result :resultSet){
+      answer.add(result);
+    }
+    return answer;
+  }
+
+  private void helper_findWordsII(String prefix, char[][] board, boolean[][] visited, int currX, int currY, int lenX, int lenY, Utils.TrieNode currNode, Set<String> result) {
+    if (prefix.equals(currNode.getPrefix()) && currNode.getInDictionary()) {
+      result.add(prefix);
+    }
+    char childChar;
+    //going up
+    if (currY > 0 && !visited[currX][currY - 1]) {
+      childChar = board[currX][currY - 1];
+      if (currNode.hasChild(childChar)) {
+        String updatedPrefix = prefix + board[currX][currY - 1];
+        Utils.TrieNode updatedNode = currNode.getChildren().get(childChar);
+        visited[currX][currY - 1] = true;
+        helper_findWordsII(updatedPrefix, board, visited, currX, currY - 1, lenX, lenY, updatedNode, result);
+        visited[currX][currY - 1] = false;
+      }
+    }
+    //going left
+    if (currX > 0 && !visited[currX - 1][currY]) {
+      childChar = board[currX - 1][currY];
+      if (currNode.hasChild(childChar)) {
+        String updatedPrefix = prefix + board[currX - 1][currY];
+        Utils.TrieNode updatedNode = currNode.getChildren().get(childChar);
+        visited[currX - 1][currY] = true;
+        helper_findWordsII(updatedPrefix, board, visited, currX - 1, currY, lenX, lenY, updatedNode, result);
+        visited[currX - 1][currY] = false;
+      }
+    }
+    //going down
+    if (currY < lenY-1 && !visited[currX][currY + 1]) {
+      childChar = board[currX][currY + 1];
+      if (currNode.hasChild(childChar)) {
+        String updatedPrefix = prefix + board[currX][currY + 1];
+        Utils.TrieNode updatedNode = currNode.getChildren().get(childChar);
+        visited[currX][currY + 1] = true;
+        helper_findWordsII(updatedPrefix, board, visited, currX, currY + 1, lenX, lenY, updatedNode, result);
+        visited[currX][currY + 1] = false;
+      }
+    }
+    //going right
+    if (currX < lenX-1 && !visited[currX + 1][currY]) {
+      childChar = board[currX + 1][currY];
+      if (currNode.hasChild(childChar)) {
+        String updatedPrefix = prefix + board[currX + 1][currY];
+        Utils.TrieNode updatedNode = currNode.getChildren().get(childChar);
+        visited[currX + 1][currY] = true;
+        helper_findWordsII(updatedPrefix, board, visited, currX + 1, currY, lenX, lenY, updatedNode, result);
+        visited[currX + 1][currY] = false;
+      }
+    }
+  }
 }

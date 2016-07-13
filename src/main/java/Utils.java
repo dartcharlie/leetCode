@@ -121,4 +121,85 @@ public class Utils {
     }
     return true;
   }
+
+  public class TrieNode {
+    String prefix;
+    Map<Character,TrieNode> children;
+    boolean inDictionary;
+    public TrieNode(String pre){
+      prefix = new String(pre);
+      children = new HashMap<Character, TrieNode>();
+      inDictionary = false;
+    }
+
+    /**
+     * check if the child character already in its children map, if so return child TrieNode
+     * if not create a new TrieNode, add to its children map, then return child TireNode
+     * @param childChar child character
+     * @return child TrieNode
+     */
+    public TrieNode addChild(char childChar){
+      TrieNode res;
+      if(this.children.containsKey(childChar)){
+        res = this.children.get(childChar);
+      }else{
+        res = new TrieNode(this.prefix + childChar);
+        this.children.put(childChar,res);
+      }
+      return res;
+    }
+
+    public void setInDictionary(boolean inDictionary){
+      this.inDictionary = inDictionary;
+    }
+
+    public boolean getInDictionary(){
+      return this.inDictionary;
+    }
+
+    public Map<Character,TrieNode> getChildren(){
+      return this.children;
+    }
+
+    public String getPrefix(){
+      return this.prefix;
+    }
+
+    public boolean hasChild(char childChar){
+      return this.children.containsKey(childChar);
+    }
+  }
+
+  public boolean searchWordInTrie(TrieNode root, String word){
+    int wordLen = word.length();
+    for(int i=0;i<wordLen;++i){
+      Map<Character,TrieNode> childMap = root.getChildren();
+      if(childMap.containsKey(word.charAt(i))){
+        root = childMap.get(word.charAt(i));
+      }else{
+        break;
+      }
+    }
+    boolean found = root.getPrefix().equals(word) && root.getInDictionary();
+    return found;
+  }
+
+  /**
+   *
+   * @param words
+   * @return
+   */
+  public TrieNode buildTrie(List<String> words){
+    TrieNode root = new TrieNode("");
+    TrieNode currRoot;
+    for(String word : words){
+      currRoot = root;
+      int wordLen = word.length();
+      for(int i=0;i<wordLen;++i){
+        currRoot = currRoot.addChild(word.charAt(i));
+      }
+      currRoot.setInDictionary(true);
+    }
+    return root;
+  }
 }

@@ -71,4 +71,11 @@ public class RecursionTest {
     assertEquals(_recursion.generateParenthesis(3),Arrays.asList(new String[]{"((()))","(()())","(())()","()(())","()()()"}));
   }
 
+  @Test
+  public void wordSearchIITest(){
+    char[][] board1 = new char[][]{{'o','a','a','n'},{'e','t','a','e'},{'i','h','k','r'},{'i','f','l','v'}};
+    String[] words1 = new String[]{"oath","pea","eat","rain"};
+    List<String> expected_output1 = Arrays.asList(new String[]{"oath","eat"});
+    assertEquals(_recursion.findWordsII(board1,words1),expected_output1);
+  }
 }

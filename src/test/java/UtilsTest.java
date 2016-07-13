@@ -3,9 +3,7 @@ import org.testng.annotations.Test;
 
 import org.testng.Assert;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by ZSong on 7/8/16.
@@ -49,5 +47,34 @@ public class UtilsTest {
     String input2 = "(1 + (3 * 4)) / 13";
     List<String> RPN2 = _utils.shuntingYardSimplified(input2);
     Assert.assertEquals(_utils.reversePolishNotationCalculation(RPN2.toArray(new String[RPN2.size()])), 1);
+  }
+
+  @Test
+  public void buildTrieTest(){
+    List<String> input1 = Arrays.asList(new String[]{"oath", "pea", "eat", "rain"});
+    Utils.TrieNode expected_output1 = _utils.buildTrie(input1);
+    Assert.assertEquals(expected_output1.getPrefix(),"");
+    Set<Character> childSet = new HashSet<>();
+    childSet.add('o');
+    childSet.add('p');
+    childSet.add('e');
+    childSet.add('r');
+    Assert.assertEquals(expected_output1.getChildren().keySet(),childSet);
+    Utils.TrieNode peaNode = expected_output1.getChildren().get('p').getChildren().get('e').getChildren().get('a');
+    Assert.assertEquals(peaNode.getPrefix(),"pea");
+    Assert.assertEquals(peaNode.getInDictionary(),true);
+  }
+
+  @Test void searchWordInTrieTest(){
+    List<String> input1 = Arrays.asList(new String[]{"oath", "pea", "eat", "rain"});
+    Utils.TrieNode root1 = _utils.buildTrie(input1);
+    Assert.assertEquals(_utils.searchWordInTrie(root1,"oath"),true);
+    Assert.assertEquals(_utils.searchWordInTrie(root1,"pea"),true);
+    Assert.assertEquals(_utils.searchWordInTrie(root1,"eat"),true);
+    Assert.assertEquals(_utils.searchWordInTrie(root1,"rain"),true);
+    Assert.assertEquals(_utils.searchWordInTrie(root1,"pull"),false);
+    Assert.assertEquals(_utils.searchWordInTrie(root1,"ea"),false);
+    Assert.assertEquals(_utils.searchWordInTrie(root1,""),false);
+    Assert.assertEquals(_utils.searchWordInTrie(root1,"o"),false);
   }
 }
