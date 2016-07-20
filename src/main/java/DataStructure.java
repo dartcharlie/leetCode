@@ -252,4 +252,108 @@ public class DataStructure {
     }
     return res;
   }
+
+  //Definition for a binary tree node.
+  public static class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int x) { val = x; }
+  }
+
+  public static class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+      if(root == null){
+        return "#";
+      }
+      List<Integer> serializedNodes = new ArrayList<>();
+      List<TreeNode> nodes = new LinkedList<>();
+      TreeNode currNode = root;
+      serializedNodes.add(currNode.val);
+      while(currNode != null){
+        if(currNode.left != null){
+          nodes.add(currNode.left);
+          serializedNodes.add(currNode.left.val);
+        }else{
+          serializedNodes.add(null);
+        }
+        if(currNode.right != null){
+          serializedNodes.add(currNode.right.val);
+          nodes.add(currNode.right);
+        }else{
+          serializedNodes.add(null);
+        }
+        if(!nodes.isEmpty()){
+          currNode = nodes.remove(0);
+        }else{
+          currNode = null;
+        }
+      }
+
+      StringBuilder resBuilder = new StringBuilder();
+      int serializedNodesLen = serializedNodes.size();
+      for(int i=serializedNodesLen-1;i>=0;--i){
+        if(serializedNodes.get(i) == null){
+          serializedNodesLen--;
+        }else{
+          break;
+        }
+      }
+      for(int i=0;i<serializedNodesLen;++i){
+        Integer currInteger = serializedNodes.get(i);
+        if(currInteger !=null){
+          resBuilder.append(currInteger.toString());
+        }else{
+          resBuilder.append('#');
+        }
+        resBuilder.append(',');
+      }
+      resBuilder.deleteCharAt(resBuilder.length()-1); //trim last ','
+      return resBuilder.toString();
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+      if(data.equals("#")){
+        return null;
+      }
+      String[] tokens = data.split(",");
+      List<Integer> integers = new ArrayList<>();
+      int tokensLen = tokens.length;
+      for(int i=0;i<tokensLen;++i){
+        if(tokens[i].equals("#")){
+          integers.add(null);
+        }else{
+          integers.add(Integer.parseInt(tokens[i]));
+        }
+      }
+      int integersLen = integers.size();
+      List<TreeNode> nodeToProcess = new LinkedList<>();
+      TreeNode root = new TreeNode(integers.get(0));
+      nodeToProcess.add(root);
+      int i;
+      for(i=1;i<integersLen-1;i=i+2){
+        TreeNode curr = nodeToProcess.remove(0);
+        Integer leftInt = integers.get(i);
+        Integer rightInt = integers.get(i+1);
+        if( leftInt != null){
+          TreeNode leftChild = new TreeNode(leftInt);
+          curr.left = leftChild;
+          nodeToProcess.add(leftChild);
+        }
+        if(rightInt != null){
+          TreeNode rightChild = new TreeNode(rightInt);
+          curr.right = rightChild;
+          nodeToProcess.add(rightChild);
+        }
+      }
+      if(!nodeToProcess.isEmpty() && i<integersLen){
+        TreeNode curr = nodeToProcess.remove(0);
+        curr.left = new TreeNode(integers.get(i));
+      }
+      return root;
+    }
+  }
 }

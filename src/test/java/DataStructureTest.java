@@ -90,4 +90,26 @@ public class DataStructureTest {
     DataStructure.ListNode swaped_head3 = _dataStructure.swapPairs(head3);
     Assert.assertEquals(_dataStructure.listEqual(swaped_head3,expected_head3),true);
   }
+
+  @Test
+  public void TreeSerDeserTest(){
+    DataStructure.Codec codec = new DataStructure.Codec();
+    String input1 = "1,2,3,#,#,4,5";
+    Assert.assertEquals(codec.serialize(codec.deserialize(input1)),input1);
+
+    String input2 = "#";
+    Assert.assertEquals(codec.serialize(codec.deserialize(input2)),input2);
+
+    String input3 = "1";
+    Assert.assertEquals(codec.serialize(codec.deserialize(input3)),input3);
+
+    String input4 = "1,2,3";
+    Assert.assertEquals(codec.serialize(codec.deserialize(input4)),input4);
+
+    String input5 = "1,#,2,3";
+    Assert.assertEquals(codec.serialize(codec.deserialize(input5)),input5);
+
+    String input6 = "5,4,7,3,#,2,#,-1,#,9";
+    Assert.assertEquals(codec.serialize(codec.deserialize(input6)),input6);
+  }
 }
