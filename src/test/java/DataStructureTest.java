@@ -2,15 +2,18 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import org.testng.Assert;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class DataStructureTest {
   DataStructure _dataStructure;
+  DataStructure.TreeCodec _treeCodec;
 
   @BeforeTest
   public void setup() {
     _dataStructure = new DataStructure();
+    _treeCodec = new DataStructure.TreeCodec();
   }
 
   @Test
@@ -93,23 +96,42 @@ public class DataStructureTest {
 
   @Test
   public void TreeSerDeserTest(){
-    DataStructure.Codec codec = new DataStructure.Codec();
+
     String input1 = "1,2,3,#,#,4,5";
-    Assert.assertEquals(codec.serialize(codec.deserialize(input1)),input1);
+    Assert.assertEquals(_treeCodec.serialize(_treeCodec.deserialize(input1)),input1);
 
     String input2 = "#";
-    Assert.assertEquals(codec.serialize(codec.deserialize(input2)),input2);
+    Assert.assertEquals(_treeCodec.serialize(_treeCodec.deserialize(input2)),input2);
 
     String input3 = "1";
-    Assert.assertEquals(codec.serialize(codec.deserialize(input3)),input3);
+    Assert.assertEquals(_treeCodec.serialize(_treeCodec.deserialize(input3)),input3);
 
     String input4 = "1,2,3";
-    Assert.assertEquals(codec.serialize(codec.deserialize(input4)),input4);
+    Assert.assertEquals(_treeCodec.serialize(_treeCodec.deserialize(input4)),input4);
 
     String input5 = "1,#,2,3";
-    Assert.assertEquals(codec.serialize(codec.deserialize(input5)),input5);
+    Assert.assertEquals(_treeCodec.serialize(_treeCodec.deserialize(input5)),input5);
 
     String input6 = "5,4,7,3,#,2,#,-1,#,9";
-    Assert.assertEquals(codec.serialize(codec.deserialize(input6)),input6);
+    Assert.assertEquals(_treeCodec.serialize(_treeCodec.deserialize(input6)),input6);
+  }
+
+  @Test
+  public void zigzagLevelOrderTest(){
+    String input1 = "3,9,20,#,#,15,7";
+    DataStructure.TreeNode root1 = _treeCodec.deserialize(input1);
+    List<List<Integer>> expected1 = new ArrayList<List<Integer>>();
+    expected1.add(Arrays.asList(new Integer[]{3}));
+    expected1.add(Arrays.asList(new Integer[]{20,9}));
+    expected1.add(Arrays.asList(new Integer[]{15,7}));
+    Assert.assertEquals(_dataStructure.zigzagLevelOrder(root1),expected1);
+
+    String input2 = "1,2,3,4,#,#,5";
+    DataStructure.TreeNode root2 = _treeCodec.deserialize(input2);
+    List<List<Integer>> expected2 = new ArrayList<List<Integer>>();
+    expected2.add(Arrays.asList(new Integer[]{1}));
+    expected2.add(Arrays.asList(new Integer[]{3,2}));
+    expected2.add(Arrays.asList(new Integer[]{4,5}));
+    Assert.assertEquals(_dataStructure.zigzagLevelOrder(root2),expected2);
   }
 }

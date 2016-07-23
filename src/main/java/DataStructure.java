@@ -261,7 +261,7 @@ public class DataStructure {
     TreeNode(int x) { val = x; }
   }
 
-  public static class Codec {
+  public static class TreeCodec {
 
     // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
@@ -355,5 +355,36 @@ public class DataStructure {
       }
       return root;
     }
+  }
+
+  public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+    Queue<TreeNode> queue = new LinkedList<>();
+    List<List<Integer>> res = new ArrayList<>();
+    if(root != null){
+      queue.offer(root);
+      int level = 0;
+      while(!queue.isEmpty()){
+        List<Integer> levelList = new ArrayList<>();
+        int queueSize = queue.size();
+        for(int i=0;i<queueSize;++i){
+          TreeNode currNode = queue.poll();
+          if(level%2 == 0){
+            levelList.add(currNode.val);
+          }else{
+            levelList.add(0,currNode.val);
+          }
+          if(currNode.left!= null){
+            queue.offer(currNode.left);
+          }
+          if(currNode.right != null){
+            queue.offer(currNode.right);
+          }
+
+        }
+        res.add(levelList);
+        level++;
+      }
+    }
+    return res;
   }
 }
