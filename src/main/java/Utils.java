@@ -202,4 +202,30 @@ public class Utils {
     }
     return root;
   }
+
+  /**
+   * English letter that is not in the names of U.S. 50 states
+   */
+  public String letterOutsideStates(String[] states){
+    String alphabet = "abcdefghijklmnopqrstuvwxyz";
+    int statesLen = states.length;
+    Set<Character> stateChar = new HashSet<>();
+    for(int i=0;i<statesLen;++i){
+      int stateLen = states[i].length();
+      for(int j=0;j<stateLen;++j){
+        Character currChar = states[i].charAt(j);
+        currChar = Character.toLowerCase(currChar);
+        if(!stateChar.contains(currChar)){
+          stateChar.add(currChar);
+        }
+      }
+    }
+    StringBuilder letterNotChosen = new StringBuilder();
+    for(int i=0;i<26;++i){
+      if(!stateChar.contains(alphabet.charAt(i))){
+        letterNotChosen.append(alphabet.charAt(i));
+      }
+    }
+    return letterNotChosen.toString();
+  }
 }

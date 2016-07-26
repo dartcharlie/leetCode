@@ -77,4 +77,11 @@ public class UtilsTest {
     Assert.assertEquals(_utils.searchWordInTrie(root1,""),false);
     Assert.assertEquals(_utils.searchWordInTrie(root1,"o"),false);
   }
+
+  @Test void letterOutsideStatesTest(){
+    String[] states = new String[]{"Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia",
+        "Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","NewHampshire","NewJersey","NewMexico","NewYork","NorthCarolina","NorthDakota",
+        "Ohio","Oklahoma","Oregon","Pennsylvania","RhodeIsland","SouthCarolina","SouthDakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","WestVirginia","Wisconsin","Wyoming"};
+    Assert.assertEquals(_utils.letterOutsideStates(states),"q");
+  }
 }
