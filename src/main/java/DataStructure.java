@@ -387,4 +387,40 @@ public class DataStructure {
     }
     return res;
   }
+
+  /**
+   * java heap questions
+   * Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
+   */
+  public ListNode mergeKLists(ListNode[] lists) {
+    int k = lists.length;
+    if(k == 0){
+      return null;
+    }
+    PriorityQueue<ListNode> pq = new PriorityQueue<>(k, (ListNode n1, ListNode n2)-> n1.val - n2.val);
+
+    for(int i=0;i<k;++i){
+      if(lists[i] != null) {
+        pq.offer(lists[i]);
+      }
+    }
+    if(pq.isEmpty()){
+      return null;
+    }
+    ListNode minimum = pq.poll();
+    if(minimum.next != null){
+      pq.add(minimum.next);
+    }
+    ListNode itr = new ListNode(minimum.val);
+    ListNode root = itr;
+    while(!pq.isEmpty()){
+      minimum = pq.poll();
+      if(minimum.next != null){
+        pq.offer(minimum.next);
+      }
+      itr.next = new ListNode(minimum.val);
+      itr = itr.next;
+    }
+    return root;
+  }
 }

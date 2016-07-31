@@ -29,11 +29,6 @@ public class SearchAndSort {
     return result;
   }
 
-  public int[] builtInArraySort(int[] unsorted) {
-    Arrays.sort(unsorted);
-    return unsorted;
-  }
-
   public boolean isPerfectSquare(int num) {
     boolean result = false;
     if (num == 1) {

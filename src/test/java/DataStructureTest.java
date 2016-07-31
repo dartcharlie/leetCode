@@ -47,12 +47,12 @@ public class DataStructureTest {
     DataStructure.ListNode l0 = _dataStructure.createList(new int[]{});
     DataStructure.ListNode l1 = _dataStructure.createList(new int[]{1,2,3,4});
     DataStructure.ListNode l2 = _dataStructure.createList(new int[]{1,2,3,4});
-    Assert.assertEquals(_dataStructure.listEqual(l0,l0),true);
+    Assert.assertEquals(_dataStructure.listEqual(l0, l0),true);
     Assert.assertEquals(_dataStructure.listEqual(l1,l2),true);
     DataStructure.ListNode l3 = _dataStructure.createList(new int[]{1,2});
     DataStructure.ListNode l4 = _dataStructure.createList(new int[]{1,2,4,3});
-    Assert.assertEquals(_dataStructure.listEqual(l2,l3),false);
-    Assert.assertEquals(_dataStructure.listEqual(l2,l4),false);
+    Assert.assertEquals(_dataStructure.listEqual(l2, l3),false);
+    Assert.assertEquals(_dataStructure.listEqual(l2, l4),false);
   }
 
   @Test
@@ -73,7 +73,7 @@ public class DataStructureTest {
     DataStructure.ListNode l6 = _dataStructure.createList(new int[]{1,7,13,14});
     DataStructure.ListNode l56 = _dataStructure.createList(new int[]{1,7,13,14});
     DataStructure.ListNode l56Merged = _dataStructure.mergeTwoLists(l5,l6);
-    Assert.assertEquals(_dataStructure.listEqual(l56Merged,l56),true);
+    Assert.assertEquals(_dataStructure.listEqual(l56Merged, l56),true);
   }
 
   @Test
@@ -122,7 +122,7 @@ public class DataStructureTest {
     DataStructure.TreeNode root1 = _treeCodec.deserialize(input1);
     List<List<Integer>> expected1 = new ArrayList<List<Integer>>();
     expected1.add(Arrays.asList(new Integer[]{3}));
-    expected1.add(Arrays.asList(new Integer[]{20,9}));
+    expected1.add(Arrays.asList(new Integer[]{20, 9}));
     expected1.add(Arrays.asList(new Integer[]{15,7}));
     Assert.assertEquals(_dataStructure.zigzagLevelOrder(root1),expected1);
 
@@ -133,5 +133,29 @@ public class DataStructureTest {
     expected2.add(Arrays.asList(new Integer[]{3,2}));
     expected2.add(Arrays.asList(new Integer[]{4,5}));
     Assert.assertEquals(_dataStructure.zigzagLevelOrder(root2),expected2);
+  }
+
+  @Test
+  public void mergeKListsTest(){
+    DataStructure.ListNode list11 = _dataStructure.createList(new int[]{4,8,12,16});
+    DataStructure.ListNode list12 = _dataStructure.createList(new int[]{3,6,9,15});
+    DataStructure.ListNode list13 = _dataStructure.createList(new int[]{2,5,11,17,19,20});
+    DataStructure.ListNode list14 = _dataStructure.createList(new int[]{1,7,10,13,14,18});
+    DataStructure.ListNode expected1 = _dataStructure.createList(new int[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20});
+
+    DataStructure.ListNode[] listNodes1 = new DataStructure.ListNode[]{list11,list12,list13,list14};
+    Assert.assertEquals(_dataStructure.listEqual(_dataStructure.mergeKLists(listNodes1),expected1),true);
+
+    DataStructure.ListNode list21 = _dataStructure.createList(new int[]{});
+    DataStructure.ListNode[] listNodes2 = new DataStructure.ListNode[]{list21};
+    DataStructure.ListNode expected2 = _dataStructure.createList(new int[]{});
+    Assert.assertEquals(_dataStructure.listEqual(_dataStructure.mergeKLists(listNodes2),expected2),true);
+
+    DataStructure.ListNode list31 = _dataStructure.createList(new int[]{});
+    DataStructure.ListNode list32 = _dataStructure.createList(new int[]{});
+    DataStructure.ListNode[] listNodes3 = new DataStructure.ListNode[]{list31,list32};
+    DataStructure.ListNode expected3 = _dataStructure.createList(new int[]{});
+    Assert.assertEquals(_dataStructure.listEqual(_dataStructure.mergeKLists(listNodes3),expected3),true);
+
   }
 }
