@@ -555,17 +555,17 @@ public class DataStructure {
     return ans;
   }
 
-  private int helper_fallingLeaves(TreeNode curr, Map<Integer,List<TreeNode>> nodeLevelMap){
+  private int helper_fallingLeaves(TreeNode curr, Map<Integer,List<TreeNode>> nodeLevelMap) {
     int currHeight;
-    if(curr == null){
+    if (curr == null) {
       currHeight = Integer.MIN_VALUE;
-    }else {
+    } else {
       if (curr.left == null && curr.right == null) {
         currHeight = 0;
       } else {
         int leftHeight = helper_fallingLeaves(curr.left, nodeLevelMap);
         int rightHeight = helper_fallingLeaves(curr.right, nodeLevelMap);
-        currHeight = Math.max(leftHeight, rightHeight)+1;
+        currHeight = Math.max(leftHeight, rightHeight) + 1;
       }
       if (nodeLevelMap.containsKey(currHeight)) {
         List<TreeNode> nodes = nodeLevelMap.get(currHeight);
@@ -577,5 +577,42 @@ public class DataStructure {
       }
     }
     return currHeight;
+  }
+  public static class SegmentTree{
+    private int[] segArray;
+    //public int[] constructSegmentTree(int[] input,)
+  }
+
+  /**
+   * * A tournament tree is a binary tree
+   * where the parent is the minimum of the two children.
+   * Given a tournament tree find the second minimum value in the tree.
+   * A node in the tree will always have 2 or 0 children.
+   * Also all leaves will have distinct and unique values.
+   * @param root
+   * @return
+   */
+  public Integer tournamentTree2ndMinimum(TreeNode root){
+    if(root == null){
+      return null;
+    }
+    if(root.left == null || root.right == null){
+      return null;
+    }
+    int secondMin = Integer.MAX_VALUE;
+    return helper_TournamentTree(root,secondMin);
+  }
+
+  public Integer helper_TournamentTree(TreeNode root, int currMax){
+    if(root.left == null || root.right == null){
+      return currMax;
+    }
+    if(root.left.val > root.right.val){
+      currMax = Math.min(currMax,root.left.val);
+      return helper_TournamentTree(root.right,currMax);
+    }else{
+      currMax = Math.min(currMax,root.right.val);
+      return helper_TournamentTree(root.left,currMax);
+    }
   }
 }

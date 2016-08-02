@@ -30,6 +30,8 @@ public class DataStructureTest {
     List<String> ballots_input3 = Arrays.asList(new String[]{"abcd", "acbd", "abcd", "acbd", "bdac", "bcad", "bcda", "cbda", "dcba"});
     Assert.assertEquals(_dataStructure.preferentialVoting(ballots_input3), 'b');
 
+    List<String> ballots_input4 = Arrays.asList(new String[]{"adc","acd","bcd","bdc","dab","cba"});
+    Assert.assertEquals(_dataStructure.preferentialVoting(ballots_input4), 'b');
   }
 
   @Test
@@ -252,28 +254,20 @@ public class DataStructureTest {
   }
 
   @Test
-  public void fallingLeavesTest(){
+  public void fallingLeavesTest() {
     String input1 = "#";
     DataStructure.TreeNode root1 = _treeCodec.deserialize(input1);
-    Assert.assertEquals(_dataStructure.fallingLeaves(root1).size(),0);
+    Assert.assertEquals(_dataStructure.fallingLeaves(root1).size(), 0);
 
     String input2 = "11,7,17,3,8,13,25,2,4,#,#,#,16";
     DataStructure.TreeNode root2 = _treeCodec.deserialize(input2);
     List<List<Integer>> expected2 = new ArrayList<>();
-    expected2.add(Arrays.asList(new Integer[]{2,4,8,16,25}));
-    expected2.add(Arrays.asList(new Integer[]{3,13}));
-    expected2.add(Arrays.asList(new Integer[]{7,17}));
+    expected2.add(Arrays.asList(new Integer[]{2, 4, 8, 16, 25}));
+    expected2.add(Arrays.asList(new Integer[]{3, 13}));
+    expected2.add(Arrays.asList(new Integer[]{7, 17}));
     expected2.add(Arrays.asList(new Integer[]{11}));
     List<List<DataStructure.TreeNode>> actual2 = _dataStructure.fallingLeaves(root2);
-    int expectedListLen2 = expected2.size();
-    Assert.assertEquals(actual2.size(),expectedListLen2);
-    for(int i=0;i<expectedListLen2;++i){
-      int expectedLen = expected2.get(i).size();
-      Assert.assertEquals(actual2.get(i).size(),expectedLen);
-      for(int j=0;j<expectedLen;++j){
-        Assert.assertEquals(actual2.get(i).get(j).val,expected2.get(i).get(j).intValue());
-      }
-    }
+    faillingLeavesTestHelper(actual2,expected2);
 
     String input3 = "1,2,#,3,#,4,#,5";
     DataStructure.TreeNode root3 = _treeCodec.deserialize(input3);
@@ -284,14 +278,35 @@ public class DataStructureTest {
     expected3.add(Arrays.asList(new Integer[]{2}));
     expected3.add(Arrays.asList(new Integer[]{1}));
     List<List<DataStructure.TreeNode>> actual3 = _dataStructure.fallingLeaves(root3);
-    int expectedListLen3 = expected3.size();
-    Assert.assertEquals(actual3.size(),expectedListLen3);
-    for(int i=0;i<expectedListLen3;++i){
-      int expectedLen = expected3.get(i).size();
-      Assert.assertEquals(actual3.get(i).size(),expectedLen);
-      for(int j=0;j<expectedLen;++j){
-        Assert.assertEquals(actual3.get(i).get(j).val,expected3.get(i).get(j).intValue());
+    faillingLeavesTestHelper(actual3,expected3);
+  }
+
+  private void faillingLeavesTestHelper(List<List<DataStructure.TreeNode>> actual, List<List<Integer>> expected){
+    int expectedListLen = expected.size();
+    Assert.assertEquals(actual.size(), expectedListLen);
+    for (int i = 0; i < expectedListLen; ++i) {
+      int expectedLen = expected.get(i).size();
+      Assert.assertEquals(actual.get(i).size(), expectedLen);
+      for (int j = 0; j < expectedLen; ++j) {
+        Assert.assertEquals(actual.get(i).get(j).val, expected.get(i).get(j).intValue());
       }
     }
+  }
+  public void TournamentTreeTest(){
+    String input1 = "2,2,3,4,2,5,3";
+    DataStructure.TreeNode root1 = _treeCodec.deserialize(input1);
+    Assert.assertEquals(_dataStructure.tournamentTree2ndMinimum(root1),new Integer(3));
+
+    String input2 = "2,2,4,3,2,5,4";
+    DataStructure.TreeNode root2 = _treeCodec.deserialize(input2);
+    Assert.assertEquals(_dataStructure.tournamentTree2ndMinimum(root2),new Integer(3));
+
+    String input3 = "2,2,40,30,2,#,#,#,#,2,6,#,#,6,8";
+    DataStructure.TreeNode root3 = _treeCodec.deserialize(input3);
+    Assert.assertEquals(_dataStructure.tournamentTree2ndMinimum(root3),new Integer(6));
+
+    String input4 = "2,2,4,3,2,#,#,#,#,2,6,#,#,6,8";
+    DataStructure.TreeNode root4 = _treeCodec.deserialize(input4);
+    Assert.assertEquals(_dataStructure.tournamentTree2ndMinimum(root4),new Integer(3));
   }
 }
