@@ -423,4 +423,117 @@ public class DataStructure {
     }
     return root;
   }
+
+  /**
+   * leetcode-218 skyline problem
+   * brute force solution
+   * will have memory limitation error when have input such as [[0,2147483647,2147483647]]
+   */
+  public List<int[]> getSkylineBruteForce(int[][] buildings) {
+    int buildingCount = buildings.length;
+    List<int[]> ans = new ArrayList<int[]>();
+    if(buildingCount > 0) {
+      //find right most building end
+      int rightEnd = 0;
+      for (int i = 0; i < buildingCount; ++i) {
+        if (buildings[i][1] > rightEnd) {
+          rightEnd = buildings[i][1];
+        }
+      }
+      int[] tallestPoints = new int[rightEnd];
+      for (int i = 0; i < buildingCount; ++i) {
+        for (int j = buildings[i][0]; j < buildings[i][1]; ++j) {
+          if (buildings[i][2] > tallestPoints[j]) {
+            tallestPoints[j] = buildings[i][2];
+          }
+        }
+      }
+
+      int currHeight = 0;
+      for (int i = 0; i < rightEnd; ++i) {
+        if (tallestPoints[i] != currHeight) {
+          int[] anchorPoint = new int[2];
+          anchorPoint[0] = i;
+          anchorPoint[1] = tallestPoints[i];
+          currHeight = tallestPoints[i];
+          ans.add(anchorPoint);
+        }
+      }
+      int[] endpoint = new int[2];
+      endpoint[0] = rightEnd;
+      endpoint[1] = 0;
+      ans.add(endpoint);
+    }
+    return ans;
+  }
+
+  /**
+   * 218 skyline problem
+   * use max heap and customized comparator to sort input
+   */
+  public class skylineComparator implements Comparator<int[]>{
+    @Override
+    public int compare(int[] a, int[] b){
+      if(a[0] == b[0]){
+        if(a[2] == b[2]){
+          if(a[2] == 0){
+            //both are start points
+            return b[1] - a[1];
+          }else{
+            //both are end points
+            return a[1] - b[1];
+          }
+        }else{
+          //if at the same point, start point always comes before end point
+          if(a[2] == 0) {
+            return -1;
+          }else{
+            return 1;
+          }
+        }
+      }else{
+        return a[0] - b[0];
+      }
+    }
+  }
+
+  public List<int[]> getSkyline(int[][] buildings) {
+    int buildingsCount = buildings.length;
+    List<int[]> ans = new ArrayList<int[]>();
+    if(buildingsCount > 0) {
+      List<int[]> keyPoints = new ArrayList<>();
+      Set<int[]> samePointSameHeight = new HashSet<>();
+      for (int i = 0; i < buildingsCount; ++i) {
+        int[] pointHeightS = new int[]{buildings[i][0],buildings[i][2]};
+        if(!samePointSameHeight.contains(pointHeightS)){
+          keyPoints.add(new int[]{buildings[i][0],buildings[i][2],0});
+          samePointSameHeight.add(pointHeightS);
+        }
+        int[] pointHeightE = new int[]{buildings[i][1],buildings[i][2]};
+        if(!samePointSameHeight.contains(pointHeightE)) {
+          keyPoints.add(new int[]{buildings[i][1], buildings[i][2], 1});
+          samePointSameHeight.add(pointHeightE);
+        }
+      }
+      Collections.sort(keyPoints, new skylineComparator());
+
+      PriorityQueue<Integer> pq = new PriorityQueue<>(buildingsCount + 1, (a, b) -> b - a);
+      pq.offer(0);
+      for (int[] keyPoint : keyPoints) {
+        if(keyPoint[2] == 0){
+          if(pq.peek() < keyPoint[1]){
+            ans.add(new int[]{keyPoint[0],keyPoint[1]});
+          }
+          pq.offer(keyPoint[1]);
+        }
+        if(keyPoint[2] == 1){
+          pq.remove(keyPoint[1]);
+          if(pq.peek() < keyPoint[1]){
+            ans.add(new int[]{keyPoint[0],pq.peek()});
+          }
+        }
+      }
+    }
+    return ans;
+  }
 }

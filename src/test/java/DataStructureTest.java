@@ -144,7 +144,7 @@ public class DataStructureTest {
     DataStructure.ListNode expected1 = _dataStructure.createList(new int[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20});
 
     DataStructure.ListNode[] listNodes1 = new DataStructure.ListNode[]{list11,list12,list13,list14};
-    Assert.assertEquals(_dataStructure.listEqual(_dataStructure.mergeKLists(listNodes1),expected1),true);
+    Assert.assertEquals(_dataStructure.listEqual(_dataStructure.mergeKLists(listNodes1), expected1),true);
 
     DataStructure.ListNode list21 = _dataStructure.createList(new int[]{});
     DataStructure.ListNode[] listNodes2 = new DataStructure.ListNode[]{list21};
@@ -156,6 +156,99 @@ public class DataStructureTest {
     DataStructure.ListNode[] listNodes3 = new DataStructure.ListNode[]{list31,list32};
     DataStructure.ListNode expected3 = _dataStructure.createList(new int[]{});
     Assert.assertEquals(_dataStructure.listEqual(_dataStructure.mergeKLists(listNodes3),expected3),true);
+
+  }
+
+  @Test
+  public void getSkylineBruteForceTest(){
+    int[][] buildings1 = new int[][]{{2,9,10},{3,7,15},{5,12,12},{15,20,10},{19,24,8}};
+    List<int[]> expected_keyPoints1 = new ArrayList<>();
+    expected_keyPoints1.add(new int[]{2,10});
+    expected_keyPoints1.add(new int[]{3,15});
+    expected_keyPoints1.add(new int[]{7,12});
+    expected_keyPoints1.add(new int[]{12,0});
+    expected_keyPoints1.add(new int[]{15,10});
+    expected_keyPoints1.add(new int[]{20,8});
+    expected_keyPoints1.add(new int[]{24,0});
+    List<int[]> program_output1 = _dataStructure.getSkylineBruteForce(buildings1);
+    int outputLen1 = expected_keyPoints1.size();
+    for(int i=0;i<outputLen1;++i){
+      Assert.assertTrue(Arrays.equals(program_output1.get(i),expected_keyPoints1.get(i)));
+    }
+
+    int[][] buildings2 = new int[][]{};
+    List<int[]> expected_keyPoints2 = new ArrayList<>();
+    Assert.assertEquals(_dataStructure.getSkylineBruteForce(buildings2),expected_keyPoints2);
+
+    /* this test will fail with "Requested array size exceeds VM limit" error
+    int[][] buildings3 = new int[][]{{0,2147483647,2147483647}};
+    List<int[]> expected_keyPoints3 = new ArrayList<>();
+    expected_keyPoints3.add(new int[]{0,2147483647});
+    expected_keyPoints3.add(new int[]{2147483647,0});
+    List<int[]> program_output3 = _dataStructure.getSkylineBruteForce(buildings3);
+    int outputLen3 = program_output3.size();
+    for(int i=0;i<outputLen3;++i){
+      Assert.assertTrue(Arrays.equals(program_output3.get(i),expected_keyPoints3.get(i)));
+    }
+    */
+
+  }
+  @Test
+  public void getSkylineTest(){
+    int[][] buildings1 = new int[][]{{2,9,10},{3,7,15},{5,12,12},{15,20,10},{19,24,8}};
+    List<int[]> expected_keyPoints1 = new ArrayList<>();
+    expected_keyPoints1.add(new int[]{2,10});
+    expected_keyPoints1.add(new int[]{3,15});
+    expected_keyPoints1.add(new int[]{7,12});
+    expected_keyPoints1.add(new int[]{12,0});
+    expected_keyPoints1.add(new int[]{15,10});
+    expected_keyPoints1.add(new int[]{20,8});
+    expected_keyPoints1.add(new int[]{24,0});
+    List<int[]> program_output1 = _dataStructure.getSkyline(buildings1);
+    int outputLen1 = expected_keyPoints1.size();
+    Assert.assertEquals(outputLen1,program_output1.size());
+    for(int i=0;i<outputLen1;++i){
+      Assert.assertTrue(Arrays.equals(program_output1.get(i),expected_keyPoints1.get(i)));
+    }
+    //corner case empty input
+    int[][] buildings2 = new int[][]{};
+    List<int[]> expected_keyPoints2 = new ArrayList<>();
+    Assert.assertEquals(_dataStructure.getSkyline(buildings2),expected_keyPoints2);
+
+    //corner case large range
+    int[][] buildings3 = new int[][]{{0,2147483647,2147483647}};
+    List<int[]> expected_keyPoints3 = new ArrayList<int[]>();
+    expected_keyPoints3.add(new int[]{0,2147483647});
+    expected_keyPoints3.add(new int[]{2147483647,0});
+    List<int[]> program_output3 = _dataStructure.getSkyline(buildings3);
+    int outputLen3 = expected_keyPoints3.size();
+    Assert.assertEquals(outputLen3,program_output3.size());
+    for(int i=0;i<outputLen3;++i){
+      Assert.assertTrue(Arrays.equals(program_output3.get(i),expected_keyPoints3.get(i)));
+    }
+
+    //corner case 2 buildings with the same height start and end at the same point
+    int[][] buildings4 = new int[][]{{0,2,3},{2,5,3}};
+    List<int[]> expected_keyPoints4 = new ArrayList<int[]>();
+    expected_keyPoints4.add(new int[]{0,3});
+    expected_keyPoints4.add(new int[]{5,0});
+    List<int[]> program_output4 = _dataStructure.getSkyline(buildings4);
+    int outputLen4 = expected_keyPoints4.size();
+    Assert.assertEquals(outputLen4,program_output4.size());
+    for(int i=0;i<outputLen4;++i){
+      Assert.assertTrue(Arrays.equals(program_output4.get(i),expected_keyPoints4.get(i)));
+    }
+
+    //corner case 2 buildings with different height have exactly the same location and
+    // 2 buildings with the same height start and end at the same point
+    int[][] buildings5 = new int[][]{{0,5,7},{5,10,7},{5,10,12},{10,15,7},{15,20,7},{15,20,12},{20,25,7}};
+    List<int[]> expected_keyPoints5 = Arrays.asList(new int[][]{{0,7},{5,12},{10,7},{15,12},{20,7},{25,0}});
+    List<int[]> program_output5 = _dataStructure.getSkyline(buildings5);
+    int outputLen5 = expected_keyPoints5.size();
+    Assert.assertEquals(program_output5.size(),expected_keyPoints5.size());
+    for(int i=0;i<outputLen5;++i){
+      Assert.assertTrue(Arrays.equals(program_output5.get(i),expected_keyPoints5.get(i)));
+    }
 
   }
 }
