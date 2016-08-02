@@ -249,6 +249,49 @@ public class DataStructureTest {
     for(int i=0;i<outputLen5;++i){
       Assert.assertTrue(Arrays.equals(program_output5.get(i),expected_keyPoints5.get(i)));
     }
+  }
 
+  @Test
+  public void fallingLeavesTest(){
+    String input1 = "#";
+    DataStructure.TreeNode root1 = _treeCodec.deserialize(input1);
+    Assert.assertEquals(_dataStructure.fallingLeaves(root1).size(),0);
+
+    String input2 = "11,7,17,3,8,13,25,2,4,#,#,#,16";
+    DataStructure.TreeNode root2 = _treeCodec.deserialize(input2);
+    List<List<Integer>> expected2 = new ArrayList<>();
+    expected2.add(Arrays.asList(new Integer[]{2,4,8,16,25}));
+    expected2.add(Arrays.asList(new Integer[]{3,13}));
+    expected2.add(Arrays.asList(new Integer[]{7,17}));
+    expected2.add(Arrays.asList(new Integer[]{11}));
+    List<List<DataStructure.TreeNode>> actual2 = _dataStructure.fallingLeaves(root2);
+    int expectedListLen2 = expected2.size();
+    Assert.assertEquals(actual2.size(),expectedListLen2);
+    for(int i=0;i<expectedListLen2;++i){
+      int expectedLen = expected2.get(i).size();
+      Assert.assertEquals(actual2.get(i).size(),expectedLen);
+      for(int j=0;j<expectedLen;++j){
+        Assert.assertEquals(actual2.get(i).get(j).val,expected2.get(i).get(j).intValue());
+      }
+    }
+
+    String input3 = "1,2,#,3,#,4,#,5";
+    DataStructure.TreeNode root3 = _treeCodec.deserialize(input3);
+    List<List<Integer>> expected3 = new ArrayList<>();
+    expected3.add(Arrays.asList(new Integer[]{5}));
+    expected3.add(Arrays.asList(new Integer[]{4}));
+    expected3.add(Arrays.asList(new Integer[]{3}));
+    expected3.add(Arrays.asList(new Integer[]{2}));
+    expected3.add(Arrays.asList(new Integer[]{1}));
+    List<List<DataStructure.TreeNode>> actual3 = _dataStructure.fallingLeaves(root3);
+    int expectedListLen3 = expected3.size();
+    Assert.assertEquals(actual3.size(),expectedListLen3);
+    for(int i=0;i<expectedListLen3;++i){
+      int expectedLen = expected3.get(i).size();
+      Assert.assertEquals(actual3.get(i).size(),expectedLen);
+      for(int j=0;j<expectedLen;++j){
+        Assert.assertEquals(actual3.get(i).get(j).val,expected3.get(i).get(j).intValue());
+      }
+    }
   }
 }

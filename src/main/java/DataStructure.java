@@ -91,16 +91,17 @@ public class DataStructure {
    * leet code 20
    * Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
    * The brackets must close in the correct order, "()" and "()[]{}" are all valid but "(]" and "([)]" are not.
+   *
    * @param s
    * @return
    */
   public boolean isParenthesisValid(String s) {
     int sLen = s.length();
     boolean result = true;
-    if(sLen > 0){
+    if (sLen > 0) {
       Stack<Character> parenthesises = new Stack<>();
-      for(int i=0;i<sLen;++i){
-        if(result){
+      for (int i = 0; i < sLen; ++i) {
+        if (result) {
           switch (s.charAt(i)) {
             case '(':
               parenthesises.push('(');
@@ -112,29 +113,29 @@ public class DataStructure {
               parenthesises.push('[');
               break;
             case ')':
-              if(!parenthesises.empty() && parenthesises.peek() == '('){
+              if (!parenthesises.empty() && parenthesises.peek() == '(') {
                 parenthesises.pop();
-              }else{
+              } else {
                 result = false;
               }
               break;
             case '}':
-              if(!parenthesises.empty() && parenthesises.peek() == '{'){
+              if (!parenthesises.empty() && parenthesises.peek() == '{') {
                 parenthesises.pop();
-              }else{
+              } else {
                 result = false;
               }
               break;
             case ']':
-              if(!parenthesises.empty() && parenthesises.peek() == '['){
+              if (!parenthesises.empty() && parenthesises.peek() == '[') {
                 parenthesises.pop();
-              }else{
+              } else {
                 result = false;
               }
               break;
           }
 
-        }else{
+        } else {
           break;
         }
       }
@@ -146,13 +147,16 @@ public class DataStructure {
   public class ListNode {
     int val;
     ListNode next;
-    ListNode(int x) { val = x; }
+
+    ListNode(int x) {
+      val = x;
+    }
   }
 
-  public boolean listEqual(ListNode l1, ListNode l2){
+  public boolean listEqual(ListNode l1, ListNode l2) {
     boolean equal = true;
-    while(l1 != null && l2 !=null){
-      if(l1.val != l2.val){
+    while (l1 != null && l2 != null) {
+      if (l1.val != l2.val) {
         equal = false;
         break;
       }
@@ -163,13 +167,13 @@ public class DataStructure {
     return equal;
   }
 
-  public ListNode createList(int[] inputs){
+  public ListNode createList(int[] inputs) {
     int inputLen = inputs.length;
     ListNode head = null;
-    if(inputLen > 0){
+    if (inputLen > 0) {
       head = new ListNode(inputs[0]);
       ListNode currHead = head;
-      for(int i=1;i<inputLen;++i){
+      for (int i = 1; i < inputLen; ++i) {
         currHead.next = new ListNode(inputs[i]);
         currHead = currHead.next;
       }
@@ -181,42 +185,43 @@ public class DataStructure {
    * leet code 21
    * Merge two sorted linked lists and return it as a new list.
    * The new list should be made by splicing together the nodes of the first two lists.
+   *
    * @param l1
    * @param l2
    * @return
    */
   public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-    if(l1 == null){
+    if (l1 == null) {
       return l2;
-    }else if(l2 == null){
+    } else if (l2 == null) {
       return l1;
     }
     ListNode head;
-    if(l1.val < l2.val){
+    if (l1.val < l2.val) {
       head = l1;
       l1 = l1.next;
-    }else{
+    } else {
       head = l2;
       l2 = l2.next;
     }
     ListNode currHead = head;
-    while(l1 != null && l2 != null){
-      if(l1.val < l2.val){
+    while (l1 != null && l2 != null) {
+      if (l1.val < l2.val) {
         currHead.next = l1;
         l1 = l1.next;
 
-      }else{
+      } else {
         currHead.next = l2;
         l2 = l2.next;
       }
       currHead = currHead.next;
     }
-    while(l1 != null){
+    while (l1 != null) {
       currHead.next = l1;
       l1 = l1.next;
       currHead = currHead.next;
     }
-    while(l2 != null){
+    while (l2 != null) {
       currHead.next = l2;
       l2 = l2.next;
       currHead = currHead.next;
@@ -227,25 +232,26 @@ public class DataStructure {
   /**
    * leetcode 24 Given a linked list, swap every two adjacent nodes and return its head.
    * For example,Given 1->2->3->4, you should return the list as 2->1->4->3.
+   *
    * @param head
    * @return
    */
   public ListNode swapPairs(ListNode head) {
-    if(head == null || head.next == null){
+    if (head == null || head.next == null) {
       return head;
     }
-    ListNode pre,first,second,res;
+    ListNode pre, first, second, res;
     pre = new ListNode(0); //dummy node
     first = head;
     second = head.next;
     res = head.next;
-    while(second != null){
+    while (second != null) {
       pre.next = second;
       first.next = second.next;
       second.next = first;
       pre = first;
       first = first.next;
-      if(first == null){
+      if (first == null) {
         break;
       }
       second = first.next;
@@ -258,74 +264,77 @@ public class DataStructure {
     int val;
     TreeNode left;
     TreeNode right;
-    TreeNode(int x) { val = x; }
+
+    TreeNode(int x) {
+      val = x;
+    }
   }
 
   public static class TreeCodec {
 
     // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
-      if(root == null){
+      if (root == null) {
         return "#";
       }
       List<Integer> serializedNodes = new ArrayList<>();
       List<TreeNode> nodes = new LinkedList<>();
       TreeNode currNode = root;
       serializedNodes.add(currNode.val);
-      while(currNode != null){
-        if(currNode.left != null){
+      while (currNode != null) {
+        if (currNode.left != null) {
           nodes.add(currNode.left);
           serializedNodes.add(currNode.left.val);
-        }else{
+        } else {
           serializedNodes.add(null);
         }
-        if(currNode.right != null){
+        if (currNode.right != null) {
           serializedNodes.add(currNode.right.val);
           nodes.add(currNode.right);
-        }else{
+        } else {
           serializedNodes.add(null);
         }
-        if(!nodes.isEmpty()){
+        if (!nodes.isEmpty()) {
           currNode = nodes.remove(0);
-        }else{
+        } else {
           currNode = null;
         }
       }
 
       StringBuilder resBuilder = new StringBuilder();
       int serializedNodesLen = serializedNodes.size();
-      for(int i=serializedNodesLen-1;i>=0;--i){
-        if(serializedNodes.get(i) == null){
+      for (int i = serializedNodesLen - 1; i >= 0; --i) {
+        if (serializedNodes.get(i) == null) {
           serializedNodesLen--;
-        }else{
+        } else {
           break;
         }
       }
-      for(int i=0;i<serializedNodesLen;++i){
+      for (int i = 0; i < serializedNodesLen; ++i) {
         Integer currInteger = serializedNodes.get(i);
-        if(currInteger !=null){
+        if (currInteger != null) {
           resBuilder.append(currInteger.toString());
-        }else{
+        } else {
           resBuilder.append('#');
         }
         resBuilder.append(',');
       }
-      resBuilder.deleteCharAt(resBuilder.length()-1); //trim last ','
+      resBuilder.deleteCharAt(resBuilder.length() - 1); //trim last ','
       return resBuilder.toString();
     }
 
     // Decodes your encoded data to tree.
     public TreeNode deserialize(String data) {
-      if(data.equals("#")){
+      if (data.equals("#")) {
         return null;
       }
       String[] tokens = data.split(",");
       List<Integer> integers = new ArrayList<>();
       int tokensLen = tokens.length;
-      for(int i=0;i<tokensLen;++i){
-        if(tokens[i].equals("#")){
+      for (int i = 0; i < tokensLen; ++i) {
+        if (tokens[i].equals("#")) {
           integers.add(null);
-        }else{
+        } else {
           integers.add(Integer.parseInt(tokens[i]));
         }
       }
@@ -334,22 +343,22 @@ public class DataStructure {
       TreeNode root = new TreeNode(integers.get(0));
       nodeToProcess.add(root);
       int i;
-      for(i=1;i<integersLen-1;i=i+2){
+      for (i = 1; i < integersLen - 1; i = i + 2) {
         TreeNode curr = nodeToProcess.remove(0);
         Integer leftInt = integers.get(i);
-        Integer rightInt = integers.get(i+1);
-        if( leftInt != null){
+        Integer rightInt = integers.get(i + 1);
+        if (leftInt != null) {
           TreeNode leftChild = new TreeNode(leftInt);
           curr.left = leftChild;
           nodeToProcess.add(leftChild);
         }
-        if(rightInt != null){
+        if (rightInt != null) {
           TreeNode rightChild = new TreeNode(rightInt);
           curr.right = rightChild;
           nodeToProcess.add(rightChild);
         }
       }
-      if(!nodeToProcess.isEmpty() && i<integersLen){
+      if (!nodeToProcess.isEmpty() && i < integersLen) {
         TreeNode curr = nodeToProcess.remove(0);
         curr.left = new TreeNode(integers.get(i));
       }
@@ -360,23 +369,23 @@ public class DataStructure {
   public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
     Queue<TreeNode> queue = new LinkedList<>();
     List<List<Integer>> res = new ArrayList<>();
-    if(root != null){
+    if (root != null) {
       queue.offer(root);
       int level = 0;
-      while(!queue.isEmpty()){
+      while (!queue.isEmpty()) {
         List<Integer> levelList = new ArrayList<>();
         int queueSize = queue.size();
-        for(int i=0;i<queueSize;++i){
+        for (int i = 0; i < queueSize; ++i) {
           TreeNode currNode = queue.poll();
-          if(level%2 == 0){
+          if (level % 2 == 0) {
             levelList.add(currNode.val);
-          }else{
-            levelList.add(0,currNode.val);
+          } else {
+            levelList.add(0, currNode.val);
           }
-          if(currNode.left!= null){
+          if (currNode.left != null) {
             queue.offer(currNode.left);
           }
-          if(currNode.right != null){
+          if (currNode.right != null) {
             queue.offer(currNode.right);
           }
 
@@ -394,28 +403,28 @@ public class DataStructure {
    */
   public ListNode mergeKLists(ListNode[] lists) {
     int k = lists.length;
-    if(k == 0){
+    if (k == 0) {
       return null;
     }
-    PriorityQueue<ListNode> pq = new PriorityQueue<>(k, (ListNode n1, ListNode n2)-> n1.val - n2.val);
+    PriorityQueue<ListNode> pq = new PriorityQueue<>(k, (ListNode n1, ListNode n2) -> n1.val - n2.val);
 
-    for(int i=0;i<k;++i){
-      if(lists[i] != null) {
+    for (int i = 0; i < k; ++i) {
+      if (lists[i] != null) {
         pq.offer(lists[i]);
       }
     }
-    if(pq.isEmpty()){
+    if (pq.isEmpty()) {
       return null;
     }
     ListNode minimum = pq.poll();
-    if(minimum.next != null){
+    if (minimum.next != null) {
       pq.add(minimum.next);
     }
     ListNode itr = new ListNode(minimum.val);
     ListNode root = itr;
-    while(!pq.isEmpty()){
+    while (!pq.isEmpty()) {
       minimum = pq.poll();
-      if(minimum.next != null){
+      if (minimum.next != null) {
         pq.offer(minimum.next);
       }
       itr.next = new ListNode(minimum.val);
@@ -432,7 +441,7 @@ public class DataStructure {
   public List<int[]> getSkylineBruteForce(int[][] buildings) {
     int buildingCount = buildings.length;
     List<int[]> ans = new ArrayList<int[]>();
-    if(buildingCount > 0) {
+    if (buildingCount > 0) {
       //find right most building end
       int rightEnd = 0;
       for (int i = 0; i < buildingCount; ++i) {
@@ -471,27 +480,27 @@ public class DataStructure {
    * 218 skyline problem
    * use max heap and customized comparator to sort input
    */
-  public class skylineComparator implements Comparator<int[]>{
+  public class skylineComparator implements Comparator<int[]> {
     @Override
-    public int compare(int[] a, int[] b){
-      if(a[0] == b[0]){
-        if(a[2] == b[2]){
-          if(a[2] == 0){
+    public int compare(int[] a, int[] b) {
+      if (a[0] == b[0]) {
+        if (a[2] == b[2]) {
+          if (a[2] == 0) {
             //both are start points
             return b[1] - a[1];
-          }else{
+          } else {
             //both are end points
             return a[1] - b[1];
           }
-        }else{
+        } else {
           //if at the same point, start point always comes before end point
-          if(a[2] == 0) {
+          if (a[2] == 0) {
             return -1;
-          }else{
+          } else {
             return 1;
           }
         }
-      }else{
+      } else {
         return a[0] - b[0];
       }
     }
@@ -500,10 +509,10 @@ public class DataStructure {
   public List<int[]> getSkyline(int[][] buildings) {
     int buildingsCount = buildings.length;
     List<int[]> ans = new ArrayList<int[]>();
-    if(buildingsCount > 0) {
+    if (buildingsCount > 0) {
       List<int[]> keyPoints = new ArrayList<>();
       for (int i = 0; i < buildingsCount; ++i) {
-        keyPoints.add(new int[]{buildings[i][0],buildings[i][2],0});
+        keyPoints.add(new int[]{buildings[i][0], buildings[i][2], 0});
         keyPoints.add(new int[]{buildings[i][1], buildings[i][2], 1});
       }
       Collections.sort(keyPoints, new skylineComparator());
@@ -511,20 +520,62 @@ public class DataStructure {
       PriorityQueue<Integer> pq = new PriorityQueue<>(buildingsCount + 1, (a, b) -> b - a);
       pq.offer(0);
       for (int[] keyPoint : keyPoints) {
-        if(keyPoint[2] == 0){
-          if(pq.peek() < keyPoint[1]){
-            ans.add(new int[]{keyPoint[0],keyPoint[1]});
+        if (keyPoint[2] == 0) {
+          if (pq.peek() < keyPoint[1]) {
+            ans.add(new int[]{keyPoint[0], keyPoint[1]});
           }
           pq.offer(keyPoint[1]);
         }
-        if(keyPoint[2] == 1){
+        if (keyPoint[2] == 1) {
           pq.remove(keyPoint[1]);
-          if(pq.peek() < keyPoint[1]){
-            ans.add(new int[]{keyPoint[0],pq.peek()});
+          if (pq.peek() < keyPoint[1]) {
+            ans.add(new int[]{keyPoint[0], pq.peek()});
           }
         }
       }
     }
     return ans;
+  }
+
+  /**
+   * leetcode 366
+   * Find Leaves of Binary Tree
+   * The goal of this problem is to list out in which order the leaves would "fall" off a tree, a node only falls from the tree
+   * if it has no children. At each step, several leaves will fall, giving an ordered list of sets of leaves that have fallen
+   */
+  public List<List<TreeNode>> fallingLeaves(TreeNode root){
+    List<List<TreeNode>> ans = new ArrayList<>();
+    if(root != null) {
+      Map<Integer, List<TreeNode>> nodeLevelMap = new HashMap<>();
+      int maxLevel = helper_fallingLeaves(root, nodeLevelMap);
+      for (int i = 0; i <= maxLevel; ++i) {
+        ans.add(nodeLevelMap.get(i));
+      }
+    }
+    return ans;
+  }
+
+  private int helper_fallingLeaves(TreeNode curr, Map<Integer,List<TreeNode>> nodeLevelMap){
+    int currHeight;
+    if(curr == null){
+      currHeight = Integer.MIN_VALUE;
+    }else {
+      if (curr.left == null && curr.right == null) {
+        currHeight = 0;
+      } else {
+        int leftHeight = helper_fallingLeaves(curr.left, nodeLevelMap);
+        int rightHeight = helper_fallingLeaves(curr.right, nodeLevelMap);
+        currHeight = Math.max(leftHeight, rightHeight)+1;
+      }
+      if (nodeLevelMap.containsKey(currHeight)) {
+        List<TreeNode> nodes = nodeLevelMap.get(currHeight);
+        nodes.add(curr);
+      } else {
+        List<TreeNode> nodes = new ArrayList<>();
+        nodes.add(curr);
+        nodeLevelMap.put(currHeight, nodes);
+      }
+    }
+    return currHeight;
   }
 }
