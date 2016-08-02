@@ -502,18 +502,9 @@ public class DataStructure {
     List<int[]> ans = new ArrayList<int[]>();
     if(buildingsCount > 0) {
       List<int[]> keyPoints = new ArrayList<>();
-      Set<int[]> samePointSameHeight = new HashSet<>();
       for (int i = 0; i < buildingsCount; ++i) {
-        int[] pointHeightS = new int[]{buildings[i][0],buildings[i][2]};
-        if(!samePointSameHeight.contains(pointHeightS)){
-          keyPoints.add(new int[]{buildings[i][0],buildings[i][2],0});
-          samePointSameHeight.add(pointHeightS);
-        }
-        int[] pointHeightE = new int[]{buildings[i][1],buildings[i][2]};
-        if(!samePointSameHeight.contains(pointHeightE)) {
-          keyPoints.add(new int[]{buildings[i][1], buildings[i][2], 1});
-          samePointSameHeight.add(pointHeightE);
-        }
+        keyPoints.add(new int[]{buildings[i][0],buildings[i][2],0});
+        keyPoints.add(new int[]{buildings[i][1], buildings[i][2], 1});
       }
       Collections.sort(keyPoints, new skylineComparator());
 
