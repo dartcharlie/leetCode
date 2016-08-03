@@ -292,7 +292,9 @@ public class DataStructureTest {
       }
     }
   }
-  public void TournamentTreeTest(){
+
+  @Test
+  public void tournamentTreeTest(){
     String input1 = "2,2,3,4,2,5,3";
     DataStructure.TreeNode root1 = _treeCodec.deserialize(input1);
     Assert.assertEquals(_dataStructure.tournamentTree2ndMinimum(root1),new Integer(3));
@@ -308,5 +310,54 @@ public class DataStructureTest {
     String input4 = "2,2,4,3,2,#,#,#,#,2,6,#,#,6,8";
     DataStructure.TreeNode root4 = _treeCodec.deserialize(input4);
     Assert.assertEquals(_dataStructure.tournamentTree2ndMinimum(root4),new Integer(3));
+  }
+
+  @Test
+  public void sumSegmentTreeTest(){
+    int[] input1 = new int[]{1,3,5,7,9};
+    DataStructure.SegmentTree segTree1 = new DataStructure.SegmentTree(
+        input1, DataStructure.SegmentTree.QueryType.SUM_RANGE);
+    Assert.assertEquals(segTree1.query(0,4),25);
+    Assert.assertEquals(segTree1.query(0,2),9);
+    segTree1.update(1,2);
+    Assert.assertEquals(segTree1.query(0,2),8);
+
+    int[] input2 = new int[]{-28,-39,53,65,11,-56,-65,-39,-43,97};
+    DataStructure.SegmentTree segTree2 = new DataStructure.SegmentTree(
+        input2, DataStructure.SegmentTree.QueryType.SUM_RANGE);
+    Assert.assertEquals(segTree2.query(5,6),-121);
+    segTree2.update(9,27);
+    Assert.assertEquals(segTree2.query(2,3),118);
+    Assert.assertEquals(segTree2.query(6,7),-104);
+    segTree2.update(1,-82);
+    segTree2.update(3,-72);
+    Assert.assertEquals(segTree2.query(3,7),-221);
+    Assert.assertEquals(segTree2.query(1,8),-293);
+    segTree2.update(5,13);
+    segTree2.update(4,-67);
+
+  }
+
+  @Test
+  public void minSegmentTreeTest(){
+    int[] input1 = new int[]{2,1,6,-7,0,3,15,18,-3};
+    DataStructure.SegmentTree segTree1 = new DataStructure.SegmentTree(
+        input1, DataStructure.SegmentTree.QueryType.MIN_RANGE);
+    Assert.assertEquals(segTree1.query(0,6),-7);
+    Assert.assertEquals(segTree1.query(4,6),0);
+    Assert.assertEquals(segTree1.query(0,4),-7);
+    segTree1.update(3,4);
+    Assert.assertEquals(segTree1.query(0,4),0);
+  }
+
+  @Test
+  public void maxSegmentTreeTest(){
+    int[] input1 = new int[]{2,1,6,-7,0,3,15,18,-3};
+    DataStructure.SegmentTree segTree1 = new DataStructure.SegmentTree(
+        input1, DataStructure.SegmentTree.QueryType.MAX_RANGE);
+    Assert.assertEquals(segTree1.query(0,6),15);
+    Assert.assertEquals(segTree1.query(3,5),3);
+    segTree1.update(4,11);
+    Assert.assertEquals(segTree1.query(3,5),11);
   }
 }

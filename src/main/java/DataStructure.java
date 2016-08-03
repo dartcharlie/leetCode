@@ -506,6 +506,12 @@ public class DataStructure {
     }
   }
 
+  /**
+   * TODO: use TreeMap instead of max heap to add and remove points
+   *
+   * @param buildings
+   * @return
+   */
   public List<int[]> getSkyline(int[][] buildings) {
     int buildingsCount = buildings.length;
     List<int[]> ans = new ArrayList<int[]>();
@@ -543,9 +549,9 @@ public class DataStructure {
    * The goal of this problem is to list out in which order the leaves would "fall" off a tree, a node only falls from the tree
    * if it has no children. At each step, several leaves will fall, giving an ordered list of sets of leaves that have fallen
    */
-  public List<List<TreeNode>> fallingLeaves(TreeNode root){
+  public List<List<TreeNode>> fallingLeaves(TreeNode root) {
     List<List<TreeNode>> ans = new ArrayList<>();
-    if(root != null) {
+    if (root != null) {
       Map<Integer, List<TreeNode>> nodeLevelMap = new HashMap<>();
       int maxLevel = helper_fallingLeaves(root, nodeLevelMap);
       for (int i = 0; i <= maxLevel; ++i) {
@@ -555,7 +561,7 @@ public class DataStructure {
     return ans;
   }
 
-  private int helper_fallingLeaves(TreeNode curr, Map<Integer,List<TreeNode>> nodeLevelMap) {
+  private int helper_fallingLeaves(TreeNode curr, Map<Integer, List<TreeNode>> nodeLevelMap) {
     int currHeight;
     if (curr == null) {
       currHeight = Integer.MIN_VALUE;
@@ -578,9 +584,217 @@ public class DataStructure {
     }
     return currHeight;
   }
-  public static class SegmentTree{
-    private int[] segArray;
-    //public int[] constructSegmentTree(int[] input,)
+
+  public static class SegmentTree {
+    private int[] _segTree;
+    private int[] _input;
+    private int _inputLen;
+
+    public enum QueryType {
+      SUM_RANGE,
+      MIN_RANGE,
+      MAX_RANGE
+    }
+
+    private QueryType _queryType;
+
+    public SegmentTree(int[] input, QueryType type) {
+      _input = input;
+      _inputLen = input.length;
+      if(_inputLen > 0) {
+        //allocate enough memory for a complete balanced binary tree
+        int height = (int) Math.ceil(Math.log(_inputLen)/Math.log(2));
+        _segTree = new int[2 * (int)Math.pow(2,height) - 1];
+        _queryType = type;
+        switch (_queryType) {
+          case SUM_RANGE:
+            buildSumSegTreeFromInput(0, 0, _inputLen - 1);
+            break;
+          case MIN_RANGE:
+            buildMinSegTreeFromInput(0, 0, _inputLen - 1);
+            break;
+          case MAX_RANGE:
+            buildMaxSegTreeFromInput(0, 0, _inputLen - 1);
+            break;
+          default:
+            buildSumSegTreeFromInput(0, 0, _inputLen - 1);
+            break;
+        }
+      }
+    }
+
+    private int buildSumSegTreeFromInput(int currIndex, int rangeStart, int rangeEnd) {
+      if (rangeStart == rangeEnd) {
+        _segTree[currIndex] = _input[rangeStart];
+      } else {
+        int rangeMid = (rangeStart + rangeEnd) / 2;
+        int leftChild = buildSumSegTreeFromInput(2 * currIndex + 1, rangeStart, rangeMid);
+        int rightChild = buildSumSegTreeFromInput(2 * currIndex + 2, rangeMid + 1, rangeEnd);
+        _segTree[currIndex] = leftChild + rightChild;
+      }
+      return _segTree[currIndex];
+    }
+
+    private int buildMinSegTreeFromInput(int currIndex, int rangeStart, int rangeEnd) {
+      if (rangeStart == rangeEnd) {
+        _segTree[currIndex] = _input[rangeStart];
+      } else {
+        int rangeMid = (rangeStart + rangeEnd) / 2;
+        int leftChild = buildMinSegTreeFromInput(2 * currIndex + 1, rangeStart, rangeMid);
+        int rightChild = buildMinSegTreeFromInput(2 * currIndex + 2, rangeMid + 1, rangeEnd);
+        _segTree[currIndex] = Math.min(leftChild, rightChild);
+      }
+      return _segTree[currIndex];
+    }
+
+    private int buildMaxSegTreeFromInput(int currIndex, int rangeStart, int rangeEnd) {
+      if (rangeStart == rangeEnd) {
+        _segTree[currIndex] = _input[rangeStart];
+      } else {
+        int rangeMid = (rangeStart + rangeEnd) / 2;
+        int leftChild = buildMaxSegTreeFromInput(2 * currIndex + 1, rangeStart, rangeMid);
+        int rightChild = buildMaxSegTreeFromInput(2 * currIndex + 2, rangeMid + 1, rangeEnd);
+        _segTree[currIndex] = Math.max(leftChild, rightChild);
+      }
+      return _segTree[currIndex];
+    }
+
+    public int query(int queryStart, int queryEnd) {
+      int ans;
+      switch (_queryType) {
+        case SUM_RANGE:
+          ans = querySum(0, 0, _inputLen - 1, queryStart, queryEnd);
+          break;
+        case MIN_RANGE:
+          ans = queryMin(0, 0, _inputLen - 1, queryStart, queryEnd);
+          break;
+        case MAX_RANGE:
+          ans = queryMax(0, 0, _inputLen - 1, queryStart, queryEnd);
+          break;
+        default:
+          ans = querySum(0, 0, _inputLen - 1, queryStart, queryEnd);
+          break;
+      }
+      return ans;
+    }
+
+    private int querySum(int currIndex, int rangeStart, int rangeEnd, int queryStart, int queryEnd) {
+      int ans;
+      if (rangeStart >= queryStart && rangeEnd <= queryEnd) {
+        ans = _segTree[currIndex];
+      } else if (queryEnd < rangeStart || queryStart > rangeEnd) {
+        return 0;
+      } else {
+        int rangeMid = (rangeStart + rangeEnd) / 2;
+        int leftChild = querySum(2 * currIndex + 1, rangeStart, rangeMid, queryStart, queryEnd);
+        int rightChild = querySum(2 * currIndex + 2, rangeMid + 1, rangeEnd, queryStart, queryEnd);
+        ans = leftChild + rightChild;
+      }
+      return ans;
+    }
+
+    private int queryMin(int currIndex, int rangeStart, int rangeEnd, int queryStart, int queryEnd) {
+      int ans;
+      if (rangeStart >= queryStart && rangeEnd <= queryEnd) {
+        ans = _segTree[currIndex];
+      } else if (queryEnd < rangeStart || queryStart > rangeEnd) {
+        return Integer.MAX_VALUE;
+      } else {
+        int rangeMid = (rangeStart + rangeEnd) / 2;
+        int leftChild = queryMin(2 * currIndex + 1, rangeStart, rangeMid, queryStart, queryEnd);
+        int rightChild = queryMin(2 * currIndex + 2, rangeMid + 1, rangeEnd, queryStart, queryEnd);
+        ans = Math.min(leftChild, rightChild);
+      }
+      return ans;
+    }
+
+    private int queryMax(int currIndex, int rangeStart, int rangeEnd, int queryStart, int queryEnd) {
+      int ans;
+      if (rangeStart >= queryStart && rangeEnd <= queryEnd) {
+        ans = _segTree[currIndex];
+      } else if (queryEnd < rangeStart || queryStart > rangeEnd) {
+        return Integer.MIN_VALUE;
+      } else {
+        int rangeMid = (rangeStart + rangeEnd) / 2;
+        int leftChild = queryMax(2 * currIndex + 1, rangeStart, rangeMid, queryStart, queryEnd);
+        int rightChild = queryMax(2 * currIndex + 2, rangeMid + 1, rangeEnd, queryStart, queryEnd);
+        ans = Math.max(leftChild, rightChild);
+      }
+      return ans;
+    }
+
+    public void update(int updateIndex, int updateValue) {
+      int originalValue = _input[updateIndex];
+      int delta = updateValue - originalValue;
+      _input[updateIndex] = updateValue;
+      int segTreeIndex;
+      switch (_queryType) {
+        case SUM_RANGE:
+          updateSum(0, 0, _inputLen - 1, updateIndex, delta);
+          break;
+        case MIN_RANGE:
+          segTreeIndex = findSegTreeIndex(0,0,_inputLen-1,updateIndex);
+          updateMin(segTreeIndex,updateValue);
+          break;
+        case MAX_RANGE:
+          segTreeIndex = findSegTreeIndex(0,0,_inputLen-1,updateIndex);
+          updateMax(segTreeIndex, updateValue);
+          break;
+        default:
+          updateSum(0, 0, _inputLen - 1, updateIndex, delta);
+          break;
+      }
+    }
+
+    private void updateSum(int currIndex, int rangeStart, int rangeEnd, int updateIndex, int delta) {
+
+      if (rangeStart <= updateIndex && rangeEnd >= updateIndex) {
+        _segTree[currIndex] += delta;
+        if (rangeStart == updateIndex && rangeEnd == updateIndex) {
+          return;
+        }
+        int rangeMid = (rangeStart + rangeEnd) / 2;
+        updateSum(2 * currIndex + 1, rangeStart, rangeMid, updateIndex, delta);
+        updateSum(2 * currIndex + 2, rangeMid + 1, rangeEnd, updateIndex, delta);
+      }
+    }
+
+    private int findSegTreeIndex(int currIndex, int rangeStart, int rangeEnd, int updateIndex) {
+      if (rangeStart <= updateIndex && rangeEnd >= updateIndex) {
+        if (rangeStart == updateIndex && rangeEnd == updateIndex) {
+          return currIndex;
+        }
+        int rangeMid = (rangeStart + rangeEnd) / 2;
+        int leftChild = findSegTreeIndex(2 * currIndex + 1, rangeStart, rangeMid, updateIndex);
+        int rightChild = findSegTreeIndex(2 * currIndex + 2, rangeMid + 1, rangeEnd, updateIndex);
+        return leftChild == -1? rightChild:leftChild;
+      }
+      return -1;
+
+    }
+
+    private void updateMin(int segTreeIndex, int updateValue) {
+      if(segTreeIndex == -1){
+        return;
+      }
+      _segTree[segTreeIndex] = updateValue;
+      while(segTreeIndex > 0){
+        segTreeIndex = (segTreeIndex-1)/2;
+        _segTree[segTreeIndex] = Math.min(_segTree[2*segTreeIndex+1], _segTree[2*segTreeIndex+2]);
+      }
+
+    }
+
+    private void updateMax(int segTreeIndex, int updateValue) {
+      if(segTreeIndex == -1){
+        return;
+      }
+      _segTree[segTreeIndex] = updateValue;
+      while(segTreeIndex > 0){
+        segTreeIndex = (segTreeIndex-1)/2;
+        _segTree[segTreeIndex] = Math.max(_segTree[2 * segTreeIndex + 1], _segTree[2 * segTreeIndex + 2]);
+      }
+    }
   }
 
   /**
@@ -589,30 +803,31 @@ public class DataStructure {
    * Given a tournament tree find the second minimum value in the tree.
    * A node in the tree will always have 2 or 0 children.
    * Also all leaves will have distinct and unique values.
+   *
    * @param root
    * @return
    */
-  public Integer tournamentTree2ndMinimum(TreeNode root){
-    if(root == null){
+  public Integer tournamentTree2ndMinimum(TreeNode root) {
+    if (root == null) {
       return null;
     }
-    if(root.left == null || root.right == null){
+    if (root.left == null || root.right == null) {
       return null;
     }
     int secondMin = Integer.MAX_VALUE;
-    return helper_TournamentTree(root,secondMin);
+    return helper_TournamentTree(root, secondMin);
   }
 
-  public Integer helper_TournamentTree(TreeNode root, int currMax){
-    if(root.left == null || root.right == null){
+  public Integer helper_TournamentTree(TreeNode root, int currMax) {
+    if (root.left == null || root.right == null) {
       return currMax;
     }
-    if(root.left.val > root.right.val){
-      currMax = Math.min(currMax,root.left.val);
-      return helper_TournamentTree(root.right,currMax);
-    }else{
-      currMax = Math.min(currMax,root.right.val);
-      return helper_TournamentTree(root.left,currMax);
+    if (root.left.val > root.right.val) {
+      currMax = Math.min(currMax, root.left.val);
+      return helper_TournamentTree(root.right, currMax);
+    } else {
+      currMax = Math.min(currMax, root.right.val);
+      return helper_TournamentTree(root.left, currMax);
     }
   }
 }
