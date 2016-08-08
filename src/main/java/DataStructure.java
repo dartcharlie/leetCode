@@ -876,4 +876,40 @@ public class DataStructure {
     return true;
   }
 
+  public static class MinStack {
+    Stack<Integer> rStack;
+    Stack<Integer> mStack;
+    /** initialize your data structure here. */
+    public MinStack() {
+      rStack = new Stack<>();
+      mStack = new Stack<>();
+    }
+
+    public void push(int x) {
+      rStack.push(x);
+      if(mStack.size() == 0){
+        mStack.push(x);
+      }else{
+        int currMin = mStack.peek();
+        if(currMin <= x){
+          mStack.push(currMin);
+        }else{
+          mStack.push(x);
+        }
+      }
+    }
+
+    public void pop() {
+      mStack.pop();
+      rStack.pop();
+    }
+
+    public int top() {
+      return rStack.peek();
+    }
+
+    public int getMin() {
+      return mStack.peek();
+    }
+  }
 }
