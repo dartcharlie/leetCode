@@ -877,39 +877,44 @@ public class DataStructure {
   }
 
   public static class MinStack {
-    Stack<Integer> rStack;
-    Stack<Integer> mStack;
+    Stack<Element> eStack;
+    static class Element{
+      int val;
+      int min;
+      public Element(int v, int m){
+        val = v;
+        min = m;
+      }
+    }
     /** initialize your data structure here. */
     public MinStack() {
-      rStack = new Stack<>();
-      mStack = new Stack<>();
+      eStack = new Stack<>();
     }
 
     public void push(int x) {
-      rStack.push(x);
-      if(mStack.size() == 0){
-        mStack.push(x);
+      if(eStack.size() == 0){
+        Element e = new Element(x,x);
+        eStack.push(e);
       }else{
-        int currMin = mStack.peek();
+        int currMin = eStack.peek().min;
         if(currMin <= x){
-          mStack.push(currMin);
+          eStack.push(new Element(x,currMin));
         }else{
-          mStack.push(x);
+          eStack.push(new Element(x,x));
         }
       }
     }
 
     public void pop() {
-      mStack.pop();
-      rStack.pop();
+      eStack.pop();
     }
 
     public int top() {
-      return rStack.peek();
+      return eStack.peek().val;
     }
 
     public int getMin() {
-      return mStack.peek();
+      return eStack.peek().min;
     }
   }
 }
