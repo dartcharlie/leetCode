@@ -1,5 +1,6 @@
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import org.testng.internal.junit.ArrayAsserts;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -77,5 +78,38 @@ public class RecursionTest {
     String[] words1 = new String[]{"oath","pea","eat","rain"};
     List<String> expected_output1 = Arrays.asList(new String[]{"oath","eat"});
     assertEquals(_recursion.findWordsII(board1,words1),expected_output1);
+  }
+
+  @Test
+  public void numberIslandsTest(){
+    assertEquals(_recursion.numIslands(null),0);
+    char[][] grid1 = new char[][]{{'0'}};
+    assertEquals(_recursion.numIslands(grid1),0);
+    char[][] grid2 = new char[][]{{'1'}};
+    assertEquals(_recursion.numIslands(grid2),1);
+    char[][] grid3 = new char[][]{{'0','1','0'},{'1','0','1'},{'0','1','0'}};
+    assertEquals(_recursion.numIslands(grid3),4);
+    char[][] grid4 = new char[][]{{'0','1','0'},{'0','1','0'},{'0','1','0'}};
+    assertEquals(_recursion.numIslands(grid4),1);
+    char[][] grid5 = new char[][]{{'1','1','1','1','0'},{'1','1','0','1','0'},{'1','1','0','0','0'},{'0','0','0','0','0'}};
+    assertEquals(_recursion.numIslands(grid5),1);
+    char[][] grid6 = new char[][]{{'1','1','0','0','0'},{'1','1','0','0','0'},{'0','0','1','0','0'},{'0','0','0','1','1'}};
+    assertEquals(_recursion.numIslands(grid6),3);
+  }
+
+  @Test
+  public void surroundedRegionsTest(){
+    assertEquals(_recursion.surroundedRegions(null),null);
+    char[][] board1 = new char[][]{{'O'}};
+    char[][] res1 = new char[][]{{'O'}};
+    ArrayAsserts.assertArrayEquals(_recursion.surroundedRegions(board1),res1);
+
+    char[][] board2 = new char[][]{{'O','X'},{'X','O'}};
+    char[][] res2 = new char[][]{{'O','X'},{'X','O'}};
+    ArrayAsserts.assertArrayEquals(_recursion.surroundedRegions(board2),res2);
+
+    char[][] board3 = new char[][]{{'X','X','X','X'},{'X','O','O','X'},{'X','X','O','X'},{'X','O','X','X'}};
+    char[][] res3 = new char[][]{{'X','X','X','X'},{'X','X','X','X'},{'X','X','X','X'},{'X','O','X','X'}};
+    ArrayAsserts.assertArrayEquals(_recursion.surroundedRegions(board3),res3);
   }
 }

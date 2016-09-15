@@ -389,4 +389,103 @@ public class Recursion {
       }
     }
   }
+
+
+  /**
+   * leetcode 200 Number of Islands
+   * breadth-first-search, depth-first-search
+   */
+  public int numIslands(char[][] grid) {
+    int result = 0;
+    if(grid != null && grid.length != 0 && grid[0].length != 0) {
+      int gridx = grid.length;
+      int gridy = grid[0].length;
+
+      for (int i = 0; i < gridx; ++i) {
+        for (int j = 0; j < gridy; ++j) {
+          if(grid[i][j] == '1'){
+            result++;
+            visitIsland(i,j,grid,gridx,gridy);
+          }
+        }
+      }
+    }
+    return result;
+  }
+
+
+  public void visitIsland(int currX, int currY,char[][] grid, int gridx, int gridy){
+    if(currX <0 || currX >= gridx || currY<0 || currY >=gridy){
+      return;
+    }
+    if(grid[currX][currY] == '1') {
+      grid[currX][currY] = 'X';
+      visitIsland(currX - 1, currY,  grid, gridx, gridy);
+      visitIsland(currX + 1, currY,  grid, gridx, gridy);
+      visitIsland(currX, currY - 1,  grid, gridx, gridy);
+      visitIsland(currX, currY + 1,  grid, gridx, gridy);
+    }
+  }
+
+  /**
+   * leetcode 130 surrounded regions
+   */
+  public char[][] surroundedRegions(char[][] board) {
+    if(board != null && board.length != 0 && board[0].length !=0){
+      int sizeX = board.length;
+      int sizeY = board[0].length;
+
+      for(int i = 0;i<sizeX;++i){
+        markBoard(i,0,board,sizeX,sizeY);
+        markBoard(i,sizeY-1,board,sizeX,sizeY);
+      }
+      for(int i=0;i<sizeY;++i){
+        markBoard(0,i,board,sizeX,sizeY);
+        markBoard(sizeX-1,i,board,sizeX,sizeY);
+      }
+      for(int i=0;i<sizeX;++i){
+        for(int j=0;j<sizeY;++j){
+          if(board[i][j] == 'O'){
+            board[i][j] = 'X';
+          }
+          if(board[i][j] == '1'){
+            board[i][j] = 'O';
+          }
+        }
+      }
+    }
+    return board;
+  }
+
+  public void markBoard(int currX, int currY, char[][] board, int sizeX, int sizeY){
+    if(board[currX][currY] != 'O'){
+      return;
+    }else{
+      //inprovements over recursive solution
+      Queue<Integer> visitQueue = new LinkedList<>();
+      visitQueue.offer(currX*sizeY + currY);
+      board[currX][currY] = '1';
+      while(!visitQueue.isEmpty()){
+        int currNode = visitQueue.poll();
+        currX = currNode/sizeY;
+        currY = currNode%sizeY;
+        fillBoard(currX-1, currY,board,sizeX,sizeY,visitQueue);
+        fillBoard(currX+1, currY,board,sizeX,sizeY,visitQueue);
+        fillBoard(currX, currY-1,board,sizeX,sizeY,visitQueue);
+        fillBoard(currX, currY+1,board,sizeX,sizeY,visitQueue);
+
+      }
+    }
+  }
+
+  public void fillBoard(int currX, int currY, char[][] board, int sizeX, int sizeY, Queue<Integer> visitQueue){
+    if(currX <0 || currX >= sizeX || currY<0 || currY >=sizeY){
+      return;
+    }
+    if(board[currX][currY] == 'O'){
+      visitQueue.offer(currX*sizeY+currY);
+      board[currX][currY] = '1';
+    }
+  }
+
 }
