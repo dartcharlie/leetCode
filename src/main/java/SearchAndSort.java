@@ -203,4 +203,33 @@ public class SearchAndSort {
     }
     return range;
   }
+
+  /**
+   * leetcode 35
+   * Given a sorted array and a target value, return the index if the target is found.
+   * If not, return the index where it would be if it were inserted in order.
+   * @param nums
+   * @param target
+   * @return
+   */
+  public int searchInsert(int[] nums, int target) {
+    int low = 0;
+    int high = nums.length-1;
+    int ret = -1;
+    while(low <= high){
+      int mid = (high - low)/2 + low;
+      if(nums[mid] > target){
+        high = mid -1;
+      }else if(nums[mid] < target){
+        low = mid +1;
+      }else{
+        ret = mid;
+        break;
+      }
+    }
+    if(ret == -1){
+      ret = low > high? low: nums[low] > target? low :low+1;
+    }
+    return ret;
+  }
 }

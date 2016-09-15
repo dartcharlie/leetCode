@@ -100,5 +100,16 @@ public class SearchAndSortTest {
     int[] range2 = new int[] {-1,-1};
     assertEquals(_searchAndSort.searchRange(nums1,3),range2);
   }
+
+  @Test
+  void searchInsertTest() {
+    int[] nums = new int[] {1,3,5,6};
+    int target1 = 5, target2 =2,target3=7,target4=0;
+    int res1 = 2, res2 = 1, res3= 4, res4=0;
+    assertEquals(_searchAndSort.searchInsert(nums,target1),res1);
+    assertEquals(_searchAndSort.searchInsert(nums,target2),res2);
+    assertEquals(_searchAndSort.searchInsert(nums,target3),res3);
+    assertEquals(_searchAndSort.searchInsert(nums,target4),res4);
+  }
 }
 
