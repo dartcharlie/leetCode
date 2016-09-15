@@ -16,7 +16,7 @@ public class SearchAndSort {
     int mid;
     int result = -1;
     while (start <= end) {
-      mid = (start + end) / 2;
+      mid = (end - start) / 2 + start;
       if (arrayToSearch[mid] == element) {
         result = mid;
         break;
@@ -151,7 +151,7 @@ public class SearchAndSort {
     int high = nums.length -1;
     int candidate = -1;
     while(low <= high){
-      int mid = (low + high)/2;
+      int mid = (high - low )/2 + low;
       if(nums[mid] < target){
         low = mid +1;
       }else if(nums[mid] > target){
@@ -169,7 +169,7 @@ public class SearchAndSort {
     int high = nums.length -1;
     int candidate = -1;
     while(low <= high){
-      int mid = (low + high)/2;
+      int mid = (high - low)/2 + low;
       if(nums[mid] < target){
         low = mid +1;
       }else if(nums[mid] > target){
