@@ -184,6 +184,37 @@ public class Utils {
     return found;
   }
 
+  public boolean wildCardSearchTrie(TrieNode root, String word){
+    int wordLen = word.length();
+    boolean found = false;
+    //base case
+    if(wordLen == 0){
+      found = root.getInDictionary();
+    }
+    else{
+      for(int i=0;i<wordLen;++i) {
+        Map<Character, TrieNode> childMap = root.getChildren();
+        if (word.charAt(i) == '.') {
+          for (Character c : childMap.keySet()) {
+            TrieNode currRoot = childMap.get(c);
+            if (wildCardSearchTrie(currRoot, word.substring(i + 1))) {
+              return true;
+            }
+          }
+          return false;
+        } else {
+          if (childMap.containsKey(word.charAt(i))) {
+            root = childMap.get(word.charAt(i));
+            found = root.getInDictionary();
+          } else {
+            return false;
+          }
+        }
+      }
+    }
+    return found;
+  }
+
   /**
    *
    * @param words
@@ -201,6 +232,17 @@ public class Utils {
       currRoot.setInDictionary(true);
     }
     return root;
+  }
+
+  /**
+   *
+   */
+  public void addWordToTrie(TrieNode root, String word){
+    int wordLen = word.length();
+    for(int i=0;i<wordLen;++i){
+      root = root.addChild(word.charAt(i));
+    }
+    root.setInDictionary(true);
   }
 
   /**

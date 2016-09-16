@@ -84,4 +84,29 @@ public class UtilsTest {
         "Ohio","Oklahoma","Oregon","Pennsylvania","RhodeIsland","SouthCarolina","SouthDakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","WestVirginia","Wisconsin","Wyoming"};
     Assert.assertEquals(_utils.letterOutsideStates(states),"q");
   }
+
+  @Test
+  void wildCardSearchTrieTest(){
+    List<String> input1 = Arrays.asList(new String[]{"bad", "dad", "mad"});
+    Utils.TrieNode root1 = _utils.buildTrie(input1);
+    Assert.assertEquals(_utils.wildCardSearchTrie(root1,"pad"),false);
+    Assert.assertEquals(_utils.wildCardSearchTrie(root1,"bad"),true);
+    Assert.assertEquals(_utils.wildCardSearchTrie(root1,".ad"),true);
+    Assert.assertEquals(_utils.wildCardSearchTrie(root1,"b.."),true);
+    Assert.assertEquals(_utils.wildCardSearchTrie(root1,"b.f"),false);
+
+    List<String> input2 = Arrays.asList(new String[]{"a", "a"});
+    Utils.TrieNode root2 = _utils.buildTrie(input2);
+    Assert.assertEquals(_utils.wildCardSearchTrie(root2,"a"),true);
+    Assert.assertEquals(_utils.wildCardSearchTrie(root2,"aa"),false);
+    Assert.assertEquals(_utils.wildCardSearchTrie(root2,".a"),false);
+    Assert.assertEquals(_utils.wildCardSearchTrie(root2,"a."),false);
+
+    List<String> input3 = Arrays.asList(new String[]{"at", "and", "an","add"});
+    Utils.TrieNode root3 = _utils.buildTrie(input3);
+    Assert.assertEquals(_utils.wildCardSearchTrie(root3,"a"),false);
+    Assert.assertEquals(_utils.wildCardSearchTrie(root3,".at"),false);
+    Assert.assertEquals(_utils.wildCardSearchTrie(root3,".a"),false);
+    Assert.assertEquals(_utils.wildCardSearchTrie(root3,"a.d"),true);
+  }
 }

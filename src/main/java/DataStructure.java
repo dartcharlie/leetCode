@@ -830,4 +830,50 @@ public class DataStructure {
       return helper_TournamentTree(root.left, currMax);
     }
   }
+
+  /**
+   * The Sudoku board could be partially filled, where empty cells are filled with the character '.'.
+   * @param board sodoku board
+   * @return true if it's valid board, false otherwise
+   */
+  public boolean isValidSudoku(char[][] board) {
+    for(int i=0;i<9;++i){
+      boolean[] horizonalArray = new boolean[9];
+      boolean[] verticalArray = new boolean[9];
+      for(int j=0;j<9;++j){
+        //check horizontal
+        if(!checkAndSet(horizonalArray,board[i][j])){
+          return false;
+        }
+        //check vertical
+        if(!checkAndSet(verticalArray,board[j][i])){
+          return false;
+        }
+      }
+    }
+    for(int i=0;i<9;i+=3){
+      for(int j=0;j<9;j+=3){
+        boolean[] matrixArray = new boolean[9];
+        for(int k=0;k<9;++k){
+          if (!checkAndSet(matrixArray, board[i + k/3][j + k%3])) {
+            return false;
+          }
+        }
+      }
+    }
+    return true;
+  }
+
+  private boolean checkAndSet(boolean[] numArray, char currChar){
+    if(currChar != '.'){
+      int num = currChar-'0';
+      if(num <1 || num>9 || numArray[num-1]){
+        return false;
+      }else{
+        numArray[num-1] = true;
+      }
+    }
+    return true;
+  }
+
 }
