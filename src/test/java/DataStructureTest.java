@@ -441,4 +441,19 @@ public class DataStructureTest {
     Assert.assertEquals(minStack1.getMin(),-2);
 
   }
+
+  @Test
+  public void lowestCommonAncestorTest(){
+    String input1 = "3,5,1,6,2,0,8,#,#,7,4";
+    DataStructure.TreeNode root1 = _treeCodec.deserialize(input1);
+    DataStructure.TreeNode commonAncestor11 = _dataStructure.lowestCommonAncestor(root1, root1.left,root1.right);
+    Assert.assertEquals(commonAncestor11,root1);
+    DataStructure.TreeNode commonAncestor12 = _dataStructure.lowestCommonAncestor(root1, root1.left.left, root1.left.right.right);
+    Assert.assertEquals(commonAncestor12,root1.left);
+
+    String input2 = "37,-34,-48,#,-100,-100,48,#,#,#,#,-54,#,-71,-22,#,#,#,8";
+    DataStructure.TreeNode root2 = _treeCodec.deserialize(input2);
+    DataStructure.TreeNode commonAncestor21 = _dataStructure.lowestCommonAncestor(root2, root2.right.left,root2.right.right.left.left);
+    Assert.assertEquals(commonAncestor21, root2.right);
+  }
 }
