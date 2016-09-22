@@ -1,13 +1,12 @@
+import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import org.testng.internal.junit.ArrayAsserts;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static org.testng.Assert.assertEquals;
-
+import static org.testng.Assert.assertTrue;
 public class RecursionTest {
   Recursion _recursion;
 
@@ -111,5 +110,27 @@ public class RecursionTest {
     char[][] board3 = new char[][]{{'X','X','X','X'},{'X','O','O','X'},{'X','X','O','X'},{'X','O','X','X'}};
     char[][] res3 = new char[][]{{'X','X','X','X'},{'X','X','X','X'},{'X','X','X','X'},{'X','O','X','X'}};
     ArrayAsserts.assertArrayEquals(_recursion.surroundedRegions(board3),res3);
+  }
+
+  @Test
+  public void findLaddersIITest(){
+    List<String> stringList1 = Arrays.asList(new String[]{"hot","dot","dog","lot","log"});
+    Set<String> dic1 = new HashSet<>(stringList1);
+    List<List<String>> expected_res1 = new ArrayList<>();
+    expected_res1.add(Arrays.asList(new String[]{"hit","hot","dot","dog","cog"}));
+    expected_res1.add(Arrays.asList(new String[]{"hit","hot","lot","log","cog"}));
+    List<List<String>> res1 = _recursion.findLaddersII("hit","cog",dic1);
+    assertEquals(res1.size(),expected_res1.size());
+    assertTrue(res1.containsAll(expected_res1));
+    assertTrue(expected_res1.containsAll(res1));
+
+    List<String> stringList2 = Arrays.asList(new String[]{"a","b","c"});
+    Set<String> dic2 = new HashSet<>(stringList2);
+    List<List<String>> expected_res2 = new ArrayList<>();
+    expected_res2.add(Arrays.asList(new String[]{"a","c"}));
+    List<List<String>> res2 = _recursion.findLaddersII("a","c",dic2);
+    assertEquals(res2.size(),expected_res2.size());
+    assertTrue(res2.containsAll(expected_res2));
+    assertTrue(expected_res2.containsAll(res2));
   }
 }

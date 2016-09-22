@@ -488,4 +488,114 @@ public class Recursion {
     }
   }
 
+  /**
+   * leetcode 126, Given two words (beginWord and endWord), and a dictionary's word list, find all shortest transformation sequence(s) from beginWord to endWord, such that:
+   * Only one letter can be changed at a time
+   * Each intermediate word must exist in the word list
+   * Given:
+   * beginWord = "hit"
+   * endWord = "cog"
+   * wordList = ["hot","dot","dog","lot","log"]
+   * Return [["hit","hot","dot","dog","cog"],["hit","hot","lot","log","cog"]]
+   * @param beginWord
+   * @param endWord
+   * @param wordList
+   * @return
+   */
+  public List<List<String>> findLaddersII(String beginWord, String endWord, Set<String> wordList) {
+    //pre-process
+    int wordLen = beginWord.length();
+    Set<String> processedList = new HashSet<>();
+    for(String word:wordList){
+      if(!word.equals(beginWord) && word.length() == wordLen){
+        processedList.add(word);
+      }
+    }
+    processedList.add(endWord);
+    List<String> prefix = new ArrayList<>();
+    prefix.add(beginWord);
+    List<List<String>> res = new ArrayList<>();
+    findLaddersRecur(beginWord,endWord,processedList,prefix,res);
+    int shortestListLen = Integer.MAX_VALUE;
+    for(List<String> resList:res){
+      int currListSize = resList.size();
+      if(currListSize < shortestListLen){
+        shortestListLen = currListSize;
+      }
+    }
+    List<List<String>> shortestList = new ArrayList<>();
+    for(List<String> resList:res){
+      if(resList.size() == shortestListLen){
+        shortestList.add(resList);
+      }
+    }
+    return shortestList;
+  }
+
+  public void findLaddersRecur(String currWord, String endWord, Set<String> wordList, List<String> prefix, List<List<String>> res){
+    List<String> neighborWords = neighborWord(wordList,currWord);
+    for(String word:neighborWords){
+      if(word.equals(endWord)){
+        List<String> resList = new ArrayList<>(prefix);
+        resList.add(endWord);
+        res.add(resList);
+        return;
+      }else{
+        if(wordDistance(currWord,endWord) >= wordDistance(word,endWord)) {
+          wordList.remove(word);
+          prefix.add(word);
+          findLaddersRecur(word, endWord, wordList, prefix, res);
+          wordList.add(word);
+          prefix.remove(word);
+        }
+      }
+    }
+  }
+
+  public int wordDistance(String word1, String word2){
+    int wordLen = word1.length();
+    int distance = 0;
+    for(int i=0;i<wordLen;++i){
+      if(word1.charAt(i) != word2.charAt(i)){
+        distance++;
+      }
+    }
+    return distance;
+  }
+
+  public List<String> neighborWord(Set<String> wordList, String currWord){
+    List<String> neighbors = new ArrayList<>();
+    char[] currCharArray = currWord.toCharArray();
+    int wordLen = currCharArray.length;
+    //there are 2 approaches to get distance 1 word list
+    //(1) try to swap character with current word, time complexity O(26*w)
+    for(int i=0;i<wordLen;++i){
+      for(char ch='a';ch<='z';++ch){
+        if(ch != currCharArray[i]){
+          char oldChar = currCharArray[i];
+          currCharArray[i] = ch;
+          String transformWord = String.valueOf(currCharArray);
+          if(wordList.contains(transformWord)){
+            neighbors.add(transformWord);
+          }
+          currCharArray[i] = oldChar;
+        }
+      }
+    }
+    /* (2) iterate through all words in the dictionary, time complexity O(n*w)
+    for(String word:wordList){
+      int distance = 0;
+      for(int i=0;i<wordLen;++i){
+        if(word.charAt(i) != currWord.charAt(i)){
+          distance++;
+        }
+      }
+      if(distance == 1){
+        neighbors.add(word);
+      }
+    }
+    */
+    return neighbors;
+  }
+
 }
