@@ -503,64 +503,61 @@ public class Recursion {
    * @return
    */
   public List<List<String>> findLaddersII(String beginWord, String endWord, Set<String> wordList) {
-    //pre-process
-    int wordLen = beginWord.length();
-    Set<String> processedList = new HashSet<>();
-    for(String word:wordList){
-      if(!word.equals(beginWord) && word.length() == wordLen){
-        processedList.add(word);
-      }
-    }
-    processedList.add(endWord);
-    List<String> prefix = new ArrayList<>();
-    prefix.add(beginWord);
-    List<List<String>> res = new ArrayList<>();
-    findLaddersRecur(beginWord,endWord,processedList,prefix,res);
-    int shortestListLen = Integer.MAX_VALUE;
-    for(List<String> resList:res){
-      int currListSize = resList.size();
-      if(currListSize < shortestListLen){
-        shortestListLen = currListSize;
-      }
-    }
-    List<List<String>> shortestList = new ArrayList<>();
-    for(List<String> resList:res){
-      if(resList.size() == shortestListLen){
-        shortestList.add(resList);
-      }
-    }
-    return shortestList;
+    //distance between key word and beginWord through bfs search
+    Map<String, Integer> distance = new HashMap<>();
+    Map<String, List<String>> neighbors = new HashMap<>();
+    List<List<String>> result = new ArrayList<>();
+    wordList.add(endWord);
+    findLaddersBFS(beginWord,endWord,wordList,distance,neighbors);
+    findLaddersDFS(beginWord,endWord,distance,neighbors,new ArrayList<>(),result);
+
+    return result;
   }
 
-  public void findLaddersRecur(String currWord, String endWord, Set<String> wordList, List<String> prefix, List<List<String>> res){
-    List<String> neighborWords = neighborWord(wordList,currWord);
-    for(String word:neighborWords){
-      if(word.equals(endWord)){
-        List<String> resList = new ArrayList<>(prefix);
-        resList.add(endWord);
-        res.add(resList);
-        return;
-      }else{
-        if(wordDistance(currWord,endWord) >= wordDistance(word,endWord)) {
-          wordList.remove(word);
-          prefix.add(word);
-          findLaddersRecur(word, endWord, wordList, prefix, res);
-          wordList.add(word);
-          prefix.remove(word);
+  public void findLaddersBFS(String beginWord, String endWord, Set<String> dic, Map<String,Integer> distance, Map<String,List<String>> neighbors){
+    Queue<String> queue = new LinkedList<>();
+    queue.offer(beginWord);
+    distance.put(beginWord,0);
+    neighbors.put(beginWord,new ArrayList<>());
+    while(!queue.isEmpty()){
+      int queueSize = queue.size();
+      boolean foundEnd = false;
+      for(int i=0;i<queueSize;++i){
+        String currWord = queue.poll();
+        List<String> currNeighbors = neighborWord(dic,currWord);
+        int currDistance = distance.get(currWord);
+        for(String word:currNeighbors){
+          neighbors.get(currWord).add(word);
+          if(!distance.containsKey(word)){
+            distance.put(word,currDistance+1);
+            neighbors.put(word,new ArrayList<>());
+            if(word.equals(endWord)){
+              foundEnd = true;
+            }else{
+              queue.offer(word);
+            }
+          }
+        }
+      }
+      if(foundEnd){
+        break;
+      }
+    }
+  }
+
+  public void findLaddersDFS(String currWord, String endWord, Map<String,Integer> distance, Map<String,List<String>> neighbors, List<String> prefix, List<List<String>> result){
+    prefix.add(currWord);
+    if(currWord.equals(endWord)){
+      List<String> ladder = new ArrayList<>(prefix);
+      result.add(ladder);
+    } else{
+      for(String neighbor:neighbors.get(currWord)){
+        if(distance.get(neighbor) == distance.get(currWord) +1 ) {
+          findLaddersDFS(neighbor, endWord, distance, neighbors, prefix, result);
         }
       }
     }
-  }
-
-  public int wordDistance(String word1, String word2){
-    int wordLen = word1.length();
-    int distance = 0;
-    for(int i=0;i<wordLen;++i){
-      if(word1.charAt(i) != word2.charAt(i)){
-        distance++;
-      }
-    }
-    return distance;
+    prefix.remove(prefix.size()-1);
   }
 
   public List<String> neighborWord(Set<String> wordList, String currWord){

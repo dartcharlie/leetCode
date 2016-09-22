@@ -132,5 +132,16 @@ public class RecursionTest {
     assertEquals(res2.size(),expected_res2.size());
     assertTrue(res2.containsAll(expected_res2));
     assertTrue(expected_res2.containsAll(res2));
+
+    List<String> stringList3 = Arrays.asList(new String[]{"ted","tex","red","tax","tad","den","rex","pee"});
+    Set<String> dic3 = new HashSet<>(stringList3);
+    List<List<String>> expected_res3 = new ArrayList<>();
+    expected_res3.add(Arrays.asList(new String[]{"red","ted","tad","tax"}));
+    expected_res3.add(Arrays.asList(new String[]{"red","ted","tex","tax"}));
+    expected_res3.add(Arrays.asList(new String[]{"red","rex","tex","tax"}));
+    List<List<String>> res3 = _recursion.findLaddersII("red","tax",dic3);
+    assertEquals(res3.size(),expected_res3.size());
+    assertTrue(res3.containsAll(expected_res3));
+    assertTrue(expected_res3.containsAll(res3));
   }
 }
