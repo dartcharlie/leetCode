@@ -601,10 +601,10 @@ public class DataStructure {
     public SegmentTree(int[] input, QueryType type) {
       _input = input;
       _inputLen = input.length;
-      if(_inputLen > 0) {
+      if (_inputLen > 0) {
         //allocate enough memory for a complete balanced binary tree
-        int height = (int) Math.ceil(Math.log(_inputLen)/Math.log(2));
-        _segTree = new int[2 * (int)Math.pow(2,height) - 1];
+        int height = (int) Math.ceil(Math.log(_inputLen) / Math.log(2));
+        _segTree = new int[2 * (int) Math.pow(2, height) - 1];
         _queryType = type;
         switch (_queryType) {
           case SUM_RANGE:
@@ -733,11 +733,11 @@ public class DataStructure {
           updateSum(0, 0, _inputLen - 1, updateIndex, delta);
           break;
         case MIN_RANGE:
-          segTreeIndex = findSegTreeIndex(0,0,_inputLen-1,updateIndex);
-          updateMin(segTreeIndex,updateValue);
+          segTreeIndex = findSegTreeIndex(0, 0, _inputLen - 1, updateIndex);
+          updateMin(segTreeIndex, updateValue);
           break;
         case MAX_RANGE:
-          segTreeIndex = findSegTreeIndex(0,0,_inputLen-1,updateIndex);
+          segTreeIndex = findSegTreeIndex(0, 0, _inputLen - 1, updateIndex);
           updateMax(segTreeIndex, updateValue);
           break;
         default:
@@ -767,31 +767,31 @@ public class DataStructure {
         int rangeMid = (rangeStart + rangeEnd) / 2;
         int leftChild = findSegTreeIndex(2 * currIndex + 1, rangeStart, rangeMid, updateIndex);
         int rightChild = findSegTreeIndex(2 * currIndex + 2, rangeMid + 1, rangeEnd, updateIndex);
-        return leftChild == -1? rightChild:leftChild;
+        return leftChild == -1 ? rightChild : leftChild;
       }
       return -1;
 
     }
 
     private void updateMin(int segTreeIndex, int updateValue) {
-      if(segTreeIndex == -1){
+      if (segTreeIndex == -1) {
         return;
       }
       _segTree[segTreeIndex] = updateValue;
-      while(segTreeIndex > 0){
-        segTreeIndex = (segTreeIndex-1)/2;
-        _segTree[segTreeIndex] = Math.min(_segTree[2*segTreeIndex+1], _segTree[2*segTreeIndex+2]);
+      while (segTreeIndex > 0) {
+        segTreeIndex = (segTreeIndex - 1) / 2;
+        _segTree[segTreeIndex] = Math.min(_segTree[2 * segTreeIndex + 1], _segTree[2 * segTreeIndex + 2]);
       }
 
     }
 
     private void updateMax(int segTreeIndex, int updateValue) {
-      if(segTreeIndex == -1){
+      if (segTreeIndex == -1) {
         return;
       }
       _segTree[segTreeIndex] = updateValue;
-      while(segTreeIndex > 0){
-        segTreeIndex = (segTreeIndex-1)/2;
+      while (segTreeIndex > 0) {
+        segTreeIndex = (segTreeIndex - 1) / 2;
         _segTree[segTreeIndex] = Math.max(_segTree[2 * segTreeIndex + 1], _segTree[2 * segTreeIndex + 2]);
       }
     }
@@ -833,29 +833,30 @@ public class DataStructure {
 
   /**
    * The Sudoku board could be partially filled, where empty cells are filled with the character '.'.
+   *
    * @param board sodoku board
    * @return true if it's valid board, false otherwise
    */
   public boolean isValidSudoku(char[][] board) {
-    for(int i=0;i<9;++i){
+    for (int i = 0; i < 9; ++i) {
       boolean[] horizonalArray = new boolean[9];
       boolean[] verticalArray = new boolean[9];
-      for(int j=0;j<9;++j){
+      for (int j = 0; j < 9; ++j) {
         //check horizontal
-        if(!checkAndSet(horizonalArray,board[i][j])){
+        if (!checkAndSet(horizonalArray, board[i][j])) {
           return false;
         }
         //check vertical
-        if(!checkAndSet(verticalArray,board[j][i])){
+        if (!checkAndSet(verticalArray, board[j][i])) {
           return false;
         }
       }
     }
-    for(int i=0;i<9;i+=3){
-      for(int j=0;j<9;j+=3){
+    for (int i = 0; i < 9; i += 3) {
+      for (int j = 0; j < 9; j += 3) {
         boolean[] matrixArray = new boolean[9];
-        for(int k=0;k<9;++k){
-          if (!checkAndSet(matrixArray, board[i + k/3][j + k%3])) {
+        for (int k = 0; k < 9; ++k) {
+          if (!checkAndSet(matrixArray, board[i + k / 3][j + k % 3])) {
             return false;
           }
         }
@@ -864,13 +865,13 @@ public class DataStructure {
     return true;
   }
 
-  private boolean checkAndSet(boolean[] numArray, char currChar){
-    if(currChar != '.'){
-      int num = currChar-'0';
-      if(num <1 || num>9 || numArray[num-1]){
+  private boolean checkAndSet(boolean[] numArray, char currChar) {
+    if (currChar != '.') {
+      int num = currChar - '0';
+      if (num < 1 || num > 9 || numArray[num - 1]) {
         return false;
-      }else{
-        numArray[num-1] = true;
+      } else {
+        numArray[num - 1] = true;
       }
     }
     return true;
@@ -878,29 +879,34 @@ public class DataStructure {
 
   public static class MinStack {
     Stack<Element> eStack;
-    static class Element{
+
+    static class Element {
       int val;
       int min;
-      public Element(int v, int m){
+
+      public Element(int v, int m) {
         val = v;
         min = m;
       }
     }
-    /** initialize your data structure here. */
+
+    /**
+     * initialize your data structure here.
+     */
     public MinStack() {
       eStack = new Stack<>();
     }
 
     public void push(int x) {
-      if(eStack.size() == 0){
-        Element e = new Element(x,x);
+      if (eStack.size() == 0) {
+        Element e = new Element(x, x);
         eStack.push(e);
-      }else{
+      } else {
         int currMin = eStack.peek().min;
-        if(currMin <= x){
-          eStack.push(new Element(x,currMin));
-        }else{
-          eStack.push(new Element(x,x));
+        if (currMin <= x) {
+          eStack.push(new Element(x, currMin));
+        } else {
+          eStack.push(new Element(x, x));
         }
       }
     }
@@ -919,12 +925,59 @@ public class DataStructure {
   }
 
   public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-    if(root == null || root == p || root == q){
+    if (root == null || root == p || root == q) {
       return root;
     }
-    TreeNode left = lowestCommonAncestor(root.left,p,q);
-    TreeNode right = lowestCommonAncestor(root.right,p,q);
-    return left == null? right : (right == null? left : root);
+    TreeNode left = lowestCommonAncestor(root.left, p, q);
+    TreeNode right = lowestCommonAncestor(root.right, p, q);
+    return left == null ? right : (right == null ? left : root);
+  }
+
+  class UndirectedGraphNode {
+    int label;
+    List<UndirectedGraphNode> neighbors;
+
+    UndirectedGraphNode(int x) {
+      label = x;
+      neighbors = new ArrayList<UndirectedGraphNode>();
+    }
+  }
+
+  ;
+
+  public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
+    if (node == null) {
+      return null;
+    }
+
+    Map<Integer, UndirectedGraphNode> clonedNodeMap = new HashMap<>();
+    Set<UndirectedGraphNode> visitedNode = new HashSet<>();
+    Queue<UndirectedGraphNode> nodeQueue = new LinkedList<>();
+    nodeQueue.offer(node);
+    UndirectedGraphNode cloneNode = new UndirectedGraphNode(node.label);
+    clonedNodeMap.put(node.label, cloneNode);
+    while (!nodeQueue.isEmpty()) {
+      int queueSize = nodeQueue.size();
+      for (int i = 0; i < queueSize; ++i) {
+        UndirectedGraphNode currentNode = nodeQueue.poll();
+        UndirectedGraphNode clonedCurrentNode = clonedNodeMap.get(currentNode.label);
+        if (!visitedNode.contains(currentNode)) {
+          visitedNode.add(currentNode);
+          for (UndirectedGraphNode neighbor : currentNode.neighbors) {
+            UndirectedGraphNode clonedNeighbor;
+            if (clonedNodeMap.containsKey(neighbor.label)) {
+              clonedNeighbor = clonedNodeMap.get(neighbor.label);
+            } else {
+              clonedNeighbor = new UndirectedGraphNode(neighbor.label);
+              clonedNodeMap.put(neighbor.label, clonedNeighbor);
+            }
+            clonedCurrentNode.neighbors.add(clonedNeighbor);
+            nodeQueue.offer(neighbor);
+          }
+        }
+      }
+    }
+    return cloneNode;
   }
 
 }

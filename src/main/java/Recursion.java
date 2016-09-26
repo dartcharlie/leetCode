@@ -595,4 +595,67 @@ public class Recursion {
     return neighbors;
   }
 
+  /**
+   * leetcode 38 count and say
+   * The count-and-say sequence is the sequence of integers beginning as follows:
+   * 1, 11, 21, 1211, 111221, ...
+   * 1 is read off as "one 1" or 11.
+   * 11 is read off as "two 1s" or 21.
+   * 21 is read off as "one 2, then one 1" or 1211.
+   * Given an integer n, generate the nth sequence.
+   * Note: recursive method may cause calling stack overflow if n is large
+   * @param n
+   * @return
+   */
+  public String countAndSayRecursive(int n) {
+    if(n == 1){
+      return "1";
+    }
+    StringBuilder sb = new StringBuilder();
+    String previous = countAndSayRecursive(n-1);
+    char[] previousCharArray = previous.toCharArray();
+    char currChar = previousCharArray[0];
+    int currCount = 1;
+    for(int i=1;i<previousCharArray.length;++i){
+      if(previousCharArray[i] == currChar){
+        currCount++;
+      }else{
+        sb.append(String.valueOf(currCount));
+        sb.append(currChar);
+        currChar = previousCharArray[i];
+        currCount = 1;
+      }
+    }
+    sb.append(String.valueOf(currCount));
+    sb.append(currChar);
+    return sb.toString();
+  }
+
+
+  public String countAndSay(int n) {
+    int base = 1;
+    String previous = "1";
+    StringBuilder sb = new StringBuilder();
+    while(base < n){
+      char[] previousCharArray = previous.toCharArray();
+      char currChar = previousCharArray[0];
+      int currCount = 1;
+      for(int i=1;i<previousCharArray.length;++i){
+        if(previousCharArray[i] == currChar){
+          currCount++;
+        }else{
+          sb.append(String.valueOf(currCount));
+          sb.append(currChar);
+          currChar = previousCharArray[i];
+          currCount = 1;
+        }
+      }
+      sb.append(String.valueOf(currCount));
+      sb.append(currChar);
+      previous = sb.toString();
+      sb.setLength(0);
+      base++;
+    }
+    return previous;
+  }
 }

@@ -144,4 +144,24 @@ public class RecursionTest {
     assertTrue(res3.containsAll(expected_res3));
     assertTrue(expected_res3.containsAll(res3));
   }
+
+  @Test
+  public void countAndSayRecursiveTest(){
+    assertEquals(_recursion.countAndSayRecursive(1),"1");
+    assertEquals(_recursion.countAndSayRecursive(2),"11");
+    assertEquals(_recursion.countAndSayRecursive(3),"21");
+    assertEquals(_recursion.countAndSayRecursive(4),"1211");
+    assertEquals(_recursion.countAndSayRecursive(5),"111221");
+    assertEquals(_recursion.countAndSayRecursive(6),"312211");
+  }
+
+  @Test
+  public void countAndSayTest(){
+    assertEquals(_recursion.countAndSay(1),"1");
+    assertEquals(_recursion.countAndSay(2),"11");
+    assertEquals(_recursion.countAndSay(3),"21");
+    assertEquals(_recursion.countAndSay(4),"1211");
+    assertEquals(_recursion.countAndSay(5),"111221");
+    assertEquals(_recursion.countAndSay(6),"312211");
+  }
 }
