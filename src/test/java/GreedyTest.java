@@ -32,6 +32,7 @@ public class GreedyTest {
     assertEquals(_greedy.canJumpDP(nums5), true);
   }
 
+  @Test
   public void canJumpGreedyTest() {
     int[] nums1 = new int[]{2, 3, 1, 1, 4};
     assertEquals(_greedy.canJumpGreedy(nums1), true);
@@ -47,5 +48,18 @@ public class GreedyTest {
 
     int[] nums5 = new int[]{2};
     assertEquals(_greedy.canJumpGreedy(nums5), true);
+  }
+
+  @Test
+  public void jumpTest() {
+    int[] nums1 = new int[] {2,3,1,1,4};
+    assertEquals(_greedy.jump(nums1),2);
+
+    int[] nums2 = new int[] {3,1,5,1,2,1,1,3};
+    assertEquals(_greedy.jump(nums2),2);
+
+    assertEquals(_greedy.jump(new int[]{0}),0);
+    assertEquals(_greedy.jump(new int[]{1,2}),1);
+    assertEquals(_greedy.jump(new int[]{0,1}),-1);
   }
 }

@@ -43,6 +43,31 @@ public class Greedy {
       if(i>maxJump || maxJump >= numLen) break;
       maxJump = Math.max(maxJump, i+nums[i]);
     }
-    return maxJump >= nums.length -1 ? true : false;
+    return maxJump >= (nums.length -1);
+  }
+
+  /**
+   * leetcode 45 jump game II
+   * Given an array of non-negative integers, you are initially positioned at the first index of the array.
+   * Each element in the array represents your maximum jump length at that position.
+   * Your goal is to reach the last index in the minimum number of jumps.
+   * Given array A = [2,3,1,1,4]
+   * The minimum number of jumps to reach the last index is 2. (Jump 1 step from index 0 to 1, then 3 steps to the last index.)
+   * @param nums
+   * @return
+   */
+  public int jump(int[] nums) {
+    int lastJump = 0, numJumps = 0, i=0;
+    while(lastJump < nums.length -1){
+      int currMax = lastJump;
+      for(;i<=currMax;++i){
+        lastJump = Math.max(lastJump,nums[i]+i);
+      }
+      numJumps++;
+      if(lastJump == currMax){
+        return -1;
+      }
+    }
+    return numJumps;
   }
 }
