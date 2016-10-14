@@ -200,6 +200,7 @@ public class DynamicProgramming {
    * @param word2
    * @return edit distance between word1 and word2
    */
+  /*
   public int editDistance(String word1, String word2) {
     int word1Len = word1.length();
     int word2Len = word2.length();
@@ -218,7 +219,7 @@ public class DynamicProgramming {
     }
     return distanceArray[word1Len][word2Len];
   }
-
+  */
   /**
    * find a subarray in array Input that contains the largest sum and subject to the constraint that such sum is less than k.
    * algorithm time complexity should be O(nlogn)
@@ -286,4 +287,59 @@ public class DynamicProgramming {
     return result;
   }
 
+  /**
+   * given 2 strings, return edit distance between them.
+   * Edit distance is defined as the shortest transformation steps(include add, delete or replace)
+   * needed to transform one string to another.
+   * @param s1
+   * @param s2
+   * @return
+   */
+  public int editDistance(String s1, String s2){
+    int s1Len = s1.length(), s2Len = s2.length();
+    int[][] editMap = new int[s1Len+1][s2Len+1];
+    for(int i= 0;i<=s1Len;++i){
+      editMap[i][0] = i;
+    }
+    for(int i=1;i<=s2Len;++i){
+      editMap[0][i] = i;
+    }
+    for(int i=1;i<=s1Len;++i){
+      for(int j=1;j<=s2Len;++j){
+        int modify = s1.charAt(i-1) == s2.charAt(j-1) ? 0 : 1;
+        editMap[i][j] = Math.min(Math.min(editMap[i-1][j]+1,editMap[i][j-1]+1),editMap[i-1][j-1]+modify);
+        //int minimum = Math.min(Math.min(editMap[i-1][j],editMap[i][j-1]),editMap[i-1][j-1]);
+        //editMap[i][j] = s1.charAt(i-1) == s2.charAt(j-1) ? minimum :minimum+1;
+      }
+    }
+    return editMap[s1Len][s2Len];
+  }
+
+  /**
+   * A robot is located at the top-left corner of a m x n grid.
+   * The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid.
+   * How many possible unique paths are there?
+   * @param m
+   * @param n
+   * @return
+   */
+  public int uniquePaths(int m, int n) {
+    if(m<=0 || n<=0){
+      return 0;
+    }
+    int[][] pathCount = new int[m][n];
+    for(int i=0;i<=m-1;++i){
+      pathCount[i][0] = 1;
+    }
+    for(int i=0;i<=n-1;++i){
+      pathCount[0][i] = 1;
+    }
+
+    for(int i=1;i<=m-1;i++){
+      for(int j=1;j<=n-1;j++){
+        pathCount[i][j] = pathCount[i-1][j] + pathCount[i][j-1];
+      }
+    }
+    return pathCount[m-1][n-1];
+  }
 }

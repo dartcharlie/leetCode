@@ -164,4 +164,49 @@ public class RecursionTest {
     assertEquals(_recursion.countAndSay(5),"111221");
     assertEquals(_recursion.countAndSay(6),"312211");
   }
+
+  @Test
+  public void permuteUniqueTest(){
+    List<List<Integer>> expected_res1 = new ArrayList<>();
+
+    expected_res1.add(Arrays.asList(new Integer[]{1,1,2}));
+    expected_res1.add(Arrays.asList(new Integer[]{1,2,1}));
+    expected_res1.add(Arrays.asList(new Integer[]{2,1,1}));
+    assertEquals(_recursion.permuteUnique(new int[]{1,1,2}),expected_res1);
+
+    List<List<Integer>> expected_res2 = new ArrayList<>();
+    expected_res2.add(Arrays.asList(new Integer[]{1,1,1}));
+    assertEquals(_recursion.permuteUnique(new int[]{1,1,1}),expected_res2);
+
+    List<List<Integer>> expected_res3 = new ArrayList<>();
+    assertEquals(_recursion.permuteUnique(new int[]{}),expected_res3);
+
+    List<List<Integer>> expected_res4 = new ArrayList<>();
+    expected_res4.add(Arrays.asList(new Integer[]{1, 2, 3}));
+    expected_res4.add(Arrays.asList(new Integer[]{1, 3, 2}));
+    expected_res4.add(Arrays.asList(new Integer[]{2, 1, 3}));
+    expected_res4.add(Arrays.asList(new Integer[]{2, 3, 1}));
+    expected_res4.add(Arrays.asList(new Integer[]{3, 1, 2}));
+    expected_res4.add(Arrays.asList(new Integer[]{3, 2, 1}));
+    assertEquals(_recursion.permuteUnique(new int[]{1,2,3}),expected_res4);
+  }
+
+  @Test
+  public void solveNQueensTest(){
+    List<List<String>> expected_res1 = new ArrayList<>();
+    expected_res1.add(Arrays.asList(new String[]{"Q"}));
+    assertEquals(_recursion.solveNQueens(1),expected_res1);
+
+    List<List> expected_res2 = new ArrayList<>();
+    expected_res2.add(Arrays.asList(new String[]{".Q..","...Q","Q...","..Q."}));
+    expected_res2.add(Arrays.asList(new String[]{"..Q.","Q...","...Q",".Q.."}));
+    assertEquals(_recursion.solveNQueens(4),expected_res2);
+
+    List<List> expected_res3 = new ArrayList<>();
+    expected_res3.add(Arrays.asList(new String[]{".Q....","...Q..",".....Q","Q.....","..Q...","....Q."}));
+    expected_res3.add(Arrays.asList(new String[]{"..Q...",".....Q",".Q....","....Q.","Q.....","...Q.."}));
+    expected_res3.add(Arrays.asList(new String[]{"...Q..","Q.....","....Q.",".Q....",".....Q","..Q..."}));
+    expected_res3.add(Arrays.asList(new String[]{"....Q.","..Q...","Q.....",".....Q","...Q..",".Q...."}));
+    assertEquals(_recursion.solveNQueens(6),expected_res3);
+  }
 }

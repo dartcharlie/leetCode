@@ -1,5 +1,7 @@
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import org.testng.internal.junit.ArrayAsserts;
+
 import static org.testng.Assert.assertEquals;
 /**
  * Created by ZSong on 7/6/16.
@@ -21,7 +23,7 @@ public class MathProblemTest {
   }
 
   @Test
-  public void firstMissingPositive(){
+  public void firstMissingPositiveTest(){
     assertEquals(_mathProblem.firstMissingPositive(new int[]{1,2,0}),3);
     assertEquals(_mathProblem.firstMissingPositive(new int[]{1}),2);
     assertEquals(_mathProblem.firstMissingPositive(new int[]{10,4,-6,1,2,5,3}),6);
@@ -30,5 +32,31 @@ public class MathProblemTest {
     assertEquals(_mathProblem.firstMissingPositive(new int[]{0}),1);
     assertEquals(_mathProblem.firstMissingPositive(new int[]{0,1,2,3,4}),5);
     assertEquals(_mathProblem.firstMissingPositive(new int[]{5,4,3,1}),2);
+  }
+
+  @Test
+  public void lengthOfLastWordTest(){
+    assertEquals(_mathProblem.lengthOfLastWord(""),0);
+    assertEquals(_mathProblem.lengthOfLastWord("  "),0);
+    assertEquals(_mathProblem.lengthOfLastWord("s "),1);
+    assertEquals(_mathProblem.lengthOfLastWord(" s"),1);
+    assertEquals(_mathProblem.lengthOfLastWord("Hello World"),5);
+    assertEquals(_mathProblem.lengthOfLastWord("oneword"),7);
+    assertEquals(_mathProblem.lengthOfLastWord("ni hao ma"),2);
+    assertEquals(_mathProblem.lengthOfLastWord("blah blah blah   "),4);
+  }
+
+  @Test
+  public void generateMatrixTest(){
+    int[][] expected_res1 = new int[][]{{1}};
+    int[][] expected_res2 = new int[][]{{1,2},{4,3}};
+    int[][] expected_res3 = new int[][]{{1,2,3},{8,9,4},{7, 6, 5}};
+    int[][] expected_res4 = new int[][]{{1, 2, 3, 4},{12,13,14, 5},{11,16,15, 6},{10, 9, 8, 7}};
+    int[][] expected_res5 = new int[][]{{1,2,3,4,5},{16,17,18,19,6},{15,24,25,20,7},{14,23,22,21,8},{13,12,11,10,9}};
+    ArrayAsserts.assertArrayEquals(_mathProblem.generateMatrix(1),expected_res1);
+    ArrayAsserts.assertArrayEquals(_mathProblem.generateMatrix(2),expected_res2);
+    ArrayAsserts.assertArrayEquals(_mathProblem.generateMatrix(3),expected_res3);
+    ArrayAsserts.assertArrayEquals(_mathProblem.generateMatrix(4),expected_res4);
+    ArrayAsserts.assertArrayEquals(_mathProblem.generateMatrix(5),expected_res5);
   }
 }

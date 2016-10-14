@@ -658,4 +658,95 @@ public class Recursion {
     }
     return previous;
   }
+
+  /**
+   * leetcode permutation ii
+   * Given a collection of numbers that might contain duplicates, return all possible unique permutations.
+   * @param nums
+   * @return
+   */
+  public List<List<Integer>> permuteUnique(int[] nums) {
+    List<List<Integer>> ans = new ArrayList<>();
+    Arrays.sort(nums);
+    LinkedList<Integer> currentPermutation = new LinkedList<>();
+    for(int num: nums) currentPermutation.add(num);
+    permuteUniqueRecursive(currentPermutation,0,ans);
+    return ans;
+  }
+
+  public void permuteUniqueRecursive(LinkedList<Integer> nums,int pos,List<List<Integer>> res){
+    if(pos == nums.size() -1){
+      List<Integer> list = new ArrayList<>(nums);
+      res.add(list);
+      return;
+    }
+    for(int i=pos;i<=nums.size()-1;++i){
+      if(i > pos && nums.get(i) == nums.get(i-1)) {
+        continue;
+      }
+      nums.add(pos,nums.get(i));
+      nums.remove(i+1);
+
+      permuteUniqueRecursive(nums,pos+1,res);
+      nums.add(i+1,nums.get(pos));
+      nums.remove(pos);
+
+    }
+  }
+
+  /**
+   * Given an integer n, return all distinct solutions to the n-queens puzzle.
+   * Each solution contains a distinct board configuration of the n-queens' placement,
+   * where 'Q' and '.' both indicate a queen and an empty space respectively.
+   * @param n
+   * @return
+   */
+  public List<List<String>> solveNQueens(int n) {
+    List<List<String>> ans = new ArrayList<>();
+    int[] prefix = new int[n];
+    nQueensRecursive(n,0,prefix,ans);
+    return ans;
+  }
+
+  private void nQueensRecursive(int n, int currRow, int[] prefix, List<List<String>> ans){
+    if(currRow+1 == n){
+      for(int col=0;col<n;++col){
+        if(!queenMeet(currRow,col,prefix)){
+          prefix[currRow] = col;
+          //convert prefix array to ans
+          List<String> solution = new ArrayList<>();
+          for(int row=0;row<=currRow;++row){
+            char[] line = new char[n];
+            for(int i=0;i<n;++i){
+              line[i] = '.';
+            }
+            line[prefix[row]] = 'Q';
+            solution.add(String.valueOf(line));
+          }
+          ans.add(solution);
+        }
+      }
+    }else{
+      for(int col = 0;col<n;++col){
+        if(!queenMeet(currRow,col,prefix)){
+          prefix[currRow] = col;
+          nQueensRecursive(n,currRow+1,prefix,ans);
+        }
+      }
+    }
+
+  }
+
+  private boolean queenMeet(int row, int col, int[] prefix){
+    for(int i=0;i<row;++i){
+      int preRow = i;
+      int preCol = prefix[i];
+      if(row != preRow && col != preCol && row-col != preRow-preCol && row+col != preCol+preRow){
+        continue;
+      }
+      return true;
+    }
+    return false;
+  }
+
 }

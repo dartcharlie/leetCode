@@ -86,6 +86,13 @@ public class DynamicProgrammingTest {
     String input4_word2 = "superlonglonglonglongword";
     assertEquals(_dynamicProgramming.editDistance(input4_word1, input4_word2), 25);
 
+    String input5_word1 = "bat";
+    String input5_word2 = "at";
+    assertEquals(_dynamicProgramming.editDistance(input5_word1, input5_word2), 1);
+
+    String input6_word1 = "zoologicoarchaeologist";
+    String input6_word2 = "zoogeologist";
+    assertEquals(_dynamicProgramming.editDistance(input6_word1, input6_word2), 10);
   }
 
   @Test
@@ -118,5 +125,13 @@ public class DynamicProgrammingTest {
 
     int[][] matrix4 = {{2,2,-1}};
     assertEquals(_dynamicProgramming.maxSumSubmatrix(matrix4,3),3);
+  }
+
+  @Test
+  public void uniquePathsTest(){
+    assertEquals(_dynamicProgramming.uniquePaths(1,1),1);
+    assertEquals(_dynamicProgramming.uniquePaths(1,2),1);
+    assertEquals(_dynamicProgramming.uniquePaths(2,2),2);
+    assertEquals(_dynamicProgramming.uniquePaths(3,2),3);
   }
 }

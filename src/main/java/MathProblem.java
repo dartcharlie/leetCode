@@ -54,4 +54,65 @@ public class MathProblem {
     }
     return i+1;
   }
+
+  /**
+   * @param s string s consists of upper/lower-case alphabets and empty space characters ' '
+   * @return the length of last word in the string.
+   * If the last word does not exist, return 0.
+   * Given s = "Hello World", return 5
+   */
+  public int lengthOfLastWord(String s) {
+    int sLen = s.length();
+
+    int currPos = sLen-1;
+    while(currPos >= 0 && s.charAt(currPos) == ' '){
+      currPos--;
+    }
+    int startCount = currPos;
+    while(currPos >= 0){
+      if(s.charAt(currPos) == ' '){
+        break;
+      } else{
+        currPos--;
+      }
+    }
+    return startCount - currPos;
+  }
+
+
+  /**
+   * @param n integer n
+   * @return a square matrix filled with elements from 1 to n^2 in spiral order
+   * Given n = 3,
+   * should return
+   * [[ 1, 2, 3 ],
+   * [ 8, 9, 4 ],
+   * [ 7, 6, 5 ]]
+   */
+  public int[][] generateMatrix(int n) {
+    int x,y;
+    int[][] res = new int[n][n];
+    int level = 0;
+    int curr = 1;
+    while(level <= n/2){
+      for(x=level,y=level;y<=n-level-1;y++){
+        res[x][y] = curr;
+        curr++;
+      }
+      for(x=level+1,y=n-level-1;x<=n-level-1;x++){
+        res[x][y] = curr;
+        curr++;
+      }
+      for(x=n-level-1,y=n-level-2;y>=level;y--){
+        res[x][y] = curr;
+        curr++;
+      }
+      for(x=n-level-2,y=level;x>level;x--){
+        res[x][y] = curr;
+        curr++;
+      }
+      level++;
+    }
+    return res;
+  }
 }
