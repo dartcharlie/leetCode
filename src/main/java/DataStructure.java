@@ -980,15 +980,23 @@ public class DataStructure {
     return cloneNode;
   }
 
-  public static class Interval{
-     int start;
-     int end;
-     Interval() { start = 0; end = 0; }
-     Interval(int s, int e) { start = s; end = e; }
+  public static class Interval {
+    int start;
+    int end;
+
+    Interval() {
+      start = 0;
+      end = 0;
+    }
+
+    Interval(int s, int e) {
+      start = s;
+      end = e;
+    }
 
     @Override
-    public boolean equals(Object obj){
-      if(obj == null){
+    public boolean equals(Object obj) {
+      if (obj == null) {
         return false;
       }
       if (!Interval.class.isAssignableFrom(obj.getClass())) {
@@ -1005,21 +1013,21 @@ public class DataStructure {
    * For example,
    * Given [1,3],[2,6],[8,10],[15,18],
    * return [1,6],[8,10],[15,18].
+   *
    * @param intervals
    * @return
    */
   public List<Interval> merge(List<Interval> intervals) {
     List<Interval> result = new ArrayList<>();
-    if(intervals != null && !intervals.isEmpty()){
-      Collections.sort(intervals,new IntervalComparator());
+    if (intervals != null && !intervals.isEmpty()) {
+      Collections.sort(intervals, new IntervalComparator());
       Interval last = intervals.get(0);
       int intervalSize = intervals.size();
-      for(int i=1;i<intervalSize;++i){
+      for (int i = 1; i < intervalSize; ++i) {
         Interval currentInterval = intervals.get(i);
-        if(last.end >= currentInterval.start){
-          last.end = Math.max(last.end,currentInterval.end);
-        }
-        else{
+        if (last.end >= currentInterval.start) {
+          last.end = Math.max(last.end, currentInterval.end);
+        } else {
           result.add(last);
           last = currentInterval;
         }
@@ -1030,8 +1038,44 @@ public class DataStructure {
   }
 
   public class IntervalComparator implements Comparator<Interval> {
-    public int compare(Interval i1, Interval i2){
+    public int compare(Interval i1, Interval i2) {
       return i1.start - i2.start;
     }
   }
+
+  /**
+   * Given a set of non-overlapping intervals, insert a new interval into the intervals (merge if necessary).
+   * You may assume that the intervals were initially sorted according to their start times.
+   *
+   * @param intervals
+   * @param newInterval
+   * @return
+   */
+  public List<Interval> insert(List<Interval> intervals, Interval newInterval) {
+    List<Interval> ans = new ArrayList<>();
+    int intervalSize = intervals.size();
+    if (intervalSize == 0) {
+      ans.add(newInterval);
+    } else {
+      int i;
+      for (i = 0; i < intervalSize; ++i) {
+        Interval currInterval = intervals.get(i);
+        if (currInterval.end < newInterval.start) {
+          ans.add(currInterval);
+        } else if (currInterval.start > newInterval.end) {
+          break;
+        } else {
+          newInterval.start = Math.min(currInterval.start, newInterval.start);
+          newInterval.end = Math.max(currInterval.end, newInterval.end);
+        }
+      }
+      ans.add(newInterval);
+      for (; i < intervalSize; ++i) {
+        ans.add(intervals.get(i));
+      }
+    }
+    return ans;
+  }
+
+
 }

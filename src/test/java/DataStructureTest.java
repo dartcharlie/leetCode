@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static java.util.Arrays.asList;
+
 public class DataStructureTest {
   DataStructure _dataStructure;
   DataStructure.TreeCodec _treeCodec;
@@ -19,18 +21,18 @@ public class DataStructureTest {
   @Test
   public void preferentialVotingTest() {
     //basic case testing, a wins in the first round
-    List<String> ballots_input1 = Arrays.asList(new String[]{"abc", "acb", "bac", "cba", "bca", "abc"});
+    List<String> ballots_input1 = asList(new String[]{"abc", "acb", "bac", "cba", "bca", "abc"});
     Assert.assertEquals(_dataStructure.preferentialVoting(ballots_input1), 'a');
 
     //need redistribute vote to win case
-    List<String> ballots_input2 = Arrays.asList(new String[]{"abcd", "acbd", "bacd", "bcad", "cbad", "cabd", "dabc"});
+    List<String> ballots_input2 = asList(new String[]{"abcd", "acbd", "bacd", "bcad", "cbad", "cabd", "dabc"});
     Assert.assertEquals(_dataStructure.preferentialVoting(ballots_input2), 'a');
 
     //need to count the 3rd candidates in some ballot to get winner
-    List<String> ballots_input3 = Arrays.asList(new String[]{"abcd", "acbd", "abcd", "acbd", "bdac", "bcad", "bcda", "cbda", "dcba"});
+    List<String> ballots_input3 = asList(new String[]{"abcd", "acbd", "abcd", "acbd", "bdac", "bcad", "bcda", "cbda", "dcba"});
     Assert.assertEquals(_dataStructure.preferentialVoting(ballots_input3), 'b');
 
-    List<String> ballots_input4 = Arrays.asList(new String[]{"adc", "acd", "bcd", "bdc", "dab", "cba"});
+    List<String> ballots_input4 = asList(new String[]{"adc", "acd", "bcd", "bdc", "dab", "cba"});
     Assert.assertEquals(_dataStructure.preferentialVoting(ballots_input4), 'b');
   }
 
@@ -123,17 +125,17 @@ public class DataStructureTest {
     String input1 = "3,9,20,#,#,15,7";
     DataStructure.TreeNode root1 = _treeCodec.deserialize(input1);
     List<List<Integer>> expected1 = new ArrayList<List<Integer>>();
-    expected1.add(Arrays.asList(new Integer[]{3}));
-    expected1.add(Arrays.asList(new Integer[]{20, 9}));
-    expected1.add(Arrays.asList(new Integer[]{15, 7}));
+    expected1.add(asList(new Integer[]{3}));
+    expected1.add(asList(new Integer[]{20, 9}));
+    expected1.add(asList(new Integer[]{15, 7}));
     Assert.assertEquals(_dataStructure.zigzagLevelOrder(root1), expected1);
 
     String input2 = "1,2,3,4,#,#,5";
     DataStructure.TreeNode root2 = _treeCodec.deserialize(input2);
-    List<List<Integer>> expected2 = new ArrayList<List<Integer>>();
-    expected2.add(Arrays.asList(new Integer[]{1}));
-    expected2.add(Arrays.asList(new Integer[]{3, 2}));
-    expected2.add(Arrays.asList(new Integer[]{4, 5}));
+    List<List<Integer>> expected2 = new ArrayList<>();
+    expected2.add(asList(new Integer[]{1}));
+    expected2.add(asList(new Integer[]{3, 2}));
+    expected2.add(asList(new Integer[]{4, 5}));
     Assert.assertEquals(_dataStructure.zigzagLevelOrder(root2), expected2);
   }
 
@@ -245,7 +247,7 @@ public class DataStructureTest {
     //corner case 2 buildings with different height have exactly the same location and
     // 2 buildings with the same height start and end at the same point
     int[][] buildings5 = new int[][]{{0, 5, 7}, {5, 10, 7}, {5, 10, 12}, {10, 15, 7}, {15, 20, 7}, {15, 20, 12}, {20, 25, 7}};
-    List<int[]> expected_keyPoints5 = Arrays.asList(new int[][]{{0, 7}, {5, 12}, {10, 7}, {15, 12}, {20, 7}, {25, 0}});
+    List<int[]> expected_keyPoints5 = asList(new int[][]{{0, 7}, {5, 12}, {10, 7}, {15, 12}, {20, 7}, {25, 0}});
     List<int[]> program_output5 = _dataStructure.getSkyline(buildings5);
     int outputLen5 = expected_keyPoints5.size();
     Assert.assertEquals(program_output5.size(), expected_keyPoints5.size());
@@ -263,21 +265,21 @@ public class DataStructureTest {
     String input2 = "11,7,17,3,8,13,25,2,4,#,#,#,16";
     DataStructure.TreeNode root2 = _treeCodec.deserialize(input2);
     List<List<Integer>> expected2 = new ArrayList<>();
-    expected2.add(Arrays.asList(new Integer[]{2, 4, 8, 16, 25}));
-    expected2.add(Arrays.asList(new Integer[]{3, 13}));
-    expected2.add(Arrays.asList(new Integer[]{7, 17}));
-    expected2.add(Arrays.asList(new Integer[]{11}));
+    expected2.add(asList(2, 4, 8, 16, 25));
+    expected2.add(asList(3, 13));
+    expected2.add(asList(7, 17));
+    expected2.add(asList(11));
     List<List<DataStructure.TreeNode>> actual2 = _dataStructure.fallingLeaves(root2);
     faillingLeavesTestHelper(actual2, expected2);
 
     String input3 = "1,2,#,3,#,4,#,5";
     DataStructure.TreeNode root3 = _treeCodec.deserialize(input3);
     List<List<Integer>> expected3 = new ArrayList<>();
-    expected3.add(Arrays.asList(new Integer[]{5}));
-    expected3.add(Arrays.asList(new Integer[]{4}));
-    expected3.add(Arrays.asList(new Integer[]{3}));
-    expected3.add(Arrays.asList(new Integer[]{2}));
-    expected3.add(Arrays.asList(new Integer[]{1}));
+    expected3.add(asList(new Integer[]{5}));
+    expected3.add(asList(new Integer[]{4}));
+    expected3.add(asList(new Integer[]{3}));
+    expected3.add(asList(new Integer[]{2}));
+    expected3.add(asList(new Integer[]{1}));
     List<List<DataStructure.TreeNode>> actual3 = _dataStructure.fallingLeaves(root3);
     faillingLeavesTestHelper(actual3, expected3);
   }
@@ -376,6 +378,7 @@ public class DataStructureTest {
             {'.', '.', '.', '4', '1', '9', '.', '.', '5'},
             {'.', '.', '.', '.', '8', '.', '.', '7', '9'}
         };
+    Assert.assertTrue(_dataStructure.isValidSudoku(board1));
     char[][] board2 =
         {
             {'5', '3', '.', '.', '7', '.', '.', '.', '.'},
@@ -462,25 +465,74 @@ public class DataStructureTest {
   @Test
   public void mergeTest() {
 
-    List<DataStructure.Interval> intervals1 = Arrays.asList(new DataStructure.Interval[]{
+    List<DataStructure.Interval> intervals1 = asList(
         new DataStructure.Interval(1, 3),
         new DataStructure.Interval(2, 6),
         new DataStructure.Interval(8, 10),
-        new DataStructure.Interval(12, 15)});
-    List<DataStructure.Interval> expected_res1 = Arrays.asList(new DataStructure.Interval[]{
+        new DataStructure.Interval(12, 15));
+    List<DataStructure.Interval> expected_res1 = asList(
         new DataStructure.Interval(1, 6),
         new DataStructure.Interval(8, 10),
-        new DataStructure.Interval(12, 15)});
+        new DataStructure.Interval(12, 15));
     Assert.assertEquals(_dataStructure.merge(intervals1), expected_res1);
 
-    List<DataStructure.Interval> intervals2 = Arrays.asList(new DataStructure.Interval[]{
+    List<DataStructure.Interval> intervals2 = asList(
         new DataStructure.Interval(3, 6),
         new DataStructure.Interval(0, 2),
         new DataStructure.Interval(2, 4),
-        new DataStructure.Interval(7, 10)});
-    List<DataStructure.Interval> expected_res2 = Arrays.asList(new DataStructure.Interval[]{
+        new DataStructure.Interval(7, 10));
+    List<DataStructure.Interval> expected_res2 = asList(
         new DataStructure.Interval(0, 6),
-        new DataStructure.Interval(7, 10)});
+        new DataStructure.Interval(7, 10));
     Assert.assertEquals(_dataStructure.merge(intervals2), expected_res2);
+  }
+
+  @Test
+  public void insertTest() {
+    List<DataStructure.Interval> intervals1 = asList(
+        new DataStructure.Interval(1, 3),
+        new DataStructure.Interval(6, 9));
+    DataStructure.Interval newInterval1 = new DataStructure.Interval(2,5);
+    List<DataStructure.Interval> expected_res1 = asList(
+        new DataStructure.Interval(1, 5),
+        new DataStructure.Interval(6, 9));
+    Assert.assertEquals(_dataStructure.insert(intervals1,newInterval1), expected_res1);
+
+    List<DataStructure.Interval> intervals2 = asList();
+    DataStructure.Interval newInterval2 = new DataStructure.Interval(2,5);
+    List<DataStructure.Interval> expected_res2 = asList(
+        new DataStructure.Interval(2, 5));
+    Assert.assertEquals(_dataStructure.insert(intervals2,newInterval2), expected_res2);
+
+    List<DataStructure.Interval> intervals3 = asList(
+        new DataStructure.Interval(1, 3),
+        new DataStructure.Interval(6, 9));
+    DataStructure.Interval newInterval3 = new DataStructure.Interval(4,5);
+    List<DataStructure.Interval> expected_res3 = asList(
+        new DataStructure.Interval(1, 3),
+        new DataStructure.Interval(4, 5),
+        new DataStructure.Interval(6, 9));
+    Assert.assertEquals(_dataStructure.insert(intervals3,newInterval3), expected_res3);
+
+    List<DataStructure.Interval> intervals4 = asList(
+        new DataStructure.Interval(1, 2),
+        new DataStructure.Interval(3, 5),
+        new DataStructure.Interval(6, 7),
+        new DataStructure.Interval(8, 10),
+        new DataStructure.Interval(12, 16));
+    DataStructure.Interval newInterval4 = new DataStructure.Interval(4,9);
+    List<DataStructure.Interval> expected_res4 = asList(
+        new DataStructure.Interval(1, 2),
+        new DataStructure.Interval(3, 10),
+        new DataStructure.Interval(12, 16));
+    Assert.assertEquals(_dataStructure.insert(intervals4,newInterval4), expected_res4);
+
+    List<DataStructure.Interval> intervals5 = asList(
+        new DataStructure.Interval(1, 5)
+    );
+    DataStructure.Interval newInterval5 = new DataStructure.Interval(2,3);
+    List<DataStructure.Interval> expected_res5 = asList(
+        new DataStructure.Interval(1, 5));
+    Assert.assertEquals(_dataStructure.insert(intervals5,newInterval5), expected_res5);
   }
 }

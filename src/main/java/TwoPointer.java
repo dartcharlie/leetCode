@@ -117,4 +117,65 @@ public class TwoPointer {
     }
     return ans;
   }
+
+  /**
+   * leetcode 167 Given an array of integers that is already sorted in ascending order,
+   * find two numbers such that they add up to a specific target number.
+   * Input: numbers={2, 7, 11, 15}, target=9
+   * Output: index1=1, index2=2
+   * You may assume that each input would have exactly one solution.
+   * @param numbers
+   * @param target
+   * @return
+   */
+  public int[] twoSum(int[] numbers, int target) {
+    int[] ans = new int[2];
+    int head=0,tail=numbers.length-1;
+    while(head<tail){
+      if(numbers[head] + numbers[tail] == target){
+        ans[0] = head+1;
+        ans[1] = tail+1;
+        break;
+      } else if(numbers[head] + numbers[tail] < target) {
+        head++;
+      } else{
+        tail--;
+      }
+    }
+    return ans;
+  }
+
+  /**
+   * Given a list, rotate the list to the right by k places, where k is non-negative.
+   * For example:
+   * Given 1->2->3->4->5->NULL and k = 2,
+   * return 4->5->1->2->3->NULL.
+   * @param head
+   * @param k
+   * @return
+   */
+  public DataStructure.ListNode rotateRight(DataStructure.ListNode head, int k) {
+
+    if(k==0 || head == null){
+      return head;
+    }
+    int len=1;
+    DataStructure.ListNode rotateHead = head;
+    while(rotateHead.next != null){
+      rotateHead = rotateHead.next;
+      len++;
+    }
+    //make it a circle
+    rotateHead.next = head;
+
+    int travel = len - k%len;
+    while(travel > 1){
+      head = head.next;
+      travel--;
+    }
+    rotateHead = head.next;
+    head.next = null;
+    return rotateHead;
+  }
+
 }
