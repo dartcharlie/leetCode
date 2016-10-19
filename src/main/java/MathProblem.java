@@ -174,4 +174,24 @@ public class MathProblem {
       }
     }
   }
+
+  /**
+   * You are given an n x n 2D matrix representing an image.
+   * Rotate the image by 90 degrees (clockwise).
+   * @param matrix
+   */
+  public void rotate(int[][] matrix) {
+    int n = matrix.length;
+    int l = 0;
+    while(l<n/2){
+      for(int i=l;i<=n-2-l;++i){
+        int temp = matrix[n-1-i][l];
+        matrix[n-1-i][l] = matrix[n-1-l][n-1-i];
+        matrix[n-1-l][n-1-i] = matrix[i][n-1-l];
+        matrix[i][n-1-l] = matrix[l][i];
+        matrix[l][i] = temp;
+      }
+      l++;
+    }
+  }
 }
