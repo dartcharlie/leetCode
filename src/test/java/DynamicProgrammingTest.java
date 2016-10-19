@@ -134,4 +134,19 @@ public class DynamicProgrammingTest {
     assertEquals(_dynamicProgramming.uniquePaths(2,2),2);
     assertEquals(_dynamicProgramming.uniquePaths(3,2),3);
   }
+
+  @Test
+  public void uniquePathsWithObstaclesTest(){
+    int[][] obstacleGrid1 = {{}};
+    assertEquals(_dynamicProgramming.uniquePathsWithObstacles(obstacleGrid1),0);
+
+    int[][] obstacleGrid2 = {{0,0,0},{0,1,0},{0,0,0}};
+    assertEquals(_dynamicProgramming.uniquePathsWithObstacles(obstacleGrid2),2);
+
+    int[][] obstacleGrid3 = {{0,1,0},{0,1,0},{0,1,0}};
+    assertEquals(_dynamicProgramming.uniquePathsWithObstacles(obstacleGrid3),0);
+
+    int[][] obstacleGrid4 = {{0,0,0},{0,0,0},{0,0,0}};
+    assertEquals(_dynamicProgramming.uniquePathsWithObstacles(obstacleGrid4),6);
+  }
 }

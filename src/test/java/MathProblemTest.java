@@ -59,4 +59,32 @@ public class MathProblemTest {
     ArrayAsserts.assertArrayEquals(_mathProblem.generateMatrix(4),expected_res4);
     ArrayAsserts.assertArrayEquals(_mathProblem.generateMatrix(5),expected_res5);
   }
+
+  @Test
+  public void setZeroesTest(){
+    int[][] matrix1 = new int[][]{{1,1},{1,0}};
+    int[][] expected_res1 = new int[][]{{1,0},{0,0}};
+    _mathProblem.setZeroes(matrix1);
+    ArrayAsserts.assertArrayEquals(expected_res1,matrix1);
+
+    int[][] matrix2 = new int[][]{{0}};
+    int[][] expected_res2 = new int[][]{{0}};
+    _mathProblem.setZeroes(matrix2);
+    ArrayAsserts.assertArrayEquals(expected_res2,matrix2);
+
+    int[][] matrix3 = new int[][]{{1,0}};
+    int[][] expected_res3 = new int[][]{{0,0}};
+    _mathProblem.setZeroes(matrix3);
+    ArrayAsserts.assertArrayEquals(expected_res3,matrix3);
+
+    int[][] matrix4 = new int[][]{{1,1,1},{0,0,1},{1,1,1}};
+    int[][] expected_res4 = new int[][]{{0,0,1},{0,0,0},{0,0,1}};
+    _mathProblem.setZeroes(matrix4);
+    ArrayAsserts.assertArrayEquals(expected_res4,matrix4);
+
+    int[][] matrix5 = new int[][]{{1,1,1},{1,0,1},{1,1,1}};
+    int[][] expected_res5 = new int[][]{{1,0,1},{0,0,0},{1,0,1}};
+    _mathProblem.setZeroes(matrix5);
+    ArrayAsserts.assertArrayEquals(expected_res5,matrix5);
+  }
 }
