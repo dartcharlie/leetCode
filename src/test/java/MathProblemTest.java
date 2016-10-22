@@ -93,27 +93,35 @@ public class MathProblemTest {
     int[][] matrix1 = new int[][]{{1}};
     int[][] expected_res1 = new int[][]{{1}};
     _mathProblem.rotate(matrix1);
-    ArrayAsserts.assertArrayEquals(expected_res1,matrix1);
+    ArrayAsserts.assertArrayEquals(expected_res1, matrix1);
 
-    int[][] matrix2 = new int[][]{{1,2},{3,4}};
-    int[][] expected_res2 = new int[][]{{3,1},{4,2}};
+    int[][] matrix2 = new int[][]{{1, 2}, {3, 4}};
+    int[][] expected_res2 = new int[][]{{3, 1}, {4, 2}};
     _mathProblem.rotate(matrix2);
-    ArrayAsserts.assertArrayEquals(expected_res2,matrix2);
+    ArrayAsserts.assertArrayEquals(expected_res2, matrix2);
 
-    int[][] matrix3 = new int[][]{{1,2,3},{4,5,6},{7,8,9}};
-    int[][] expected_res3 = new int[][]{{7,4,1},{8,5,2},{9,6,3}};
+    int[][] matrix3 = new int[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    int[][] expected_res3 = new int[][]{{7, 4, 1}, {8, 5, 2}, {9, 6, 3}};
     _mathProblem.rotate(matrix3);
-    ArrayAsserts.assertArrayEquals(expected_res3,matrix3);
+    ArrayAsserts.assertArrayEquals(expected_res3, matrix3);
 
-    int[][] matrix4 = new int[][]{{1,2,3,4},{5,6,7,8},{9,10,11,12},{13,14,15,16}};
-    int[][] expected_res4 = new int[][]{{13,9,5,1},{14,10,6,2},{15,11,7,3},{16,12,8,4}};
+    int[][] matrix4 = new int[][]{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}};
+    int[][] expected_res4 = new int[][]{{13, 9, 5, 1}, {14, 10, 6, 2}, {15, 11, 7, 3}, {16, 12, 8, 4}};
     _mathProblem.rotate(matrix4);
-    ArrayAsserts.assertArrayEquals(expected_res4,matrix4);
+    ArrayAsserts.assertArrayEquals(expected_res4, matrix4);
 
 
-    int[][] matrix5 = new int[][]{{1,2,3,4,5},{6,7,8,9,10},{11,12,13,14,15},{16,17,18,19,20},{21,22,23,24,25}};
-    int[][] expected_res5 = new int[][]{{21,16,11,6,1},{22,17,12,7,2},{23,18,13,8,3},{24,19,14,9,4},{25,20,15,10,5}};
+    int[][] matrix5 = new int[][]{{1, 2, 3, 4, 5}, {6, 7, 8, 9, 10}, {11, 12, 13, 14, 15}, {16, 17, 18, 19, 20}, {21, 22, 23, 24, 25}};
+    int[][] expected_res5 = new int[][]{{21, 16, 11, 6, 1}, {22, 17, 12, 7, 2}, {23, 18, 13, 8, 3}, {24, 19, 14, 9, 4}, {25, 20, 15, 10, 5}};
     _mathProblem.rotate(matrix5);
-    ArrayAsserts.assertArrayEquals(expected_res5,matrix5);
+    ArrayAsserts.assertArrayEquals(expected_res5, matrix5);
+  }
+
+  @Test
+  public void multiplyTest() {
+    assertEquals(_mathProblem.multiply("1","2"),"2");
+    assertEquals(_mathProblem.multiply("12","0"),"0");
+    assertEquals(_mathProblem.multiply("12345","321"),"3962745");
+    assertEquals(_mathProblem.multiply("1928","234569091029"),"452249207503912");
   }
 }

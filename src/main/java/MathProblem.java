@@ -44,9 +44,9 @@ public class MathProblem {
         int swap = nums[nums[i]-1];
         nums[nums[i]-1] = nums[i];
         nums[i] = swap;
-        i--;
+      }else {
+        i++;
       }
-      i++;
     }
     i = 0;
     while(i<numLen && nums[i] == i+1 ){
@@ -183,15 +183,47 @@ public class MathProblem {
   public void rotate(int[][] matrix) {
     int n = matrix.length;
     int l = 0;
-    while(l<n/2){
-      for(int i=l;i<=n-2-l;++i){
-        int temp = matrix[n-1-i][l];
-        matrix[n-1-i][l] = matrix[n-1-l][n-1-i];
-        matrix[n-1-l][n-1-i] = matrix[i][n-1-l];
-        matrix[i][n-1-l] = matrix[l][i];
+    while (l < n / 2) {
+      for (int i = l; i <= n - 2 - l; ++i) {
+        int temp = matrix[n - 1 - i][l];
+        matrix[n - 1 - i][l] = matrix[n - 1 - l][n - 1 - i];
+        matrix[n - 1 - l][n - 1 - i] = matrix[i][n - 1 - l];
+        matrix[i][n - 1 - l] = matrix[l][i];
         matrix[l][i] = temp;
       }
       l++;
     }
+  }
+
+  /*
+   * Given two numbers represented as strings, return multiplication of the numbers as a string.
+   * The numbers can be arbitrarily large and are non-negative.
+   * You should NOT use internal library such as BigInteger.
+   * @param num1
+   * @param num2
+   * @return
+   */
+  public String multiply(String num1, String num2) {
+    int m = num1.length();
+    int n = num2.length();
+    int[] cal = new int[m+n];
+    for(int i=m-1;i>=0;i--){
+      int sum,p1,p2;
+      for(int j=n-1;j>=0;j--){
+        sum = (num1.charAt(i) - '0') * (num2.charAt(j)-'0');
+        p1 = i+j;
+        p2 = i+j+1;
+        sum += cal[p2];
+        cal[p1] += sum/10;
+        cal[p2] = sum%10;
+      }
+    }
+    StringBuilder sb = new StringBuilder();
+    for(int i=0;i<m+n;++i){
+      if(!(sb.length() == 0 && cal[i] == 0)) {
+        sb.append(cal[i]);
+      }
+    }
+    return sb.length() == 0?"0":sb.toString();
   }
 }
