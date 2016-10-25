@@ -124,10 +124,10 @@ public class DataStructureTest {
   public void zigzagLevelOrderTest() {
     String input1 = "3,9,20,#,#,15,7";
     DataStructure.TreeNode root1 = _treeCodec.deserialize(input1);
-    List<List<Integer>> expected1 = new ArrayList<List<Integer>>();
-    expected1.add(asList(new Integer[]{3}));
-    expected1.add(asList(new Integer[]{20, 9}));
-    expected1.add(asList(new Integer[]{15, 7}));
+    List<List<Integer>> expected1 = new ArrayList<>();
+    expected1.add(asList(3));
+    expected1.add(asList(20, 9));
+    expected1.add(asList(15, 7));
     Assert.assertEquals(_dataStructure.zigzagLevelOrder(root1), expected1);
 
     String input2 = "1,2,3,4,#,#,5";
@@ -534,5 +534,73 @@ public class DataStructureTest {
     List<DataStructure.Interval> expected_res5 = asList(
         new DataStructure.Interval(1, 5));
     Assert.assertEquals(_dataStructure.insert(intervals5,newInterval5), expected_res5);
+  }
+
+  @Test
+  public void groupAnagramsTest(){
+    List<List<String>> expected_res1 = new ArrayList<>();
+    expected_res1.add(Arrays.asList("eat", "tea","ate"));
+    expected_res1.add(Arrays.asList("bat"));
+    expected_res1.add(Arrays.asList("tan","nat"));
+    Assert.assertEquals(_dataStructure.groupAnagrams(new String[]{"eat", "tea", "tan", "ate", "nat", "bat"}),expected_res1);
+
+    List<List<String>> expected_res2 = new ArrayList<>();
+    Assert.assertEquals(_dataStructure.groupAnagrams(new String[]{}),expected_res2);
+
+    List<List<String>> expected_res3 = new ArrayList<>();
+    expected_res3.add(Arrays.asList("add","dad"));
+    expected_res3.add(Arrays.asList("abc", "acb","cba","cab"));
+
+    Assert.assertEquals(_dataStructure.groupAnagrams(new String[]{"abc", "acb","cba","cab","add","dad"}),expected_res3);
+
+  }
+
+  @Test
+  public void largestRectangleAreaTest(){
+    Assert.assertEquals(_dataStructure.largestRectangleArea(new int[]{5,2,3,4}),8);
+    Assert.assertEquals(_dataStructure.largestRectangleArea(new int[]{2,1,5,6,2,3}),10);
+    Assert.assertEquals(_dataStructure.largestRectangleArea(new int[]{3,3,3,3}),12);
+    Assert.assertEquals(_dataStructure.largestRectangleArea(new int[]{1,1,5}),5);
+    Assert.assertEquals(_dataStructure.largestRectangleArea(new int[]{0,1,2,3,4,5,6,7,8}),20);
+  }
+
+  @Test
+  public void maximalRectangleTest(){
+    char[][] matrix1 = new char[][]{
+        "10100".toCharArray(),
+        "10111".toCharArray(),
+        "11111".toCharArray(),
+        "10010".toCharArray()
+    };
+    Assert.assertEquals(_dataStructure.maximalRectangle(matrix1),6);
+  }
+
+  @Test
+  public void deleteDuplicatesTest(){
+    DataStructure.ListNode head1 = _dataStructure.createList(new int[]{1,2,3,3,4,4,5});
+    DataStructure.ListNode expect1 = _dataStructure.createList(new int[]{1,2,5});
+    DataStructure.ListNode actual1 = _dataStructure.deleteDuplicates(head1);
+    Assert.assertTrue(_dataStructure.listEqual(actual1,expect1));
+
+    DataStructure.ListNode head2 = _dataStructure.createList(new int[]{1,1,2,3,4});
+    DataStructure.ListNode expect2 = _dataStructure.createList(new int[]{2,3,4});
+    DataStructure.ListNode actual2 = _dataStructure.deleteDuplicates(head2);
+    Assert.assertTrue(_dataStructure.listEqual(actual2,expect2));
+
+    DataStructure.ListNode head3 = _dataStructure.createList(new int[]{1,2,3,3});
+    DataStructure.ListNode expect3 = _dataStructure.createList(new int[]{1,2});
+    DataStructure.ListNode actual3 = _dataStructure.deleteDuplicates(head3);
+    Assert.assertTrue(_dataStructure.listEqual(actual3,expect3));
+
+    DataStructure.ListNode head4 = _dataStructure.createList(new int[]{1,2,3});
+    DataStructure.ListNode expect4 = _dataStructure.createList(new int[]{1,2,3});
+    DataStructure.ListNode actual4 = _dataStructure.deleteDuplicates(head4);
+    Assert.assertTrue(_dataStructure.listEqual(actual4,expect4));
+
+    DataStructure.ListNode head5 = _dataStructure.createList(new int[]{1,1,2,2,2,2,3,3,3});
+    DataStructure.ListNode expect5 = _dataStructure.createList(new int[]{});
+    DataStructure.ListNode actual5 = _dataStructure.deleteDuplicates(head5);
+    Assert.assertTrue(_dataStructure.listEqual(actual5,expect5));
+
   }
 }

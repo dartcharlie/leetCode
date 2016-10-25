@@ -226,4 +226,35 @@ public class MathProblem {
     }
     return sb.length() == 0?"0":sb.toString();
   }
+
+  /**
+   * implement x power of n, binary search
+   * @param x
+   * @param n
+   * @return
+   */
+  public double myPow(double x, int n) {
+    if(n == 0 || x == 1){
+      return 1;
+    }
+    if(x == 0){
+      return 0;
+    }
+    if(n == 1){
+      return x;
+    }
+    if(n == -1){
+      return 1/x;
+    }
+    double squareRoot;
+    squareRoot = myPow(x, n / 2);
+    if (n % 2 == 0) {
+      return squareRoot * squareRoot;
+    } else {
+      if(n<0){
+        return squareRoot * squareRoot * 1/x;
+      }
+      return squareRoot * squareRoot*x;
+    }
+  }
 }

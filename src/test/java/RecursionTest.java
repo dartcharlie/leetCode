@@ -6,6 +6,7 @@ import org.testng.internal.junit.ArrayAsserts;
 import java.util.*;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 public class RecursionTest {
   Recursion _recursion;
@@ -169,9 +170,9 @@ public class RecursionTest {
   public void permuteUniqueTest(){
     List<List<Integer>> expected_res1 = new ArrayList<>();
 
-    expected_res1.add(Arrays.asList(new Integer[]{1,1,2}));
-    expected_res1.add(Arrays.asList(new Integer[]{1,2,1}));
-    expected_res1.add(Arrays.asList(new Integer[]{2,1,1}));
+    expected_res1.add(Arrays.asList(1,1,2));
+    expected_res1.add(Arrays.asList(1,2,1));
+    expected_res1.add(Arrays.asList(2,1,1));
     assertEquals(_recursion.permuteUnique(new int[]{1,1,2}),expected_res1);
 
     List<List<Integer>> expected_res2 = new ArrayList<>();
@@ -182,31 +183,59 @@ public class RecursionTest {
     assertEquals(_recursion.permuteUnique(new int[]{}),expected_res3);
 
     List<List<Integer>> expected_res4 = new ArrayList<>();
-    expected_res4.add(Arrays.asList(new Integer[]{1, 2, 3}));
-    expected_res4.add(Arrays.asList(new Integer[]{1, 3, 2}));
-    expected_res4.add(Arrays.asList(new Integer[]{2, 1, 3}));
-    expected_res4.add(Arrays.asList(new Integer[]{2, 3, 1}));
-    expected_res4.add(Arrays.asList(new Integer[]{3, 1, 2}));
-    expected_res4.add(Arrays.asList(new Integer[]{3, 2, 1}));
+    expected_res4.add(Arrays.asList(1, 2, 3));
+    expected_res4.add(Arrays.asList(1, 3, 2));
+    expected_res4.add(Arrays.asList(2, 1, 3));
+    expected_res4.add(Arrays.asList(2, 3, 1));
+    expected_res4.add(Arrays.asList(3, 1, 2));
+    expected_res4.add(Arrays.asList(3, 2, 1));
     assertEquals(_recursion.permuteUnique(new int[]{1,2,3}),expected_res4);
   }
 
   @Test
   public void solveNQueensTest(){
     List<List<String>> expected_res1 = new ArrayList<>();
-    expected_res1.add(Arrays.asList(new String[]{"Q"}));
+    expected_res1.add(Arrays.asList("Q"));
     assertEquals(_recursion.solveNQueens(1),expected_res1);
 
     List<List> expected_res2 = new ArrayList<>();
-    expected_res2.add(Arrays.asList(new String[]{".Q..","...Q","Q...","..Q."}));
-    expected_res2.add(Arrays.asList(new String[]{"..Q.","Q...","...Q",".Q.."}));
+    expected_res2.add(Arrays.asList(".Q..","...Q","Q...","..Q."));
+    expected_res2.add(Arrays.asList("..Q.","Q...","...Q",".Q.."));
     assertEquals(_recursion.solveNQueens(4),expected_res2);
 
     List<List> expected_res3 = new ArrayList<>();
-    expected_res3.add(Arrays.asList(new String[]{".Q....","...Q..",".....Q","Q.....","..Q...","....Q."}));
-    expected_res3.add(Arrays.asList(new String[]{"..Q...",".....Q",".Q....","....Q.","Q.....","...Q.."}));
-    expected_res3.add(Arrays.asList(new String[]{"...Q..","Q.....","....Q.",".Q....",".....Q","..Q..."}));
-    expected_res3.add(Arrays.asList(new String[]{"....Q.","..Q...","Q.....",".....Q","...Q..",".Q...."}));
+    expected_res3.add(Arrays.asList(".Q....","...Q..",".....Q","Q.....","..Q...","....Q."));
+    expected_res3.add(Arrays.asList("..Q...",".....Q",".Q....","....Q.","Q.....","...Q.."));
+    expected_res3.add(Arrays.asList("...Q..","Q.....","....Q.",".Q....",".....Q","..Q..."));
+    expected_res3.add(Arrays.asList("....Q.","..Q...","Q.....",".....Q","...Q..",".Q...."));
     assertEquals(_recursion.solveNQueens(6),expected_res3);
+  }
+
+  @Test
+  public void subsetsTest(){
+    List<List<Integer>> expected1 = new ArrayList<>();
+    Integer[][] expected_resArray1 = new Integer[][] {{},{1},{2},{3},{1,2},{1,3},{2,3},{1,2,3}};
+    for(int i=0;i<expected_resArray1.length;++i){
+      expected1.add(Arrays.asList(expected_resArray1[i]));
+    }
+    List<List<Integer>> actual1 = _recursion.subsets(new int[]{1,2,3});
+    assertEquals(actual1.size(),expected1.size());
+    assertTrue(actual1.containsAll(expected1));
+    assertTrue(expected1.containsAll(actual1));
+  }
+
+  @Test
+  public void existTest(){
+    char[][] board1 = new char[][]{
+        {'A','B','C','E'},
+        {'S','F','C','S'},
+        {'A','D','E','E'}};
+    assertTrue(_recursion.exist(board1,"ABCCED"));
+    assertTrue(_recursion.exist(board1,"SEE"));
+    assertTrue(_recursion.exist(board1,""));
+    assertFalse(_recursion.exist(board1,"ABCB"));
+
+    char[][] board2 = new char[][]{{'a','a'}};
+    assertFalse(_recursion.exist(board2,"aaa"));
   }
 }

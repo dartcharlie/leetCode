@@ -749,4 +749,91 @@ public class Recursion {
     return false;
   }
 
+  /**
+   * Given a set of distinct integers, nums, return all possible subsets.
+   * Note: The solution set must not contain duplicate subsets.
+   * @param nums
+   * @return
+   */
+  public List<List<Integer>> subsets(int[] nums) {
+    List<List<Integer>> ans = new ArrayList<>();
+    if(nums.length != 0){
+      subsetsRecursvie(nums,0,new ArrayList<>(),ans);
+    }
+    return ans;
+  }
+
+  private void subsetsRecursvie(int[] nums, int index, List<Integer> prefix, List<List<Integer>> res){
+    if(index == nums.length-1){
+      //not chose current num
+      List<Integer> subsetExclusive = new ArrayList<>(prefix);
+      //chose current num
+      List<Integer> subsetInclusive = new ArrayList<>(prefix);
+      subsetInclusive.add(nums[index]);
+      res.add(subsetExclusive);
+      res.add(subsetInclusive);
+      return;
+    }
+
+    subsetsRecursvie(nums,index+1,prefix,res);
+    prefix.add(nums[index]);
+    subsetsRecursvie(nums,index+1,prefix,res);
+    prefix.remove(prefix.size()-1);
+  }
+
+  /**
+   * Given a 2D board and a word, find if the word exists in the grid.
+   * The word can be constructed from letters of sequentially adjacent cell,
+   * where "adjacent" cells are those horizontally or vertically neighboring.
+   * The same letter cell may not be used more than once.
+   * board =
+   * [['A','B','C','E'],
+   *  ['S','F','C','S'],
+   *  ['A','D','E','E']]
+   *  word = "ABCCED", -> returns true,
+   *  word = "SEE", -> returns true,
+   *  word = "ABCB", -> returns false.
+   * @param board
+   * @param word
+   * @return
+   */
+  public boolean exist(char[][] board, String word) {
+    int m = board.length;
+    if(m == 0){
+      return false;
+    }
+    if(word.length() == 0){
+      return true;
+    }
+    int n = board[0].length;
+    boolean[][] visit = new boolean[m][n];
+    for(int i=0;i<m;++i){
+      for(int j=0;j<n;++j){
+        if(searchRecursive(board,visit,0,word,i,j)){
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  private boolean searchRecursive(char[][] board,boolean[][] visit, int index, String word, int x, int y){
+    if(board[x][y] == word.charAt(index)){
+      visit[x][y] = true;
+      if(index == word.length()-1){
+        return true;
+      }
+      int[] dirx = new int[]{-1,0,1,0};
+      int[] diry = new int[]{0,-1,0,1};
+      for(int i=0;i<=3;i++){
+        if(x+dirx[i]>=0 && x+dirx[i]<board.length && y+diry[i]>=0 && y+diry[i]<board[0].length && !visit[x+dirx[i]][y+diry[i]]){
+          if(searchRecursive(board,visit,index+1,word,x+dirx[i],y+diry[i])){
+            return true;
+          }
+        }
+      }
+      visit[x][y] = false;
+    }
+    return false;
+  }
 }

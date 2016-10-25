@@ -124,4 +124,15 @@ public class MathProblemTest {
     assertEquals(_mathProblem.multiply("12345","321"),"3962745");
     assertEquals(_mathProblem.multiply("1928","234569091029"),"452249207503912");
   }
+
+  @Test
+  public void myPowTest(){
+    assertEquals(_mathProblem.myPow(2.0,2),4.0);
+    assertEquals(_mathProblem.myPow(2.0,3),8.0);
+    assertEquals(_mathProblem.myPow(2.0,0),1.0);
+    assertEquals(_mathProblem.myPow(2.0,-2),0.25);
+    assertEquals(_mathProblem.myPow(2.0,-3),0.125);
+    assertEquals(_mathProblem.myPow(0.00001,2147483647),0.0);
+    assertEquals(_mathProblem.myPow(2,-2147483647),0.0);
+  }
 }

@@ -1077,5 +1077,156 @@ public class DataStructure {
     return ans;
   }
 
+  /**
+   * Group Anagrams Given an array of strings, group anagrams together.
+   *
+   * @param strs
+   * @return
+   */
+  public List<List<String>> groupAnagrams(String[] strs) {
+    List<List<String>> ans = new ArrayList<>();
+    Map<String,List<String>> anagramMap = new HashMap<>();
+    for(String str:strs){
+      char[] charArray = str.toCharArray();
+      Arrays.sort(charArray);
+      String sorted = String.valueOf(charArray);
+      if(!anagramMap.containsKey(sorted)){
+        List<String> anagrams = new ArrayList<>();
+        anagrams.add(str);
+        anagramMap.put(sorted,anagrams);
+      } else {
+        anagramMap.get(sorted).add(str);
+      }
+    }
+    for(List<String> vals:anagramMap.values()){
+      ans.add(vals);
+    }
+    return ans;
+  }
 
+  /**
+   * largest rectangle in histogram
+   * Given n non-negative integers representing the histogram's bar height where the width of each bar is 1,
+   * find the area of largest rectangle in the histogram.
+   * @param heights
+   * @return
+   */
+  public int largestRectangleArea(int[] heights) {
+    int len = heights.length;
+    if(len == 0){
+      return 0;
+    }
+    int largest = heights[0];
+    /* O(n^2) solution
+    for(int i=1;i<heights.length;++i){
+      int width = 0;
+      int min = heights[i];
+      for(int j=i;j>=0;j--) {
+        width++;
+        min = Math.min(min, heights[j]);
+        largest = Math.max(largest, min * width);
+      }
+    }
+    */
+    //O(n) solution using stack
+    //create a stack to hold index of heights
+    Stack<Integer> indexStack = new Stack<>();
+    int currMin,leftIndex;
+    int i=0;
+    while(i<len){
+      if(indexStack.isEmpty() || heights[i] > heights[indexStack.peek()]){
+        indexStack.push(i++);
+      } else {
+        currMin = heights[indexStack.pop()];
+        leftIndex = indexStack.isEmpty()? 0 : indexStack.peek()+1;
+        largest = Math.max(largest,(i-leftIndex)*currMin);
+      }
+    }
+    while(!indexStack.isEmpty()){
+      currMin = heights[indexStack.pop()];
+      leftIndex = indexStack.isEmpty()? 0 : indexStack.peek()+1;
+      largest = Math.max(largest,(len-leftIndex)*currMin);
+    }
+    return largest;
+  }
+
+  /**
+   * leetcode 85
+   * Given a 2D binary matrix filled with 0's and 1's, find the largest rectangle containing only 1's and return its area.
+   * Given following
+   * @param matrix
+   * 1 0 1 0 0
+   * 1 0 1 1 1
+   * 1 1 1 1 1
+   * 1 0 0 1 0
+   * @return 6
+   */
+  public int maximalRectangle(char[][] matrix) {
+    int m = matrix.length;
+    if(m == 0){
+      return 0;
+    }
+    int n = matrix[0].length;
+    int[][] heightMatrix = new int[m][n];
+    for(int i=0;i<n;i++){
+      heightMatrix[0][i] = matrix[0][i] == '0'? 0:1;
+    }
+    for(int i=1;i<m;i++){
+      for(int j=0;j<n;j++){
+        if(matrix[i][j] == '1') {
+          heightMatrix[i][j] = matrix[i - 1][j] == '0' ? 1:heightMatrix[i-1][j]+1;
+        }else{
+          heightMatrix[i][j] = 0;
+        }
+      }
+    }
+    int largest = 0;
+    for(int i=0;i<m;++i){
+      largest = Math.max(largest,largestRectangleArea(heightMatrix[i]));
+    }
+    return largest;
+  }
+
+  /**
+   * Given a sorted linked list, delete all nodes that have duplicate numbers,
+   * leaving only distinct numbers from the original list.
+   * Given 1->2->3->3->4->4->5, return 1->2->5.
+   * 1->1->2->3, return 2->3
+   * 1->2->3->3, return 1->2
+   * 1->2->3, return 1->2->3
+   * @param head
+   * @return
+   */
+  public ListNode deleteDuplicates(ListNode head) {
+    if(head == null || head.next == null){
+      return head;
+    }
+    ListNode dummy = new ListNode(0);
+    dummy.next = head;
+    ListNode senti = dummy;
+    ListNode back = head;
+    ListNode front = head.next;
+    boolean foundDup = false;
+    while(front != null){
+      if(front.val != back.val){
+        if(foundDup){
+          senti.next = front;
+          back = front;
+          front = front.next;
+          foundDup = false;
+        } else {
+          senti = back;
+          front = front.next;
+          back = back.next;
+        }
+      } else {
+        foundDup = true;
+        front = front.next;
+      }
+    }
+    if(foundDup){
+      senti.next=null;
+    }
+    return dummy.next;
+  }
 }

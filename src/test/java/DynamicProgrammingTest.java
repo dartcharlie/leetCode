@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 /**
  * Created by ZSong on 6/26/16.
@@ -148,5 +150,18 @@ public class DynamicProgrammingTest {
 
     int[][] obstacleGrid4 = {{0,0,0},{0,0,0},{0,0,0}};
     assertEquals(_dynamicProgramming.uniquePathsWithObstacles(obstacleGrid4),6);
+  }
+
+  @Test
+  public void isScrambleTest() {
+    assertTrue(_dynamicProgramming.isScramble("",""));
+    assertTrue(_dynamicProgramming.isScramble("great","rgeat"));
+    assertTrue(_dynamicProgramming.isScramble("great","rgtae"));
+    assertTrue(_dynamicProgramming.isScramble("great","tgare"));
+    assertTrue(_dynamicProgramming.isScramble("great","taerg"));
+    assertTrue(_dynamicProgramming.isScramble("aabb","abab"));
+    assertTrue(_dynamicProgramming.isScramble("baab","aabb"));
+    assertFalse(_dynamicProgramming.isScramble("abcd","bdac"));
+    assertFalse(_dynamicProgramming.isScramble("abcdefghijklmn","efghijklmncadb"));
   }
 }
