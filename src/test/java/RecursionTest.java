@@ -238,4 +238,28 @@ public class RecursionTest {
     char[][] board2 = new char[][]{{'a','a'}};
     assertFalse(_recursion.exist(board2,"aaa"));
   }
+
+  @Test
+  public void subsetsWithDupTest(){
+    List<List<Integer>> expected1 = new ArrayList<>();
+    Integer[][] expected_resArray1 = new Integer[][] {{},{1},{2},{1,2},{2,2},{1,2,2}};
+    for(int i=0;i<expected_resArray1.length;++i){
+      expected1.add(Arrays.asList(expected_resArray1[i]));
+    }
+    List<List<Integer>> actual1 = _recursion.subsetsWithDup(new int[]{1,2,2});
+    assertEquals(actual1.size(),expected1.size());
+    assertTrue(actual1.containsAll(expected1));
+    assertTrue(expected1.containsAll(actual1));
+
+
+    List<List<Integer>> expected2 = new ArrayList<>();
+    Integer[][] expected_resArray2 = new Integer[][] {{},{3},{3,3},{3,3,3}};
+    for(int i=0;i<expected_resArray2.length;++i){
+      expected2.add(Arrays.asList(expected_resArray2[i]));
+    }
+    List<List<Integer>> actual2 = _recursion.subsetsWithDup(new int[]{3,3,3});
+    assertEquals(actual2.size(),expected2.size());
+    assertTrue(actual2.containsAll(expected2));
+    assertTrue(expected2.containsAll(actual2));
+  }
 }

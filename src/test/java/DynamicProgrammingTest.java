@@ -164,4 +164,21 @@ public class DynamicProgrammingTest {
     assertFalse(_dynamicProgramming.isScramble("abcd","bdac"));
     assertFalse(_dynamicProgramming.isScramble("abcdefghijklmn","efghijklmncadb"));
   }
+
+  @Test
+  public void numTreesTest(){
+    assertEquals(_dynamicProgramming.numTrees(0),0);
+    assertEquals(_dynamicProgramming.numTrees(1),1);
+    assertEquals(_dynamicProgramming.numTrees(2),2);
+    assertEquals(_dynamicProgramming.numTrees(3),5);
+    assertEquals(_dynamicProgramming.numTrees(4),14);
+  }
+
+  @Test
+  public void isInterleaveTest(){
+    assertTrue(_dynamicProgramming.isInterleave("aabcc","dbbca","aadbbcbcac"));
+    assertTrue(_dynamicProgramming.isInterleave("aabcc","","aabcc"));
+    assertTrue(_dynamicProgramming.isInterleave("a","aabcc","aabcac"));
+    assertFalse(_dynamicProgramming.isInterleave("aabcc","dbbca","aadbbbaccc"));
+  }
 }

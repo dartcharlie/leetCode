@@ -836,4 +836,31 @@ public class Recursion {
     }
     return false;
   }
+
+  /**
+   * leetcode 90 Given a collection of integers that might contain duplicates, nums, return all possible subsets.
+   * @param nums
+   * @return
+   */
+  public List<List<Integer>> subsetsWithDup(int[] nums) {
+    List<List<Integer>> res = new ArrayList<>();
+    List<Integer> prefix = new ArrayList<>();
+    Arrays.sort(nums);
+    subsetsWithDupRecurisve(nums, 0, prefix, res);
+    return res;
+  }
+
+  private void subsetsWithDupRecurisve(int[] nums, int index, List<Integer> prefix, List<List<Integer>> res){
+    if(index <= nums.length){
+      List<Integer> prefixCopy = new ArrayList<>(prefix);
+      res.add(prefixCopy);
+    }
+
+    for(int i=index;i<=nums.length-1;++i){
+      if(i>index && nums[i] == nums[i-1]) continue;
+      prefix.add(nums[i]);
+      subsetsWithDupRecurisve(nums,i+1,prefix,res);
+      prefix.remove(prefix.size()-1);
+    }
+  }
 }

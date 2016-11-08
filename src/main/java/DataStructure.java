@@ -1229,4 +1229,69 @@ public class DataStructure {
     }
     return dummy.next;
   }
+
+  /**
+   * leetcode 95 unique binary search tree II
+   * bug in tree clone code
+   * @param n
+   * @return
+   */
+  public List<TreeNode> generateTrees(int n) {
+    Map<Integer,List<TreeNode>> rootMap = new HashMap<>();
+    List<TreeNode> baseList = new ArrayList<>();
+    if(n == 0){
+      return baseList;
+    }
+    baseList.add(null);
+    rootMap.put(0,baseList);
+
+    for(int i=1;i<=n;++i) {
+      rootMap.put(i,new ArrayList<>());
+      for(int j=1;j<=i;++j){
+        List<TreeNode> leftChildren = rootMap.get(j-1);
+        for(TreeNode leftChild:leftChildren) {
+          List<TreeNode> rightChildren = rootMap.get(i - j);
+          for(TreeNode rightChild:rightChildren){
+            TreeNode root = new TreeNode(j);
+            root.left = leftChild;
+            root.right = cloneTree(rightChild,j);
+            rootMap.get(i).add(root);
+          }
+        }
+      }
+    }
+    return rootMap.get(n);
+  }
+
+  private TreeNode cloneTree(TreeNode origin, int offset){
+    if(origin == null){
+      return null;
+    }
+    TreeNode clone = new TreeNode(origin.val+offset);
+    clone.left = cloneTree(origin.left,offset);
+    clone.right = cloneTree(origin.right,offset);
+    return clone;
+  }
+
+  /**
+   * leetcode 98 valid binary search tree
+   * @param root
+   * @return
+   */
+  public boolean isValidBST(TreeNode root) {
+    return isValidBST(root,(long)Integer.MAX_VALUE,(long)Integer.MIN_VALUE);
+  }
+
+  public boolean isValidBST(TreeNode root, long max, long min){
+    if(root == null){
+      return true;
+    }
+    if((long)root.val > max || (long)root.val < min){
+      return false;
+    }
+    boolean validLeft = root.left == null? true:((root.val > root.left.val) && isValidBST(root.left,(long)(root.val-1),min));
+    boolean validRight = root.right == null? true: ((root.val < root.right.val) && isValidBST(root.right,max,(long)(root.val+1)));
+
+    return validLeft&&validRight;
+  }
 }

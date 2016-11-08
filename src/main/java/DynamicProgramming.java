@@ -416,4 +416,79 @@ public class DynamicProgramming {
     }
     return false;
   }
+
+  /**
+   * Given n, how many structurally unique BST's (binary search trees) that store values 1...n?
+   * For example,given n=3, there are 5 structurally unique BST
+   *   1         3     3      2      1
+   *    \       /     /      / \      \
+   *     3     2     1      1   3      2
+   *    /     /       \                 \
+   *   2     1         2                 3
+   * Given @param n
+   * @return number of structurally unique BST's
+   */
+  public int numTrees(int n) {
+    if(n == 0){
+      return 0;
+    }
+    int[] preNum = new int[n+1];
+    return numTreesHelper(n,preNum);
+  }
+  private int numTreesHelper(int n, int[] preNum){
+    if(n == 0 || n == 1){
+      return n;
+    }
+    if(preNum[n] > 0){
+      return preNum[n];
+    }
+    int sum = 0;
+    sum += 2*numTreesHelper(n-1,preNum);
+    for(int i=2;i<=n-1;++i){
+      sum += numTreesHelper(i-1,preNum) * numTreesHelper(n-i,preNum);
+
+    }
+    preNum[n] = sum;
+    return sum;
+  }
+
+  /**
+   * Given s1, s2, s3, find whether s3 is formed by the interleaving of s1 and s2.
+   * Given s1 = "aabcc",s2 = "dbbca",
+   * When s3 = "aadbbcbcac", return true.
+   * When s3 = "aadbbbaccc", return false.
+   * @param s1
+   * @param s2
+   * @param s3
+   * @return
+   */
+  public boolean isInterleave(String s1, String s2, String s3) {
+    int s1Len = s1.length(), s2Len = s2.length(),s3Len = s3.length();
+    if(s3Len != s1Len + s2Len){
+      return false;
+    }
+    if(s1Len == 0){
+      return s2.equals(s3);
+    }
+    if(s2Len == 0){
+      return s1.equals(s3);
+    }
+    boolean[][] dp = new boolean[s1Len+1][s2Len+1];
+    dp[0][0] = true;
+    for(int i=1;i<=s1Len;++i){
+      dp[i][0] = dp[i-1][0] && (s1.charAt(i-1) == s3.charAt(i-1));
+    }
+    for(int i=1;i<=s2Len;++i){
+      dp[0][i] = dp[0][i-1] && (s2.charAt(i-1) == s3.charAt(i-1));
+    }
+    for(int i=1;i<=s1Len;++i){
+      for(int j=1;j<=s2Len;++j){
+        dp[i][j] = (dp[i-1][j] && s1.charAt(i-1) == s3.charAt(i+j-1))
+            || (dp[i][j-1] && s2.charAt(j-1) == s3.charAt(i+j-1));
+      }
+    }
+    return dp[s1Len][s2Len];
+  }
+
+
 }

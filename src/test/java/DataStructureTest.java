@@ -603,4 +603,50 @@ public class DataStructureTest {
     Assert.assertTrue(_dataStructure.listEqual(actual5,expect5));
 
   }
+
+  @Test
+  public void generateTreesTest(){
+    List<String> expected1 = new ArrayList<>();
+    expected1.add("1");
+    generateTreesTestHelper(_dataStructure.generateTrees(1),expected1);
+
+    List<String> expected2 = new ArrayList<>();
+    expected2.add("1,#,2");
+    expected2.add("2,1");
+    generateTreesTestHelper(_dataStructure.generateTrees(2),expected2);
+
+    List<String> expected3 = new ArrayList<>();
+    expected3.add("1,#,2,#,3");
+    expected3.add("1,#,3,2");
+    expected3.add("2,1,3");
+    expected3.add("3,1,#,#,2");
+    expected3.add("3,2,#,1");
+    generateTreesTestHelper(_dataStructure.generateTrees(3),expected3);
+
+    List<String> expected4 = new ArrayList<>();
+    expected4.add("1,#,2,#,3,#,4");
+    expected4.add("1,#,2,#,4,3");
+    expected4.add("1,#,3,2,4");
+    expected4.add("1,#,4,2,#,#,3");
+    expected4.add("1,#,4,3,#,2");
+    expected4.add("2,1,3,#,#,#,4");
+    expected4.add("2,1,4,#,#,3");
+    expected4.add("3,1,4,#,2");
+    expected4.add("3,2,4,1");
+    expected4.add("4,1,#,#,2,#,3");
+    expected4.add("4,1,#,#,3,2");
+    expected4.add("4,2,#,1,3");
+    expected4.add("4,3,#,1,#,#,2");
+    expected4.add("4,3,#,2,#,1");
+    generateTreesTestHelper(_dataStructure.generateTrees(4),expected4);
+  }
+
+  private void generateTreesTestHelper(List<DataStructure.TreeNode> actual, List<String> expected) {
+    int expectedListLen = expected.size();
+    Assert.assertEquals(actual.size(), expectedListLen);
+    for (int i = 0; i < expectedListLen; ++i) {
+      String deser = _treeCodec.serialize(actual.get(i));
+      Assert.assertEquals(deser,expected.get(i));
+    }
+  }
 }
