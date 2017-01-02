@@ -649,4 +649,50 @@ public class DataStructureTest {
       Assert.assertEquals(deser,expected.get(i));
     }
   }
+
+  @Test
+  public void isValidBSTTest(){
+    Assert.assertTrue(_dataStructure.isValidBST(_treeCodec.deserialize("4,1,#,#,2,#,3")));
+    Assert.assertFalse(_dataStructure.isValidBST(_treeCodec.deserialize("4,1,#,#,2,#,5")));
+  }
+
+  @Test
+  public void recoverTreeTest(){
+    DataStructure.TreeNode broke1 = _treeCodec.deserialize("0,1");
+    _dataStructure.recoverTree(broke1);
+    Assert.assertEquals(_treeCodec.serialize(broke1),"1,0");
+
+    DataStructure.TreeNode broke2 = _treeCodec.deserialize("6,3,5,2,9,7");
+    _dataStructure.recoverTree(broke2);
+    Assert.assertEquals(_treeCodec.serialize(broke2),"6,3,9,2,5,7");
+  }
+
+  @Test
+  public void buildTreeTest(){
+    DataStructure.TreeNode buildTree1 = _dataStructure.buildTree(new int[]{5,4,2,9,7,8},new int[]{2,4,9,5,7,8});
+    Assert.assertEquals(_treeCodec.serialize(buildTree1),"5,4,7,2,9,#,8");
+
+    DataStructure.TreeNode buildTree2 = _dataStructure.buildTree(new int[]{5},new int[]{5});
+    Assert.assertEquals(_treeCodec.serialize(buildTree2),"5");
+  }
+
+  @Test
+  public void InOrderIterativeTest(){
+    DataStructure.TreeNode simpleTree = _treeCodec.deserialize("1,2,3");
+    List<Integer> simpleInorder = _dataStructure.inOrderIterative(simpleTree);
+    Assert.assertEquals(simpleInorder,asList(2,1,3));
+    List<Integer> simplePreorder = _dataStructure.preOrderIterative(simpleTree);
+    Assert.assertEquals(simplePreorder,asList(1,2,3));
+    List<Integer> simplePostorder = _dataStructure.postOrderIterative(simpleTree);
+    Assert.assertEquals(simplePostorder,asList(2,3,1));
+
+    DataStructure.TreeNode TreeRoot1 = _treeCodec.deserialize("6,2,7,1,4,#,9,#,#,3,5,8");
+    List<Integer> inorder1 = _dataStructure.inOrderIterative(TreeRoot1);
+    List<Integer> preorder1 = _dataStructure.preOrderIterative(TreeRoot1);
+    List<Integer> postorder1 = _dataStructure.postOrderIterative(TreeRoot1);
+
+    Assert.assertEquals(inorder1,asList(1,2,3,4,5,6,7,8,9));
+    Assert.assertEquals(preorder1,asList(6,2,1,4,3,5,7,9,8));
+    Assert.assertEquals(postorder1,asList(1,3,5,4,2,8,9,7,6));
+  }
 }

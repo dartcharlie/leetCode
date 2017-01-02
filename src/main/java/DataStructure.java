@@ -1294,4 +1294,143 @@ public class DataStructure {
 
     return validLeft&&validRight;
   }
+
+  public void recoverTree(TreeNode root) {
+    if(root == null){
+      return;
+    }
+    TreeNode[] nodes = new TreeNode[3];
+    nodes[0] = new TreeNode(Integer.MIN_VALUE);
+    nodes[1] = null;
+    nodes[2] = null;
+    inorderTraverse(root,nodes);
+    if(nodes[1] != null && nodes[2] != null){
+      int temp = nodes[1].val;
+      nodes[1].val = nodes[2].val;
+      nodes[2].val = temp;
+    }
+  }
+
+  private void inorderTraverse(TreeNode root, TreeNode[] nodes){
+    if(root == null){
+      return;
+    }
+    inorderTraverse(root.left,nodes);
+    if(nodes[0].val >= root.val){
+      if(nodes[1] == null){
+        nodes[1] = nodes[0];
+        nodes[2] = root;
+      } else {
+        nodes[2] = root;
+      }
+    }
+    nodes[0] = root;
+    inorderTraverse(root.right,nodes);
+  }
+
+  public TreeNode buildTree(int[] preorder, int[] inorder) {
+    TreeNode root = buildTreeHelper(preorder,inorder,0,preorder.length-1,0,inorder.length-1);
+    return root;
+  }
+
+  private TreeNode buildTreeHelper(int[] preorder, int[] inorder, int preStart, int preEnd, int inStart, int inEnd){
+    if(preStart > preEnd){
+      return null;
+    }
+    if(preStart == preEnd){
+      return new TreeNode(preorder[preStart]);
+    }
+    TreeNode root = new TreeNode(preorder[preStart]);
+    int leftTreeLen = 0;
+    for(int i=inStart;i<=inEnd;++i){
+      if(inorder[i] == preorder[preStart]){
+        leftTreeLen = i-inStart;
+        root.left = buildTreeHelper(preorder,inorder,preStart+1,preStart+leftTreeLen,inStart,inStart+leftTreeLen-1);
+        break;
+      }
+    }
+    root.right = buildTreeHelper(preorder,inorder,preStart+leftTreeLen+1,preEnd,inStart+leftTreeLen+1,inEnd);
+    return root;
+  }
+
+  /**
+   * in order binary tree traversal in the iterative way
+   * @param root
+   * @return
+   */
+  public List<Integer> inOrderIterative(TreeNode root){
+    Stack<TreeNode> nodeStack = new Stack<>();
+    List<Integer> res = new ArrayList<>();
+    while(root != null || !nodeStack.isEmpty()) {
+      if(root != null){
+        nodeStack.push(root);
+        root = root.left;
+      } else {
+        root = nodeStack.pop();
+        res.add(root.val);
+        root = root.right;
+      }
+    }
+    return res;
+  }
+
+  /**
+   * pre order binary tree traversal in the iterative way
+   * @param root
+   * @return
+   */
+  public List<Integer> preOrderIterative(TreeNode root){
+    Stack<TreeNode> nodeStack = new Stack<>();
+    List<Integer> res = new ArrayList<>();
+    if(root != null){
+      nodeStack.push(root);
+      while(!nodeStack.isEmpty()){
+        root = nodeStack.pop();
+        res.add(root.val);
+        if(root.right != null){
+          nodeStack.push(root.right);
+        }
+        if(root.left != null){
+          nodeStack.push(root.left);
+        }
+      }
+    }
+    return res;
+  }
+
+  /**
+   * post order binary tree traversal using iterative approach
+   * the idea is to keep track of previous node and compare with current stack top node
+   * (1) if previous node is current node's parent, that means the traversal are still walking down the tree
+   * (2) if previous node is current node's left child, we should check current node's right child
+   * (3) otherwise, the traversal are returning from its right child, then we know it's the time to print out current node
+   * @param root
+   * @return
+   */
+  public List<Integer> postOrderIterative(TreeNode root){
+    Stack<TreeNode> nodeStack = new Stack<>();
+    List<Integer> res = new ArrayList<>();
+    TreeNode pre = null, curr;
+    nodeStack.push(root);
+    while(!nodeStack.isEmpty()){
+      curr = nodeStack.peek();
+      //traverse down the tree
+      if(pre == null || curr == pre.left || curr == pre.right){
+        if(curr.left != null){
+          nodeStack.push(curr.left);
+        } else if(curr.right != null){
+          nodeStack.push(curr.right);
+        }
+      } else if(pre == curr.left){
+        if(curr.right != null){
+          nodeStack.push(curr.right);
+        }
+      } else {
+        curr = nodeStack.pop();
+        res.add(curr.val);
+      }
+      pre = curr;
+    }
+    return res;
+  }
 }
