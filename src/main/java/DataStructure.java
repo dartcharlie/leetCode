@@ -1,4 +1,5 @@
 import java.util.*;
+import org.apache.commons.lang3.NotImplementedException;
 
 public class DataStructure {
   /**
@@ -1433,4 +1434,226 @@ public class DataStructure {
     }
     return res;
   }
+
+
+  /**
+   * leetcode 108 Convert sorted array to binary search tree
+   * Given an array where elements are sorted in ascending order, convert it to a height balanced BST.
+   * @param nums sorted integer array
+   * @return
+   */
+  public TreeNode sortedArrayToBST(int[] nums) {
+    return sortedArrayToBST(nums,0,nums.length-1);
+  }
+
+  private TreeNode sortedArrayToBST(int[] nums, int start, int end){
+    TreeNode node;
+    if(end == start-1){
+      node = null;
+    } else if(start == end){
+      node = new TreeNode(nums[start]);
+    } else {
+      int mid = (end - start+1)/2 + start;
+      node = new TreeNode(nums[mid]);
+      node.left = sortedArrayToBST(nums, start, mid-1);
+      node.right = sortedArrayToBST(nums, mid+1,end);
+    }
+    return node;
+
+  }
+
+  /**
+   * leetcode 423
+   * Given a non-empty string containing an out-of-order English representation of digits 0-9,
+   * output the digits in ascending order.
+   * @param s "owoztneoer"
+   * @return "012"
+   */
+  public String originalDigits(String s) {
+    Map<Character, Integer> charMap = new HashMap<>();
+    int[] counter = new int[10];
+    char currChar;
+    for(int i=0;i<s.length();++i){
+      currChar = s.charAt(i);
+      if(charMap.containsKey(currChar)){
+        charMap.put(currChar, charMap.get(currChar)+1);
+      } else {
+        charMap.put(currChar, 1);
+      }
+    }
+    //process character in order
+    int count;
+    if(charMap.containsKey('z')){
+      count = charMap.get('z');
+      counter[0] = count;
+      charMap.put('o', charMap.get('o') - count);
+    }
+
+    if(charMap.containsKey('x')){
+      count = charMap.get('x');
+      counter[6] = count;
+      charMap.put('s',charMap.get('s') - count);
+      charMap.put('i',charMap.get('i') - count);
+    }
+
+    if(charMap.containsKey('w')){
+      count = charMap.get('w');
+      counter[2] = count;
+      charMap.put('o',charMap.get('o') - count);
+    }
+
+    if(charMap.containsKey('u')){
+      count = charMap.get('u');
+      counter[4] = count;
+      charMap.put('f',charMap.get('f') - count);
+      charMap.put('o',charMap.get('o') - count);
+    }
+
+    if(charMap.containsKey('g')){
+      count = charMap.get('g');
+      counter[8] = count;
+      charMap.put('h',charMap.get('h') - count);
+      charMap.put('i',charMap.get('i') - count);
+    }
+
+    if(charMap.containsKey('f') && charMap.get('f') > 0){
+      count = charMap.get('f');
+      counter[5] = count;
+      charMap.put('i',charMap.get('i') - count);
+    }
+
+    if(charMap.containsKey('s') && charMap.get('s') > 0){
+      count = charMap.get('s');
+      counter[7] = count;
+    }
+
+    if(charMap.containsKey('h') && charMap.get('h') > 0){
+      count = charMap.get('h');
+      counter[3] = count;
+    }
+
+    if(charMap.containsKey('o') && charMap.get('o') > 0){
+      count = charMap.get('o');
+      counter[1] = count;
+    }
+
+    if(charMap.containsKey('i') && charMap.get('i') > 0){
+      count = charMap.get('i');
+      counter[9] = count;
+    }
+    StringBuilder sb = new StringBuilder();
+    for(int i=0;i<=9;++i){
+      for(int j=0;j<counter[i];++j){
+        sb.append(i);
+      }
+    }
+    return sb.toString();
+  }
+
+  /**
+   * build a balanced binary search tree recursively based on a sorted array
+   * @param start start index of the sub range
+   * @param end end index of the sub range
+   * @param input
+   * @return
+   */
+  public TreeNode buildBST(int start, int end, int[] input){
+    if(start > end){
+      return null;
+    }
+    int rootIndex = end - (end-start)/2;
+    TreeNode root = new TreeNode(input[rootIndex]);
+    root.left = buildBST(start,rootIndex-1,input);
+    root.right = buildBST(rootIndex+1,end,input);
+    return root;
+  }
+
+  /**
+   *
+   * @param words Given a non-empty list of words
+   * @param k return the k most frequent elements
+   * @return Your answer should be sorted by frequency from highest to lowest. If two words have the same frequency,
+   * then the word with the lower alphabetical order comes first.
+   * method 1 space complexity O(n), time complexity O(nlogn)
+   */
+  public List<String> topKFrequent1(String[] words, int k) {
+    Map<String, Integer> wordCountMap = new HashMap<>();
+    for(String word:words) {
+      if(wordCountMap.containsKey(word)){
+        wordCountMap.put(word,wordCountMap.get(word)+1);
+      } else {
+        wordCountMap.put(word, 1);
+      }
+    }
+    List<WordWithFrequency> wordList = new ArrayList<>();
+    for(Map.Entry<String,Integer> e:wordCountMap.entrySet()){
+      wordList.add(new WordWithFrequency(e.getKey(),e.getValue()));
+    }
+    Collections.sort(wordList,new WordFrequencyComparatorNature());
+    List<String> result = new ArrayList<>();
+    for(int i=0;i<k;++i){
+      result.add(wordList.get(i).word);
+    }
+    return result;
+  }
+
+  private class WordWithFrequency{
+    String word;
+    int frequency;
+    public WordWithFrequency(String w, int f){
+      word = w;
+      frequency = f;
+    }
+  }
+
+  private class WordFrequencyComparatorNature implements Comparator<WordWithFrequency> {
+    public int compare(WordWithFrequency w1, WordWithFrequency w2){
+      if(w1.frequency != w2.frequency) {
+        return -(w1.frequency - w2.frequency);
+      } else {
+        return w1.word.compareTo(w2.word);
+      }
+    }
+  }
+
+  private class WordFrequencyComparatorRevert implements Comparator<WordWithFrequency> {
+    public int compare(WordWithFrequency w1, WordWithFrequency w2){
+      if(w1.frequency != w2.frequency) {
+        return w1.frequency - w2.frequency;
+      } else {
+        return w2.word.compareTo(w1.word);
+      }
+    }
+  }
+
+  /**
+   * similar to method1, use fixed size k priority queue, instead of sort the whole list.
+   * @param words
+   * @param k
+   * @return
+   */
+  public List<String> topKFrequent2(String[] words, int k) {
+    Map<String, Integer> wordCountMap = new HashMap<>();
+    for(String word: words) {
+      if(wordCountMap.containsKey(word)){
+        wordCountMap.put(word,wordCountMap.get(word)+1);
+      } else {
+        wordCountMap.put(word,1);
+      }
+    }
+    PriorityQueue<WordWithFrequency> wordFrequencyQueue = new PriorityQueue<>(k+2,new WordFrequencyComparatorRevert());
+    for(Map.Entry<String,Integer> e:wordCountMap.entrySet()){
+      wordFrequencyQueue.offer(new WordWithFrequency(e.getKey(),e.getValue()));
+      if(wordFrequencyQueue.size() == k+1) {
+        wordFrequencyQueue.poll();
+      }
+    }
+    //need dequeue in a reverse order, since the comparator is reverted
+    LinkedList<String> result = new LinkedList<>();
+    while(!wordFrequencyQueue.isEmpty()){
+      result.push(wordFrequencyQueue.poll().word);
+    }
+    return result;
+  }
+
 }

@@ -208,4 +208,36 @@ public class Greedy {
     }
     return ans;
   }
+
+
+  /**
+   * leetcode 621. Task Scheduler
+   *
+   * @param tasks capital letters A to Z to represent different task.
+   *              Tasks could be done without original order. Each task could be done in one interval.
+   *              For each interval, CPU could finish one task or just be idle.
+   * @param n  there is a non-negative cooling interval n that means between two same tasks,
+   *           there must be at least n intervals that CPU are doing different tasks or just be idle.
+   * @return the least number of intervals the CPU will take to finish all the given tasks
+   */
+  public int leastInterval(char[] tasks, int n) {
+    int taskMaxCount = 0;
+    int numOfTaskWithMaxCount = 0;
+    if(tasks.length == 0) {
+      return 0;
+    }
+    int[] taskCount = new int[26];
+    int index = -1;
+    for(char c:tasks) {
+      index = c - 'A';
+      taskCount[index]++;
+      if(taskCount[index] > taskMaxCount) {
+        taskMaxCount = taskCount[index];
+        numOfTaskWithMaxCount = 1;
+      } else if(taskCount[index] == taskMaxCount) {
+        numOfTaskWithMaxCount++;
+      }
+    }
+    return (taskMaxCount - 1)*(n+1) + numOfTaskWithMaxCount;
+  }
 }

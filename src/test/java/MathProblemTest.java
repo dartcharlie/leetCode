@@ -135,4 +135,15 @@ public class MathProblemTest {
     assertEquals(_mathProblem.myPow(0.00001,2147483647),0.0);
     assertEquals(_mathProblem.myPow(2,-2147483647),0.0);
   }
+
+  @Test
+  public void find132patternTest() {
+    assertEquals(_mathProblem.find132pattern(new int[]{}), false);
+    assertEquals(_mathProblem.find132pattern(new int[]{1,2,3,4,5}), false);
+    assertEquals(_mathProblem.find132pattern(new int[]{1,1,1,1}), false);
+    assertEquals(_mathProblem.find132pattern(new int[]{3, 1, 4, 2}), true);
+    assertEquals(_mathProblem.find132pattern(new int[]{-1, 3, 2, 0}), true);
+    assertEquals(_mathProblem.find132pattern(new int[]{0, 1, -1, 0, 1}), false);
+    assertEquals(_mathProblem.find132pattern(new int[]{3, 5, 0, 3, 4}), true); // 3, 5, 4
+  }
 }

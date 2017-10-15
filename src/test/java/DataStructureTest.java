@@ -695,4 +695,63 @@ public class DataStructureTest {
     Assert.assertEquals(preorder1,asList(6,2,1,4,3,5,7,9,8));
     Assert.assertEquals(postorder1,asList(1,3,5,4,2,8,9,7,6));
   }
+
+  @Test
+  public void sortedArrayToBSTTest() {
+    DataStructure.TreeNode bst1 = _dataStructure.sortedArrayToBST(new int[]{1,2,3,4,5,6,7});
+    Assert.assertEquals(_treeCodec.serialize(bst1),"4,2,6,1,3,5,7");
+
+    DataStructure.TreeNode bst2 = _dataStructure.sortedArrayToBST(new int[]{1,2,3,4,5,6});
+    Assert.assertEquals(_treeCodec.serialize(bst2),"4,2,6,1,3,5");
+
+    DataStructure.TreeNode bst3 = _dataStructure.sortedArrayToBST(new int[]{1,2,3,4,5});
+    Assert.assertEquals(_treeCodec.serialize(bst3),"3,2,5,1,#,4");
+  }
+
+  @Test
+  public void originalDigitsTest() {
+    Assert.assertEquals(_dataStructure.originalDigits("owoztneoer"),"012");
+    Assert.assertEquals(_dataStructure.originalDigits("fviefuro"),"45");
+    Assert.assertEquals(_dataStructure.originalDigits("xis"),"6");
+    Assert.assertEquals(_dataStructure.originalDigits("htere"),"3");
+    Assert.assertEquals(_dataStructure.originalDigits("nein"),"9");
+  }
+
+  @Test
+  public void buildBSTTest() {
+    DataStructure.TreeNode bstRoot1 = _dataStructure.buildBST(0,0,new int[]{1});
+    Assert.assertEquals(bstRoot1.val,1);
+    Assert.assertEquals(bstRoot1.left,null);
+    Assert.assertEquals(bstRoot1.right,null);
+
+    DataStructure.TreeNode bstRoot2 = _dataStructure.buildBST(0,1,new int[]{1,2});
+    Assert.assertEquals(bstRoot2.val,2);
+    Assert.assertEquals(bstRoot2.left.val,1);
+    Assert.assertEquals(bstRoot2.right,null);
+
+    DataStructure.TreeNode bstRoot3 = _dataStructure.buildBST(0,2,new int[]{1,2,3});
+    Assert.assertEquals(bstRoot3.val,2);
+    Assert.assertEquals(bstRoot3.left.val,1);
+    Assert.assertEquals(bstRoot3.right.val,3);
+
+    DataStructure.TreeNode bstRoot4 = _dataStructure.buildBST(0,7,new int[]{2,5,7,8,9,10,13,15});
+    Assert.assertEquals(bstRoot4.val,9);
+    Assert.assertEquals(bstRoot4.left.left.left.val,2);
+    Assert.assertEquals(bstRoot4.right.right.val,15);
+  }
+
+  @Test
+  public void topKFrequent1Test() {
+    Assert.assertEquals(_dataStructure.topKFrequent1(new String[]{"a"},1),asList("a"));
+    Assert.assertEquals(_dataStructure.topKFrequent1(new String[]{"love", "i", "leetcode", "love", "i", "coding"},2),asList("i", "love"));
+    Assert.assertEquals(_dataStructure.topKFrequent1(new String[]{"the", "day", "is", "sunny", "the", "the", "the", "sunny", "is", "is"},4),asList("the", "is", "sunny", "day"));
+  }
+
+  @Test
+  public void topKFrequent2Test() {
+    Assert.assertEquals(_dataStructure.topKFrequent2(new String[]{"a"},1),asList("a"));
+    Assert.assertEquals(_dataStructure.topKFrequent2(new String[]{"love", "i", "leetcode", "love", "i", "coding"},2),asList("i", "love"));
+    Assert.assertEquals(_dataStructure.topKFrequent2(new String[]{"the", "day", "is", "sunny", "the", "the", "the", "sunny", "is", "is"},4),asList("the", "is", "sunny", "day"));
+
+  }
 }

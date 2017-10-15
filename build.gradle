@@ -22,6 +22,7 @@ repositories {
 dependencies {
     // Use TestNG framework, also requires calling test.useTestNG() below
     testCompile 'org.testng:testng:6.9.10'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'
 }
 
 test.useTestNG()

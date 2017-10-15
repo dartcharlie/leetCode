@@ -181,4 +181,15 @@ public class DynamicProgrammingTest {
     assertTrue(_dynamicProgramming.isInterleave("a","aabcc","aabcac"));
     assertFalse(_dynamicProgramming.isInterleave("aabcc","dbbca","aadbbbaccc"));
   }
+
+  @Test
+  public void minCutTest(){
+    assertEquals(_dynamicProgramming.minCut("abab"),1);
+    assertEquals(_dynamicProgramming.minCut("abbabab"),1);
+    assertEquals(_dynamicProgramming.minCut("aaaaaa"),0);
+    assertEquals(_dynamicProgramming.minCut("abbba"),0);
+    assertEquals(_dynamicProgramming.minCut("abcd"),3);
+    assertEquals(_dynamicProgramming.minCut("eegiicgaeadbcfacfhifdbiehbgejcaeggcgbahfcajfhjjdgj"),42);
+
+  }
 }

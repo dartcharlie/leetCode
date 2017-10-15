@@ -490,5 +490,94 @@ public class DynamicProgramming {
     return dp[s1Len][s2Len];
   }
 
+  /**
+   * leetcode 132 Palindrome Partitioning II
+   * Given a string s, partition s such that every substring of the partition is a palindrome.
+   * Return the minimum cuts needed for a palindrome partitioning of s.
+   * For example, given s = "aab",
+   * Return 1 since the palindrome partitioning ["aa","b"] could be produced using 1 cut.
+   * @param s input string
+   * @return
+   */
+  public int minCut(String s) {
+    boolean[][] matrix = palindromeMatrix(s);
+    int sLen = s.length();
+    int[] dp = new int[sLen+1];
+    dp[0] = -1;
+    for(int i=1;i<=sLen;++i){
+      dp[i] = i;
+      for(int j=0;j<i;++j){
+        if(matrix[j][i-1]){
+          dp[i] = Math.min(dp[i],dp[j]+1);
+        }
+      }
+    }
+    return dp[sLen];
+  }
 
+  /**
+   * recursive solution, will have time out limitation exceed error
+   * @param s
+   * @param memory
+   * @return
+   */
+  private int minCut(String s, Map<String, Integer> memory){
+    int sLen = s.length();
+    int minimum = Integer.MAX_VALUE;
+    if(sLen == 0 || sLen == 1){
+      minimum = 0;
+    } else if(memory.containsKey(s)){
+      minimum = memory.get(s);
+    } else if(isPalindrome(s)) {
+      minimum = 0;
+      memory.put(s,0);
+    } else {
+      int currMin;
+      for(int i=1;i<sLen;++i){
+        currMin = minCut(s.substring(0,i),memory) + minCut(s.substring(i)) + 1;
+        if(currMin < minimum){
+          minimum = currMin;
+        }
+      }
+      memory.put(s,minimum);
+    }
+    return minimum;
+  }
+
+  private boolean isPalindrome(String s){
+    int startIndex = 0;
+    int endIndex = s.length()-1;
+    while(startIndex<endIndex){
+      if(s.charAt(startIndex) != s.charAt(endIndex)){
+        return false;
+      }
+      startIndex++;
+      endIndex--;
+    }
+    return true;
+  }
+
+  /**
+   * given a string s, palindromeMatrix[i][j] represents whether s.substring(i,j+1) is a palindrome
+   * @param s
+   * @return
+   */
+  private boolean[][] palindromeMatrix(String s){
+    int sLen = s.length();
+    boolean[][] matrix = new boolean[sLen][sLen];
+    for(int i=0;i<sLen;++i){
+      //each character is a palindrome
+      matrix[i][i] = true;
+    }
+    for(int i=0;i<sLen-1;++i){
+      //if adjacent characters are the same, then s.substring(i,i+2) is a palindrome
+      matrix[i][i+1] = s.charAt(i) == s.charAt(i+1);
+    }
+    for(int length=2;length<sLen;length++){
+      for(int startPos=0;startPos+length<sLen;++startPos){
+        matrix[startPos][startPos+length] = matrix[startPos+1][startPos+length-1] && (s.charAt(startPos) == s.charAt(startPos+length));
+      }
+    }
+    return matrix;
+  }
 }

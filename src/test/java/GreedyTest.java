@@ -112,4 +112,12 @@ public class GreedyTest {
     ArrayAsserts.assertArrayEquals(_greedy.maxNumber(new int[]{6, 7}, new int[] {6, 0, 4}, 5), new int[]{6, 7, 6, 0, 4});
     ArrayAsserts.assertArrayEquals(_greedy.maxNumber(new int[]{3, 9}, new int[] {8, 9}, 3), new int[]{9,8,9});
   }
+
+  @Test
+  public void leastIntervalTest() {
+    assertEquals(_greedy.leastInterval(new char[]{},100),0);
+    assertEquals(_greedy.leastInterval(new char[]{'A','A','A','B','B','B'},2),8);
+    assertEquals(_greedy.leastInterval(new char[]{'A','A','B','B','C','C'},2),6);
+    assertEquals(_greedy.leastInterval(new char[]{'A','B','C','D','D','C'},4),7);
+  }
 }

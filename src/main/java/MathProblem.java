@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 /**
  * Created by ZSong on 7/6/16.
  */
@@ -255,6 +257,52 @@ public class MathProblem {
         return squareRoot * squareRoot * 1/x;
       }
       return squareRoot * squareRoot*x;
+    }
+  }
+
+  /**
+   * Given a sequence  nums of n integers a1, a2, ..., an, a 132 pattern is a subsequence ai, aj, ak such that i < j < k and ai < ak < aj.
+   * takes a list of n numbers (@param nums) as input and
+   * @return  whether there is a 132 pattern in the list.
+   */
+  public boolean find132pattern(int[] nums) {
+    Stack<Pair> iStack = new Stack<>();
+    if(nums.length < 3) {
+      return false;
+    }
+    for(int num:nums){
+      if(iStack.empty()){
+        iStack.push(new Pair(num,num));
+      } else {
+        if(num <= iStack.peek().min) {
+          iStack.push(new Pair(num, num));
+        } else {
+          if(num < iStack.peek().max) {
+            return true;
+          } else {
+            Pair last = iStack.pop();
+            last.max = num;
+            while(!iStack.empty() && num > iStack.peek().min) {
+              if(num < iStack.peek().max) {
+                return true;
+              } else {
+                iStack.pop();
+              }
+            }
+            iStack.push(last);
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  private class Pair{
+    int min;
+    int max;
+    public Pair(int mi, int ma){
+      min = mi;
+      max = ma;
     }
   }
 }
