@@ -234,4 +234,52 @@ public class SearchAndSort {
     }
     return ret;
   }
+
+  private class NetworkNode{
+    int nodeIndex;
+    int delay;
+    NetworkNode(int index, int del){
+      this.nodeIndex = index;
+      this.delay = del;
+    }
+  }
+
+  /**
+   * leetcode 743
+   * @param times
+   * @param N
+   * @param K
+   * @return
+   */
+  public int networkDelayTime(int[][] times, int N, int K) {
+    int maxTime = -1;
+    PriorityQueue<NetworkNode> minDelayQueue = new PriorityQueue<>(N);
+    NetworkNode[] nodes = new NetworkNode[N+1];
+    for(int i=1;i<=N;++i){
+      NetworkNode myNode;
+      if(i == K){
+        myNode = new NetworkNode(i,0);
+      } else {
+        myNode = new NetworkNode(i, Integer.MAX_VALUE);
+      }
+      nodes[i] = myNode;
+      minDelayQueue.offer(myNode);
+    }
+    while(!minDelayQueue.isEmpty() || minDelayQueue.peek().delay < Integer.MAX_VALUE){
+      NetworkNode currNode = minDelayQueue.poll();
+      maxTime = Math.max(maxTime,currNode.delay);
+      int currIndex = currNode.nodeIndex;
+      for(int i=0;i<times[currIndex].length;++i){
+        if(currNode.delay + times[currIndex][i] < nodes[i].delay){
+          nodes[i].delay = currNode.delay + times[currIndex][i];
+          minDelayQueue.remove(nodes[i]);
+          minDelayQueue.offer(nodes[i]);
+        }
+      }
+    }
+    if(!minDelayQueue.isEmpty()){
+      return -1;
+    }
+    return maxTime;
+  }
 }

@@ -1656,4 +1656,64 @@ public class DataStructure {
     return result;
   }
 
+  private class Employee {
+    // It's the unique id of each node;
+    // unique id of this employee
+    public int id;
+    // the importance value of this employee
+    public int importance;
+    // the id of direct subordinates
+    public List<Integer> subordinates;
+  }
+
+  public int getImportance(List<Employee> employees, int id) {
+    Map<Integer, Employee> employeeMap = new HashMap<>();
+    for(Employee employee:employees) {
+      employeeMap.put(employee.id, employee);
+    }
+    LinkedList<Integer> employeeIds = new LinkedList<>();
+    employeeIds.add(id);
+    int importanceSum = 0;
+    while(!employeeIds.isEmpty()) {
+      Employee employee = employeeMap.get(employeeIds.poll());
+      importanceSum += employee.importance;
+      employeeIds.addAll(employee.subordinates);
+    }
+    return importanceSum;
+  }
+
+  public int[] dailyTemperatures(int[] temperatures) {
+    int arrayLength = temperatures.length;
+    int[] result = new int[arrayLength];
+    Stack<Integer> tempStack = new Stack<>();
+    for(int i=0;i<arrayLength;++i){
+      int currPop = 0;
+      while(tempStack.size() != 0){
+        if(temperatures[tempStack.peek()] >= temperatures[i]){
+          result[tempStack.peek()] += currPop;
+          tempStack.push(i);
+        } else {
+          result[tempStack.pop()]++;
+          currPop++;
+        }
+      }
+      if(tempStack.size() == 0){
+        tempStack.push(i);
+      }
+    }
+    return result;
+  }
+
+  public int deleteAndEarn(int[] nums) {
+    int[] points = new int[10001];
+    for(int n:nums){
+      points[n] += n;
+    }
+    int[] res = new int[10001];
+    res[1] = points[1];
+    for(int i=2;i<10001;++i){
+      res[i] = Math.max(res[i-2] + points[i], res[i-1]);
+    }
+    return res[10000];
+  }
 }

@@ -580,4 +580,61 @@ public class DynamicProgramming {
     }
     return matrix;
   }
+
+  /**
+   * given an array of integers prices, for which the i-th element is the price of a given stock on day i; and a non-negative integer fee representing a transaction fee
+   * @param prices
+   * @param fee
+   * @return the maximum profit you can make
+   * You may complete as many transactions as you like, but you need to pay the transaction fee for each transaction.
+   * You may not buy more than 1 share of a stock at a time (ie. you must sell the stock share before you buy again.)
+   */
+  public int maxProfit(int[] prices, int fee) {
+    int arrayLen = prices.length;
+    int[] buy = new int[arrayLen];
+    int[] hold = new int[arrayLen];
+    int[] sell = new int[arrayLen];
+    int[] skip = new int[arrayLen];
+
+    buy[0] = -prices[0];
+    hold[0] = Integer.MIN_VALUE;
+    sell[0] = Integer.MIN_VALUE;
+    skip[0] = 0;
+    for(int i=1;i<arrayLen;++i){
+      buy[i] = Math.max(sell[i-1],skip[i-1]) - prices[i];
+      hold[i] = Math.max(buy[i-1],hold[i-1]);
+      sell[i] = Math.max(buy[i-1],hold[i-1]) - fee + prices[i];
+      skip[i] = Math.max(sell[i-1],skip[i-1]);
+    }
+    return Math.max(sell[arrayLen-1],skip[arrayLen-1]);
+  }
+
+  /**
+   * Given two integer arrays A and B
+   * @param A
+   * @param B
+   * @return the maximum length of an subarray that appears in both arrays.
+   * a similar problem is find longest common string between 2 strings
+   */
+  public int findLength(int[] A, int[] B) {
+    int aLen = A.length;
+    int bLen = B.length;
+    int[][] matchMap = new int[aLen+1][bLen+1];
+    for(int i=0; i<=aLen; ++i){
+      matchMap[i][0] = 0;
+    }
+    for(int i=1;i<=bLen;++i) {
+      matchMap[0][i] = 0;
+    }
+    int maxLen = 0;
+    for(int i=1;i<=aLen;++i) {
+      for(int j=1;j<=bLen;++j) {
+        if(A[i-1] == B[j-1]){
+          matchMap[i][j] = matchMap[i-1][j-1] +1;
+          maxLen = Math.max(maxLen,matchMap[i][j]);
+        }
+      }
+    }
+    return maxLen;
+  }
 }

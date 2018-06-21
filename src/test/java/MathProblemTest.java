@@ -146,4 +146,11 @@ public class MathProblemTest {
     assertEquals(_mathProblem.find132pattern(new int[]{0, 1, -1, 0, 1}), false);
     assertEquals(_mathProblem.find132pattern(new int[]{3, 5, 0, 3, 4}), true); // 3, 5, 4
   }
+
+  @Test
+  public void calculateTest() {
+    assertEquals(_mathProblem.calculate(" 3+5 / 2 "), 5);
+    assertEquals(_mathProblem.calculate("3+2*2"), 7);
+    assertEquals(_mathProblem.calculate("3000/1/2/3/4/5"), 25);
+  }
 }

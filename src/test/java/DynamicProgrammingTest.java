@@ -190,6 +190,23 @@ public class DynamicProgrammingTest {
     assertEquals(_dynamicProgramming.minCut("abbba"),0);
     assertEquals(_dynamicProgramming.minCut("abcd"),3);
     assertEquals(_dynamicProgramming.minCut("eegiicgaeadbcfacfhifdbiehbgejcaeggcgbahfcajfhjjdgj"),42);
+  }
 
+  @Test
+  public void maxProfitTest() {
+    int[] prices1 = new int[] {1};
+    assertEquals(_dynamicProgramming.maxProfit(prices1,1),0);
+    int[] prices2 = new int[] {1,3,2,8,4,9};
+    assertEquals(_dynamicProgramming.maxProfit(prices2,2),8);
+  }
+
+  @Test
+  public void findLengthTest(){
+    int[] A1 = new int[] {1,2,3,2,1};
+    int[] B1 = new int[] {3,2,1,4,7};
+    assertEquals(_dynamicProgramming.findLength(A1,B1),3);
+    int[] A2 = new int[] {2};
+    int[] B2 = new int[] {3};
+    assertEquals(_dynamicProgramming.findLength(A2,B2),0);
   }
 }

@@ -176,4 +176,14 @@ public class DirectedGraph<T> {
 
   }
 
+  public <T extends Comparable<T>> T maxVertex(T[] vertices){
+    T ret = vertices[0];
+    for(int i=1;i<vertices.length;++i){
+      if(ret.compareTo(vertices[i])< 0) {
+        ret = vertices[i];
+      }
+    }
+    return ret;
+  }
+
 }
