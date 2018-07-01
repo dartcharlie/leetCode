@@ -1716,4 +1716,79 @@ public class DataStructure {
     }
     return res[10000];
   }
+
+  public double mincostToHireWorkers(int[] quality, int[] wage, int K) {
+    ArrayList<WageQualityRatio> wqa = new ArrayList<>();
+    for(int i=0;i<quality.length;++i) {
+      wqa.add(new WageQualityRatio((double)wage[i]/quality[i], quality[i]));
+    }
+    wqa.sort(new WageQualityRatioComparator());
+    PriorityQueue<WageQualityRatio> wqpq = new PriorityQueue<>(K+1, new WageComparator());
+    double minPaidGroup = 0.0;
+    for(int i=0;i<K;++i) {
+      minPaidGroup += wqa.get(i).quality * wqa.get(K-1).wqRatio;
+      wqpq.add(wqa.get(i));
+    }
+    for(int i=K;i<quality.length;++i) {
+      double currPaidGroup = 0.0;
+      wqpq.add(wqa.get(i));
+      wqpq.poll();
+      for(WageQualityRatio wqr:wqpq) {
+        currPaidGroup += wqr.quality * wqa.get(i).wqRatio;
+      }
+      minPaidGroup = Math.min(minPaidGroup, currPaidGroup);
+    }
+    return minPaidGroup;
+  }
+
+  private class WageQualityRatio {
+    Double wqRatio;
+    Integer quality;
+    public WageQualityRatio(double ratio, int q) {
+      wqRatio = ratio;
+      quality = q;
+    }
+  }
+
+  private class WageQualityRatioComparator implements Comparator<WageQualityRatio> {
+    public int compare(WageQualityRatio wqr1, WageQualityRatio wqr2) {
+      return wqr1.wqRatio.compareTo(wqr2.wqRatio);
+    }
+  }
+
+  private class WageComparator implements Comparator<WageQualityRatio> {
+    public int compare(WageQualityRatio wqr1, WageQualityRatio wqr2) {
+      return -wqr1.quality.compareTo(wqr2.quality);
+    }
+  }
+
+  public int scoreOfParentheses(String S) {
+    Stack<Character> stack = new Stack<>();
+    Stack<Integer> intermediate = new Stack<>();
+    int score = 0;
+    for(int i=0;i<S.length();++i) {
+      if(S.charAt(i) == '(') {
+        stack.push('(');
+      } else {
+        if(stack.peek() == '(') {
+          stack.pop();
+          stack.push('|');
+          intermediate.push(1);
+        } else {
+          int sum = 0;
+          while(stack.peek() == '|') {
+            sum += intermediate.pop();
+            stack.pop();
+          }
+          stack.pop();
+          stack.push('|');
+          intermediate.push(2*sum);
+        }
+      }
+    }
+    for(int i:intermediate) {
+      score += i;
+    }
+    return score;
+  }
 }

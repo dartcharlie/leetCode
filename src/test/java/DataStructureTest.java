@@ -2,6 +2,8 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import org.testng.Assert;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -753,5 +755,23 @@ public class DataStructureTest {
     Assert.assertEquals(_dataStructure.topKFrequent2(new String[]{"love", "i", "leetcode", "love", "i", "coding"},2),asList("i", "love"));
     Assert.assertEquals(_dataStructure.topKFrequent2(new String[]{"the", "day", "is", "sunny", "the", "the", "the", "sunny", "is", "is"},4),asList("the", "is", "sunny", "day"));
 
+  }
+
+  @Test
+  public void mincostToHireWorkersTest() {
+
+    Assert.assertEquals(Math.round(_dataStructure.mincostToHireWorkers(new int[] {10,20,5}, new int[] {70,50,30}, 2) * 100000d)/100000d, 105.00000);
+    Assert.assertEquals(Math.round(_dataStructure.mincostToHireWorkers(new int[] {3,1,10,10,1}, new int[] {4,8,2,2,7}, 3)* 100000d)/ 100000d, 30.66667);
+    Assert.assertEquals(Math.round(_dataStructure.mincostToHireWorkers(new int[] {25,68,35,62,52,57,35,83,40,51}, new int[] {147,97,251,129,438,443,120,366,362,343}, 6)* 100000d)/ 100000d, 1979.31429);
+  }
+
+  @Test
+  public void scoreOfParenthesesTest() {
+    Assert.assertEquals(_dataStructure.scoreOfParentheses("()"), 1);
+    Assert.assertEquals(_dataStructure.scoreOfParentheses("(())"), 2);
+    Assert.assertEquals(_dataStructure.scoreOfParentheses("()()"), 2);
+    Assert.assertEquals(_dataStructure.scoreOfParentheses("(()(()))"), 6);
+    Assert.assertEquals(_dataStructure.scoreOfParentheses("(((())))"), 8);
+    Assert.assertEquals(_dataStructure.scoreOfParentheses("(()())()()()"), 7);
   }
 }
