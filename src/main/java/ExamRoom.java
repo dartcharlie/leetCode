@@ -3,6 +3,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
 
+
+/**
+ * implementation of exam room based on leetcode 855 ExamRoom
+ * https://leetcode.com/problems/exam-room/description/
+ */
 class ExamRoom {
   int totalSlot = 0;
   PriorityQueue<AvailableSegment> segmentQueue;

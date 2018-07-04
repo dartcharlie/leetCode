@@ -1791,4 +1791,54 @@ public class DataStructure {
     }
     return score;
   }
+
+  public int carFleet(int target, int[] position, int[] speed) {
+    if(position.length == 0) {
+      return 0;
+    }
+    ArrayList<Car> carArray = new ArrayList<>();
+    for(int i=0;i<position.length;++i) {
+      carArray.add(new Car(target, position[i], speed[i]));
+    }
+    carArray.sort(new CarComparator());
+    Car headCar = carArray.get(0);
+    int fleetCount = 1;
+    for(int i=1;i<position.length;++i) {
+      if(carArray.get(i).speed > headCar.speed && carArray.get(i).eta <= headCar.eta) {
+        continue;
+      }
+      headCar = carArray.get(i);
+      fleetCount++;
+    }
+    return fleetCount;
+  }
+
+  private class Car {
+    int target;
+    Integer position;
+    int speed;
+    Double eta;
+    public Car(int trg, int pst, int spd) {
+      target = trg;
+      position = pst;
+      speed = spd;
+      eta = (double) (trg-pst)/spd;
+    }
+  }
+
+  private class CarComparator implements Comparator<Car> {
+    public int compare(Car c1, Car c2) {
+      return -c1.position.compareTo(c2.position);
+    }
+  }
+
+  public String shiftingLetters(String S, int[] shifts) {
+    int currShift = 0;
+    char[] result = new char[S.length()];
+    for(int i=shifts.length-1;i>=0;i--) {
+      currShift = (currShift + shifts[i]) % 26;
+      result[i] = (char) ((S.charAt(i) - 'a' + currShift) % 26 + 'a');
+    }
+    return new String(result);
+  }
 }

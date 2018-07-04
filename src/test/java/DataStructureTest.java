@@ -774,4 +774,10 @@ public class DataStructureTest {
     Assert.assertEquals(_dataStructure.scoreOfParentheses("(((())))"), 8);
     Assert.assertEquals(_dataStructure.scoreOfParentheses("(()())()()()"), 7);
   }
+
+  @Test
+  public void shiftingLettersTest() {
+    Assert.assertEquals(_dataStructure.shiftingLetters("abc", new int[] {3,5,9}), "rpl");
+    Assert.assertEquals(_dataStructure.shiftingLetters("ab", new int[] {26,1}), "bc");
+  }
 }

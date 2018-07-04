@@ -637,4 +637,38 @@ public class DynamicProgramming {
     }
     return maxLen;
   }
+
+  public int shortestPathLength(int[][] graph) {
+    int dp[][] = new int[graph.length][1 << graph.length];
+    Queue<NodeState> visitQueue = new LinkedList<>();
+    for(int i = 0; i< graph.length; ++ i) {
+      Arrays.fill(dp[i], Integer.MAX_VALUE);
+      dp[i][1<<i] = 0;
+      visitQueue.offer(new NodeState(1<<i,i));
+    }
+    while(!visitQueue.isEmpty()) {
+      NodeState ns = visitQueue.poll();
+      for(int next: graph[ns.source]) {
+        int nextState = (1<<next)|(ns.state);
+        if(dp[next][nextState] > dp[ns.source][ns.state] + 1) {
+          dp[next][nextState] = dp[ns.source][ns.state] + 1;
+          visitQueue.offer(new NodeState(nextState,next));
+        }
+      }
+    }
+    int shortest = Integer.MAX_VALUE;
+    for(int i=0;i<graph.length;++i) {
+      shortest = Math.min(shortest, dp[i][(1<<graph.length)-1]);
+    }
+    return shortest;
+  }
+
+  private class NodeState {
+    int state;
+    int source;
+    public NodeState(int s, int sourceNode) {
+      state = s;
+      source = sourceNode;
+    }
+  }
 }

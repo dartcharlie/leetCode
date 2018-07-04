@@ -864,5 +864,36 @@ public class Recursion {
     }
   }
 
+  public List<Integer> splitIntoFibonacci(String S) {
+    List<Integer> result = new ArrayList<>();
+    splitHelper(S, result, 0);
+    return result;
+  }
 
+  private boolean splitHelper(String S, List<Integer> splits, int index) {
+    int splitSize = splits.size();
+    if(index == S.length() && splitSize >= 3) {
+      return true;
+    }
+    for(int i=index; i<S.length(); ++i) {
+      if(S.charAt(index) == '0' && i > index) {
+        break;
+      }
+      long currNum = Long.parseLong(S.substring(index,i+1));
+      if(currNum > Integer.MAX_VALUE) {
+        break;
+      }
+      if(splitSize >= 2 && currNum > (long)splits.get(splitSize-2) + (long)splits.get(splitSize-1)) {
+        break;
+      }
+      if(splitSize <= 1 || currNum == splits.get(splitSize-2) + splits.get(splitSize-1)) {
+        splits.add((int) currNum);
+        if(splitHelper(S, splits, i+1)) {
+          return true;
+        }
+        splits.remove(splits.size() -1);
+      }
+    }
+    return false;
+  }
 }

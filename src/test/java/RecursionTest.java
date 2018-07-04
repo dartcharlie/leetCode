@@ -4,6 +4,7 @@ import org.testng.annotations.Test;
 import org.testng.internal.junit.ArrayAsserts;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -261,5 +262,14 @@ public class RecursionTest {
     assertEquals(actual2.size(),expected2.size());
     assertTrue(actual2.containsAll(expected2));
     assertTrue(expected2.containsAll(actual2));
+  }
+
+  @Test
+  public void splitIntoFibonacciTest() {
+    assertEquals(_recursion.splitIntoFibonacci("123456579"), Arrays.stream(new int[] {123,456,579}).boxed().collect(Collectors.toList()));
+    assertEquals(_recursion.splitIntoFibonacci("11235813"), Arrays.stream(new int[] {1,1,2,3,5,8,13}).boxed().collect(Collectors.toList()));
+    assertEquals(_recursion.splitIntoFibonacci("112358130"), Arrays.stream(new int[] {}).boxed().collect(Collectors.toList()));
+    assertEquals(_recursion.splitIntoFibonacci("0123"), Arrays.stream(new int[] {}).boxed().collect(Collectors.toList()));
+    assertEquals(_recursion.splitIntoFibonacci("123"), Arrays.stream(new int[] {1,2,3}).boxed().collect(Collectors.toList()));
   }
 }

@@ -209,4 +209,12 @@ public class DynamicProgrammingTest {
     int[] B2 = new int[] {3};
     assertEquals(_dynamicProgramming.findLength(A2,B2),0);
   }
+
+  @Test
+  public void shortestPathLengthTest() {
+    int[][] graph1 = new int[][] {{1,2,3},{0},{0},{0}};
+    assertEquals(_dynamicProgramming.shortestPathLength(graph1),4);
+    int[][] graph2 = new int[][] {{1},{0,2,4},{1,3,4},{2},{1,2}};
+    assertEquals(_dynamicProgramming.shortestPathLength(graph2),4);
+  }
 }
