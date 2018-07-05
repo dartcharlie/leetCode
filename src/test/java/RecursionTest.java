@@ -272,4 +272,40 @@ public class RecursionTest {
     assertEquals(_recursion.splitIntoFibonacci("0123"), Arrays.stream(new int[] {}).boxed().collect(Collectors.toList()));
     assertEquals(_recursion.splitIntoFibonacci("123"), Arrays.stream(new int[] {1,2,3}).boxed().collect(Collectors.toList()));
   }
+
+  @Test
+  public void isAdditiveNumberTest() {
+    assertTrue(_recursion.isAdditiveNumber("12012122436"));
+    assertTrue(_recursion.isAdditiveNumber("211738"));
+  }
+
+  @Test
+  public void letterCasePermutationTest() {
+    List<String> expected1 = Arrays.asList("a1b2","a1B2","A1b2","A1B2");
+    List<String> actual1 = _recursion.letterCasePermutation("a1b2");
+    assertEquals(actual1.size(),expected1.size());
+    assertTrue(actual1.containsAll(expected1));
+    assertTrue(expected1.containsAll(actual1));
+    List<String> expected2 = Arrays.asList("12345");
+    List<String> actual2 = _recursion.letterCasePermutation("12345");
+    assertEquals(actual2.size(),expected2.size());
+    assertTrue(actual2.containsAll(expected2));
+    assertTrue(expected2.containsAll(actual2));
+  }
+
+  @Test
+  public void minStickersTest() {
+    assertEquals(_recursion.minStickers(new String[] {"with", "example", "science"}, "thehat"), 3);
+    assertEquals(_recursion.minStickers(new String[] {"notice", "possible"}, "basicbasic"), -1);
+  }
+
+  @Test
+  public void countArrangementTest() {
+    assertEquals(_recursion.countArrangement(2),2);
+    assertEquals(_recursion.countArrangement(3),3);
+    assertEquals(_recursion.countArrangement(4),8);
+    assertEquals(_recursion.countArrangement(5),10);
+    assertEquals(_recursion.countArrangement(6),36);
+    assertEquals(_recursion.countArrangement(15),24679);
+  }
 }

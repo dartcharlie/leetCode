@@ -1,4 +1,6 @@
 import java.util.*;
+import java.util.stream.Collectors;
+
 public class Recursion {
   /**
    * given an input array, return all permutations of such array, no duplicate element inside input array
@@ -895,5 +897,150 @@ public class Recursion {
       }
     }
     return false;
+  }
+
+  public boolean isAdditiveNumber(String num) {
+    return additiveNumberHelper(num, new ArrayList<Long>(), 0);
+  }
+
+  private boolean additiveNumberHelper(String num, List<Long> numList, int index) {
+    if(index == num.length() && numList.size() >=3) {
+      return true;
+    }
+    for(int i=index; i<num.length();++i) {
+      if(num.charAt(index) == '0' && i>index) {
+        break;
+      }
+      if(i - index > 10) {
+        break;
+      }
+      long currNum = Long.parseLong(num.substring(index,i+1));
+
+      if(numList.size() >=2 && currNum > numList.get(numList.size() - 2)+ numList.get(numList.size() - 1)) {
+        break;
+      }
+      if(numList.size() <=1 && 2*i > num.length() + index) {
+        break;
+      }
+      if(numList.size() <= 1 || currNum == numList.get(numList.size() - 2) + numList.get(numList.size() - 1)) {
+        numList.add(currNum);
+        if(additiveNumberHelper(num, numList, i+1)) {
+          return true;
+        }
+        numList.remove(numList.size() - 1);
+      }
+    }
+    return false;
+  }
+
+  private String convertCharListToString(List<Character> charList) {
+    return charList.stream().map(c -> c.toString()).collect(Collectors.joining());
+  }
+
+  public List<String> letterCasePermutation(String S) {
+    List<String> result = new ArrayList<>();
+    permutationHelper(S.toLowerCase(), 0, result, new String());
+    return result;
+  }
+
+  private void permutationHelper(String S, int index, List<String> permutations, String temp) {
+    if(index == S.length()) {
+      permutations.add(temp);
+      return;
+    }
+    char currChar = S.charAt(index);
+    if(Character.isDigit(currChar)) {
+      permutationHelper(S, index+1, permutations, temp + currChar);
+    } else {
+      permutationHelper(S, index+1, permutations, temp + currChar);
+      permutationHelper(S, index+1, permutations, temp + Character.toUpperCase(currChar));
+    }
+  }
+
+  /**
+   * convert String sticker[i] to an integer array int[i][26]
+   * we only care about characters that in target, and store each character count in the array.
+   */
+  protected int[][] preProcessStickers (String[] stickers, String target) {
+    int[] targetCharCount = new int[26];
+    for(int i=0;i<26;++i) {
+      for(int j=0;j<target.length();++j) {
+        targetCharCount[target.charAt(j)-'a']++;
+      }
+    }
+    int[][] processed = new int[stickers.length][26];
+    for(int i=0;i<stickers.length;++i) {
+      for(int j=0;j<stickers[i].length();++j) {
+        if(targetCharCount[stickers[i].charAt(j) - 'a'] > 0) {
+          processed[i][stickers[i].charAt(j) - 'a']++;
+        }
+      }
+    }
+    return processed;
+  }
+
+
+  public int minStickers(String[] stickers, String target) {
+    int[][] processed = new int[stickers.length][26];
+    for(int i=0;i<stickers.length;++i) {
+      for(int j=0;j<stickers[i].length(); ++j){
+        processed[i][stickers[i].charAt(j)-'a']++;
+      }
+    }
+    Map<String, Integer> dp = new HashMap<>();
+    dp.put("", 0);
+    stickerHelper(processed, target, dp);
+    return dp.get(target);
+  }
+
+  private int stickerHelper(int[][] stickers, String target, Map<String, Integer> dp) {
+    if(dp.containsKey(target)) return dp.get(target);
+    int[] tarCount = new int[26];
+
+    for(int i=0;i<target.length();++i) {
+      tarCount[target.charAt(i)-'a']++;
+    }
+
+    int minStickerCount = Integer.MAX_VALUE;
+    for(int i=0;i<stickers.length;++i) {
+      if(stickers[i][target.charAt(0) -'a'] == 0) continue;
+      StringBuilder sb = new StringBuilder();
+      for(int j=0;j<26;++j) {
+        if(tarCount[j] >0) {
+          for(int k=0;k<Math.max(0, tarCount[j]-stickers[i][j]);++k) {
+            sb.append((char)(j + 'a'));
+          }
+        }
+      }
+      int temp = stickerHelper(stickers,sb.toString(),dp);
+      if (temp != -1) minStickerCount = Math.min(minStickerCount, temp+1);
+    }
+    dp.put(target, minStickerCount == Integer.MAX_VALUE? -1:minStickerCount);
+    return dp.get(target);
+  }
+
+  public int countArrangement(int N) {
+    List<List<Integer>> result = new ArrayList<>();
+    arrangementHelper(N, new HashSet<>(), new ArrayList<>(), result);
+    return result.size();
+  }
+
+  private void arrangementHelper(int N, Set<Integer> visited, List<Integer> arrangement, List<List<Integer>> arrangements) {
+    if(visited.size() == N) {
+      List<Integer> copy = new ArrayList<>(arrangement);
+      arrangements.add(copy);
+    }
+    for(int i=1;i<=N;++i) {
+      if(!visited.contains(i)) {
+        int currPos = arrangement.size()+1;
+        if(i%currPos == 0 || currPos%i == 0) {
+          visited.add(i);
+          arrangement.add(i);
+          arrangementHelper(N,visited,arrangement,arrangements);
+          visited.remove(i);
+          arrangement.remove(arrangement.size()-1);
+        }
+      }
+    }
   }
 }
